@@ -31,7 +31,7 @@ public class FuncionarioView extends javax.swing.JDialog {
     public FuncionarioView(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        
+        this.setLocationRelativeTo(null);
       
  
         //cria a lista com os produtos

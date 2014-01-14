@@ -23,6 +23,8 @@ public class Funcionario {
     private String cep;
     private String sexo;
     private String telefone;
+    private String login;
+    private String senha;
     
     public Funcionario(){
         
@@ -35,9 +37,19 @@ public class Funcionario {
         this.telefone = telefone;
     }
     
+    /**
+     * Construtor de Autenticação.
+     * 
+     * @param login
+     * @param senha 
+     */
+    public Funcionario(String login, String senha) {
+        this.login = login;
+        this.senha = senha;
+    }
     
-
     
+   
     
     
     public String getCpf() {
@@ -102,6 +114,22 @@ public class Funcionario {
 
     public void setTelefone(String telefone) {
         this.telefone = telefone;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
     
     
