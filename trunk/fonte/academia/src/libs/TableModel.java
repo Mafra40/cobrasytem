@@ -6,7 +6,7 @@ package libs;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
-import src.model.Funcionario;
+import app.model.Funcionario;
 
 /**
  *
