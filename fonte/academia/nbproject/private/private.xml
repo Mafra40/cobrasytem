@@ -3,13 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/WISE/Documents/NetBeansProjects/academia/src/src/model/Funcionario.java</file>
-            <file>file:/C:/Users/WISE/Documents/NetBeansProjects/academia/src/src/view/FuncionarioView.java</file>
-            <file>file:/C:/Users/WISE/Documents/NetBeansProjects/academia/src/academia/Main.java</file>
-            <file>file:/C:/Users/WISE/Documents/NetBeansProjects/academia/src/src/model/DB.java</file>
-            <file>file:/C:/Users/WISE/Documents/NetBeansProjects/academia/src/src/view/FuncionarioTableModelTest.java</file>
-            <file>file:/C:/Users/WISE/Documents/NetBeansProjects/academia/src/libs/TableModel.java</file>
-            <file>file:/C:/Users/WISE/Documents/NetBeansProjects/academia/src/src/model/FuncionarioModel.java</file>
+            <file>file:/C:/Users/WISE/Documents/NetBeansProjects/academia/src/app/view/principal/MenuView.java</file>
+            <file>file:/C:/Users/WISE/Documents/NetBeansProjects/academia/src/app/model/DB.java</file>
+            <file>file:/C:/Users/WISE/Documents/NetBeansProjects/academia/src/app/view/funcionario/FuncionarioEditar.java</file>
+            <file>file:/C:/Users/WISE/Documents/NetBeansProjects/academia/src/app/model/FuncionarioModel.java</file>
+            <file>file:/C:/Users/WISE/Documents/NetBeansProjects/academia/src/app/controller/FuncionarioController.java</file>
         </group>
     </open-files>
 </project-private>
