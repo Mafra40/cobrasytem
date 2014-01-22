@@ -8,7 +8,6 @@
  * Contributors:
  *    WISE - initial API and implementation and/or initial documentation
  */
-
 package app.view.funcionario;
 
 import app.controller.FuncionarioController;
@@ -26,39 +25,39 @@ import javax.swing.JOptionPane;
  */
 public class FuncionarioView extends javax.swing.JDialog {
 
-        private FuncionarioTableModel fModel;
-        private static String cpf;
+    private FuncionarioTableModel fModel;
+    public static String cpf;
+    public static String nome;
+    private static int linhaSelecionada;
+    public static String Selecionado;
+
     /**
      * Creates new form FuncionarioView
+     *
      * @param parent
      */
     public FuncionarioView(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         this.setLocationRelativeTo(null);
-      
- 
+
         //cria a lista com os produtos
         List<Funcionario> lista = new ArrayList<Funcionario>();
         FuncionarioModel fm = new FuncionarioModel();
-        
+
         fm.Listar();
-        
+
         for (Funcionario f : fm.funcs) {
-            lista.add(new Funcionario(f.getCpf(),f.getNome(),f.getBairro(), f.getTelefone(), f.getLogin()));
-            
+            lista.add(new Funcionario(f.getCpf(), f.getNome(), f.getBairro(), f.getTelefone(), f.getLogin()));
+
         }
-      
+
         //cria o modelo de Produto
         fModel = new FuncionarioTableModel(lista);
         //atribui o modelo à tabela
         funcionarioTable.setModel(fModel);
-        
+
     }
-    
-    
-    
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -79,7 +78,7 @@ public class FuncionarioView extends javax.swing.JDialog {
         pesquisaTxt = new javax.swing.JTextField();
         radioNome = new javax.swing.JRadioButton();
         radioCpf = new javax.swing.JRadioButton();
-        jButton4 = new javax.swing.JButton();
+        btPesquisar = new javax.swing.JButton();
         btFechar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -131,14 +130,19 @@ public class FuncionarioView extends javax.swing.JDialog {
 
         btGrupo1.add(radioNome);
         radioNome.setToolTipText("Pesquisar por nome");
+        radioNome.setSelected(true);
         radioNome.setText("Nome");
 
         btGrupo1.add(radioCpf);
         radioCpf.setToolTipText("Pesquisar por CPF.");
-        radioCpf.setSelected(true);
         radioCpf.setText("Cpf");
 
-        jButton4.setText("Pesquisar");
+        btPesquisar.setText("Pesquisar");
+        btPesquisar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btPesquisarActionPerformed(evt);
+            }
+        });
 
         btFechar.setText("Fechar");
         btFechar.addActionListener(new java.awt.event.ActionListener() {
@@ -157,7 +161,7 @@ public class FuncionarioView extends javax.swing.JDialog {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(pesquisaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton4)
+                        .addComponent(btPesquisar)
                         .addGap(18, 18, 18)
                         .addComponent(radioNome)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -180,7 +184,7 @@ public class FuncionarioView extends javax.swing.JDialog {
                     .addComponent(pesquisaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(radioNome)
                     .addComponent(radioCpf)
-                    .addComponent(jButton4))
+                    .addComponent(btPesquisar))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 392, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -218,31 +222,54 @@ public class FuncionarioView extends javax.swing.JDialog {
     }//GEN-LAST:event_btFecharActionPerformed
 
     private void btCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCadastrarActionPerformed
-       this.setModal(false);// tira o foco obrigatório
-       FuncionarioForm fm = new FuncionarioForm(null, true);
-       fm.setVisible(true);
+        this.setModal(false);// tira o foco obrigatório
+        FuncionarioForm fm = new FuncionarioForm(null, true);
+        fm.setVisible(true);
+        /**
+         * Depois que ser fechado *
+         */
+
+
     }//GEN-LAST:event_btCadastrarActionPerformed
 
     private void funcionarioTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_funcionarioTableMouseClicked
-        
-            int linha = funcionarioTable.getSelectedRow();
-            int coluna = funcionarioTable.getSelectedColumn();
-            
-            cpf = funcionarioTable.getModel().getValueAt(linha, 1).toString();
-            
-            btEditar.setEnabled(true);
-            btRemover.setEnabled(true);
+
+        linhaSelecionada = funcionarioTable.getSelectedRow();
+        int coluna = funcionarioTable.getSelectedColumn();
+
+        cpf = funcionarioTable.getModel().getValueAt(linhaSelecionada, 1).toString();
+        nome = funcionarioTable.getModel().getValueAt(linhaSelecionada, 0).toString();
+
+        btEditar.setEnabled(true);
+        btRemover.setEnabled(true);
     }//GEN-LAST:event_funcionarioTableMouseClicked
 
     private void btRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btRemoverActionPerformed
-            FuncionarioController fc = new FuncionarioController();
-            fc.deletar(cpf);
+        FuncionarioController fc = new FuncionarioController();
+        fc.deletar(cpf, linhaSelecionada);
     }//GEN-LAST:event_btRemoverActionPerformed
 
     private void btEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEditarActionPerformed
         FuncionarioController fc = new FuncionarioController();
+        FuncionarioController.linhaSelecionadaTabelela = linhaSelecionada;
         fc.editar(cpf);
     }//GEN-LAST:event_btEditarActionPerformed
+
+    private void btPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btPesquisarActionPerformed
+        String pesquisa = pesquisaTxt.getText();
+        
+        if (radioCpf.isSelected() == true){
+            Selecionado = "cpf";
+        }
+        
+        if (radioNome.isSelected() == true){
+            Selecionado = "nome";
+        }
+        
+       FuncionarioController fc = new FuncionarioController();
+       fc.filtrar(pesquisa, Selecionado);
+        
+    }//GEN-LAST:event_btPesquisarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -291,9 +318,9 @@ public class FuncionarioView extends javax.swing.JDialog {
     private javax.swing.JButton btEditar;
     private javax.swing.JButton btFechar;
     private javax.swing.ButtonGroup btGrupo1;
+    private javax.swing.JButton btPesquisar;
     private javax.swing.JButton btRemover;
     public static javax.swing.JTable funcionarioTable;
-    private javax.swing.JButton jButton4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField pesquisaTxt;

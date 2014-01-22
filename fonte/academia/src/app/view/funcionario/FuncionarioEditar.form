@@ -36,7 +36,7 @@
                       <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
                       <Component id="msgSenha" min="-2" pref="190" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
-                      <Component id="btCadastrar" min="-2" max="-2" attributes="0"/>
+                      <Component id="btCadastrar" min="-2" pref="74" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="btCancelar" min="-2" max="-2" attributes="0"/>
                   </Group>
@@ -74,7 +74,7 @@
   <SubComponents>
     <Component class="javax.swing.JButton" name="btCadastrar">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Cadastrar"/>
+        <Property name="text" type="java.lang.String" value="Alterar"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btCadastrarActionPerformed"/>

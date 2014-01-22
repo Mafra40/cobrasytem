@@ -1,22 +1,21 @@
 package app.model.tablemodel;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
 import app.model.Funcionario;
+import com.sun.org.apache.xpath.internal.functions.FuncBoolean;
 
-public class FuncionarioTableModel extends AbstractTableModel {
+ public class FuncionarioTableModel extends AbstractTableModel {
 
-    private List<Funcionario> linhas;
-    private String[] colunas = new String[]{"Nome", "CPF"};
+   private List<Funcionario> linhas;
+  private String[] colunas = new String[]{"Nome", "CPF"};
 
     private static final int NOME = 0;
     private static final int CPF = 1;
 
     // Cria um Func sem nenhuma linha
-    public FuncionarioTableModel() {
+    public   FuncionarioTableModel() {
         linhas = new ArrayList<Funcionario>();
     }
 
@@ -26,7 +25,7 @@ public class FuncionarioTableModel extends AbstractTableModel {
     }
 
     @Override
-    public int getRowCount() {
+     public  int getRowCount() {
         return linhas.size();
     }
 
@@ -95,6 +94,27 @@ public class FuncionarioTableModel extends AbstractTableModel {
     }
     
     
+ public void removeRow(int row) {
+    linhas.remove(row);
+    fireTableRowsDeleted(row, row);
+}
+   
+public void  addRow(String nome, String cpf, int row){
+    Funcionario func = new Funcionario();
+    func.setNome(nome);
+    func.setCpf(cpf);
+    linhas.add(func);
+    fireTableRowsInserted(row+1, row+1);
+}
+
+public void updateRow(String nome, String cpf, int row){
+    Funcionario func = new Funcionario();
+    func.setNome(nome);
+    func.setCpf(cpf);
     
+    
+    fireTableRowsUpdated(row, row);
+    
+}
 
 }

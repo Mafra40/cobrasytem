@@ -1,3 +1,4 @@
+
 /*
  * Copyright (c) 2014 WISE.
  * All rights reserved. This program and the accompanying materials
@@ -12,16 +13,20 @@ package app.view.funcionario;
 
 import app.controller.FuncionarioController;
 import app.model.Funcionario;
+import app.model.tablemodel.FuncionarioTableModel;
 import conf.Global;
-import java.awt.Color;
-import javax.swing.BorderFactory;
-import javax.swing.border.Border;
+import javax.swing.JOptionPane;
+import javax.swing.table.TableModel;
+import libs.Validador;
 
 /**
  *
  * @author WISE
  */
 public class FuncionarioForm extends javax.swing.JDialog {
+
+    private FuncionarioTableModel fModel;
+    private TableModel fModel2;
 
     /**
      * Creates new form FuncionarioForm
@@ -48,17 +53,17 @@ public class FuncionarioForm extends javax.swing.JDialog {
         lbNome = new javax.swing.JLabel();
         nomeTxt = new javax.swing.JTextField();
         lbCpf = new javax.swing.JLabel();
-        cpfTxt = new javax.swing.JTextField();
         lbTelefone = new javax.swing.JLabel();
-        telefoneTxt = new javax.swing.JTextField();
         lbCep = new javax.swing.JLabel();
-        cepTxt = new javax.swing.JTextField();
         lbEndereco = new javax.swing.JLabel();
         enderecoTxt = new javax.swing.JTextField();
         lbCidade = new javax.swing.JLabel();
         cidadeTxt = new javax.swing.JTextField();
         lbBairro = new javax.swing.JLabel();
-        baixoTxt = new javax.swing.JTextField();
+        bairroTxt = new javax.swing.JTextField();
+        cpfTxt = new javax.swing.JFormattedTextField();
+        telefoneTxt = new javax.swing.JFormattedTextField();
+        cepTxt = new javax.swing.JFormattedTextField();
         painelAcesso = new javax.swing.JTabbedPane();
         painelAutenticacao = new javax.swing.JPanel();
         lbLogin = new javax.swing.JLabel();
@@ -72,6 +77,7 @@ public class FuncionarioForm extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Cadastro de Funcionário");
         setAutoRequestFocus(false);
+        setBackground(java.awt.Color.white);
         setName("funcionarioFormDialog"); // NOI18N
         setResizable(false);
         setType(java.awt.Window.Type.UTILITY);
@@ -90,7 +96,11 @@ public class FuncionarioForm extends javax.swing.JDialog {
             }
         });
 
+        guiaPrincipal.setBackground(new java.awt.Color(204, 255, 255));
+
         lbNome.setText("Nome");
+
+        nomeTxt.setToolTipText("Limite de 100 caracteres.");
 
         lbCpf.setText("CPF");
 
@@ -100,9 +110,33 @@ public class FuncionarioForm extends javax.swing.JDialog {
 
         lbEndereco.setText("Endereço");
 
+        enderecoTxt.setToolTipText("Limite de caracteres: 100");
+
         lbCidade.setText("Cidade");
 
+        cidadeTxt.setToolTipText("Limite de caracteres: 45");
+
         lbBairro.setText("Bairro");
+
+        bairroTxt.setToolTipText("Limite de caracteres: 45");
+
+        try {
+            cpfTxt.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###.###.###-##")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+
+        try {
+            telefoneTxt.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("####-####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+
+        try {
+            cepTxt.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("#####-###")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
 
         javax.swing.GroupLayout painelDadosLayout = new javax.swing.GroupLayout(painelDados);
         painelDados.setLayout(painelDadosLayout);
@@ -112,32 +146,27 @@ public class FuncionarioForm extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(painelDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lbNome)
-                    .addGroup(painelDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(painelDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addGroup(painelDadosLayout.createSequentialGroup()
-                            .addGroup(painelDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addGroup(painelDadosLayout.createSequentialGroup()
-                                    .addGroup(painelDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(lbCpf)
-                                        .addComponent(cpfTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGap(42, 42, 42)
-                                    .addGroup(painelDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(painelDadosLayout.createSequentialGroup()
-                                            .addGap(2, 2, 2)
-                                            .addComponent(lbTelefone))
-                                        .addComponent(telefoneTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGap(18, 18, 18))
-                                .addGroup(painelDadosLayout.createSequentialGroup()
-                                    .addComponent(lbCidade)
-                                    .addGap(106, 106, 106)))
+                            .addComponent(lbCidade)
+                            .addGap(127, 127, 127)
+                            .addGroup(painelDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(bairroTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lbBairro))
+                            .addGap(35, 35, 35))
+                        .addComponent(nomeTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 572, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, painelDadosLayout.createSequentialGroup()
+                            .addGroup(painelDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(lbCpf)
+                                .addComponent(cpfTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(27, 27, 27)
+                            .addGroup(painelDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(lbTelefone)
+                                .addComponent(telefoneTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(26, 26, 26)
                             .addGroup(painelDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(lbCep)
-                                .addComponent(cepTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(painelDadosLayout.createSequentialGroup()
-                                    .addGap(21, 21, 21)
-                                    .addGroup(painelDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(baixoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(lbBairro)))))
-                        .addComponent(nomeTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 572, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(cepTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(painelDadosLayout.createSequentialGroup()
                         .addGroup(painelDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lbEndereco)
@@ -172,17 +201,25 @@ public class FuncionarioForm extends javax.swing.JDialog {
                 .addGroup(painelDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(enderecoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cidadeTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(baixoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(bairroTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(24, Short.MAX_VALUE))
         );
 
         guiaPrincipal.addTab("Dados do Funcionário", painelDados);
 
+        painelAcesso.setBackground(new java.awt.Color(204, 255, 255));
+
         lbLogin.setText("Login");
+
+        loginTxt.setToolTipText("Nome de acesso ao sistema. Limite de caracteres: 35");
 
         lbSenha.setText("Senha");
 
         lbSenha2.setText("Digite a senha novamente");
+
+        senha2Txt.setToolTipText("Limite de caracteres: 32");
+
+        senhaTxt.setToolTipText("Limite de caracteres: 32");
 
         javax.swing.GroupLayout painelAutenticacaoLayout = new javax.swing.GroupLayout(painelAutenticacao);
         painelAutenticacao.setLayout(painelAutenticacaoLayout);
@@ -269,73 +306,62 @@ public class FuncionarioForm extends javax.swing.JDialog {
 
     private void btCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCadastrarActionPerformed
         String id, nome, cpf, endereco, cidade, bairro, cep, senha, senha2, telefone, login;
+        String msg = "";
 
-        nome = nomeTxt.getText();
-        cpf = cpfTxt.getText();
-        endereco = enderecoTxt.getText();
-        cidade = cidadeTxt.getText();
-        bairro = baixoTxt.getText();
-        cep = cepTxt.getText();
-        senha = senhaTxt.getText();
-        senha2 = senha2Txt.getText();
-        telefone = telefoneTxt.getText();
-        login = loginTxt.getText();
-
-        this.validarCampos();
-        //String[] Campos = {nome, cpf, endereco, cidade, bairro, cep, senha, senha2, telefone, login};
-        Funcionario f = new Funcionario(cpf, nome, endereco, cidade, bairro, cep, telefone, login, senha);
-        FuncionarioController fc = new FuncionarioController();
-
-        fc.cadastro(f);
+        Validador.valida_textField(nomeTxt, 100, true, 8, "Nome");
+        Validador.valida_textField(enderecoTxt, 100, false, 1, "Endereço");
+        Validador.valida_textField(cidadeTxt, 45, false, 2, "Cidade");
+        Validador.valida_textField(bairroTxt, 45, false, 3, "Bairro");
+        Validador.valida_textField(cepTxt, 15, true, 4, "CEP");
+        Validador.validaSenha(senhaTxt, senha2Txt, 32, true, 5, "Senhas");
+        Validador.valida_textField(telefoneTxt, 10, false, 6, "Telefone");
+        Validador.valida_textField(loginTxt, 35, true, 7, "Login");
+        Validador.validaCPF(cpfTxt.getText());
         
+        if (Validador.erros == 0) {
+
+            nome = nomeTxt.getText();
+            cpf = cpfTxt.getText();
+            endereco = enderecoTxt.getText();
+            cidade = cidadeTxt.getText();
+            bairro = bairroTxt.getText();
+            cep = cepTxt.getText();
+            senha = senhaTxt.getText();
+            senha2 = senha2Txt.getText();
+            telefone = telefoneTxt.getText();
+            login = loginTxt.getText();
+
+            Funcionario f = new Funcionario(cpf, nome, endereco, cidade, bairro, cep, telefone, login, senha);
+            FuncionarioController fc = new FuncionarioController();
+            fc.cadastro(f);
+
+        } else {
+
+            for (int i = 0; i < 9; i++) {//Lista os erros
+                for (int j = 0; j < 3; j++) {
+                    if (null != Validador.arrayErros[i][j]) {
+                        msg = msg + Validador.arrayErros[i][j];
+                    }
+
+                }
+            }
+
+            JOptionPane.showMessageDialog(null, msg, "Erros", JOptionPane.ERROR_MESSAGE);
+            Validador.erros = 0;
+            for (int i = 0; i < 9; i++) {// Apaga os erros para não se acumular.
+                for (int j = 0; j < 3; j++) {
+                    if (null != Validador.arrayErros[i][j]) {
+                        Validador.arrayErros[i][j] = "";
+                    }
+
+                }
+            }
+        }
 
 
     }//GEN-LAST:event_btCadastrarActionPerformed
 
-    private void validarCampos() {
-        Border borderR = BorderFactory.createLineBorder(Color.red);
-        Border borderG = BorderFactory.createLineBorder(Color.GREEN);
-
-        if ("".equals(nomeTxt.getText())) {//Nome
-            nomeTxt.setBorder(borderR);
-        } else {
-            nomeTxt.setBorder(borderG);
-        }
-
-        if ("".equals(cpfTxt.getText())) { //cpf
-            cpfTxt.setBorder(borderR);
-        } else {
-            cpfTxt.setBorder(borderG);
-        }
-
-        if ("".equals(senhaTxt.getText())) {
-            senhaTxt.setBorder(borderR);
-        } else {
-            senhaTxt.setBorder(borderG);
-        }
-
-        if ("".equals(senha2Txt.getText())) {
-            senha2Txt.setBorder(borderR);
-        } else {
-            senha2Txt.setBorder(borderG);
-        }
-
-        if ("".equals(loginTxt.getText())) {//login
-            loginTxt.setBorder(borderR);
-        } else {
-            loginTxt.setBorder(borderG);
-        }
-
-        if (!senhaTxt.getText().equals(senha2Txt.getText())) {
-            senhaTxt.setBorder(borderR);
-            senha2Txt.setBorder(borderR);
-            msgSenha.setForeground(Color.red);
-            msgSenha.setText("As senhas estão diferentes.");
-        } else {
-            msgSenha.setText("");
-        }
-
-    }
+    
 
     /**
      * @param args the command line arguments
@@ -380,12 +406,12 @@ public class FuncionarioForm extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField baixoTxt;
+    private javax.swing.JTextField bairroTxt;
     private javax.swing.JButton btCadastrar;
     private javax.swing.JButton btCancelar;
-    private javax.swing.JTextField cepTxt;
+    private javax.swing.JFormattedTextField cepTxt;
     private javax.swing.JTextField cidadeTxt;
-    private javax.swing.JTextField cpfTxt;
+    public javax.swing.JFormattedTextField cpfTxt;
     private javax.swing.JTextField enderecoTxt;
     private javax.swing.JTabbedPane guiaPrincipal;
     private javax.swing.JLabel lbBairro;
@@ -406,6 +432,6 @@ public class FuncionarioForm extends javax.swing.JDialog {
     private javax.swing.JPanel painelDados;
     private javax.swing.JPasswordField senha2Txt;
     private javax.swing.JPasswordField senhaTxt;
-    private javax.swing.JTextField telefoneTxt;
+    private javax.swing.JFormattedTextField telefoneTxt;
     // End of variables declaration//GEN-END:variables
 }
