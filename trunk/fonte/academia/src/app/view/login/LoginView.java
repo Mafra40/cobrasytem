@@ -39,7 +39,7 @@ public class LoginView extends javax.swing.JDialog {
     private void initComponents() {
 
         loginTxt = new javax.swing.JTextField();
-        senhaTxt = new javax.swing.JTextField();
+        senhaTxt = new javax.swing.JPasswordField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();

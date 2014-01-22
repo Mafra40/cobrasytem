@@ -8,18 +8,24 @@
  * Contributors:
  *    WISE - initial API and implementation and/or initial documentation
  */
-
 package app.view.funcionario;
 
 import app.controller.FuncionarioController;
+import app.model.Funcionario;
 import conf.Global;
+import java.awt.Color;
+import javax.swing.BorderFactory;
+import javax.swing.JOptionPane;
+import javax.swing.border.Border;
 
 /**
  *
  * @author WISE
  */
 public class FuncionarioEditar extends javax.swing.JDialog {
+
     private FuncionarioController fc;
+
     /**
      * Creates new form FuncionarioEditar
      */
@@ -27,9 +33,7 @@ public class FuncionarioEditar extends javax.swing.JDialog {
         super(parent, modal);
         setLocationRelativeTo(null);
         initComponents();
-        
-        
-        
+
     }
 
     /**
@@ -69,7 +73,7 @@ public class FuncionarioEditar extends javax.swing.JDialog {
         setAlwaysOnTop(true);
         setType(java.awt.Window.Type.UTILITY);
 
-        btCadastrar.setText("Cadastrar");
+        btCadastrar.setText("Alterar");
         btCadastrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btCadastrarActionPerformed(evt);
@@ -209,7 +213,7 @@ public class FuncionarioEditar extends javax.swing.JDialog {
                         .addGap(13, 13, 13)
                         .addComponent(msgSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btCadastrar)
+                        .addComponent(btCadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btCancelar)))
                 .addContainerGap())
@@ -238,6 +242,33 @@ public class FuncionarioEditar extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCadastrarActionPerformed
+        String id, nome, cpf, endereco, cidade, bairro, cep, telefone, login;
+        fc = new FuncionarioController();
+
+        nome = nomeTxt.getText();
+        cpf = cpfTxt.getText();
+        endereco = enderecoTxt.getText();
+        cidade = cidadeTxt.getText();
+        bairro = baixoTxt.getText();
+        cep = cepTxt.getText();
+        telefone = telefoneTxt.getText();
+        login = loginTxt.getText();
+
+        if (validarCampos() == 0) {
+
+            //String[] Campos = {nome, cpf, endereco, cidade, bairro, cep, senha, senha2, telefone, login};
+            Funcionario f = new Funcionario(cpf, nome, endereco, cidade, bairro, cep, telefone, login);
+            FuncionarioController fc = new FuncionarioController();
+            //System.err.println(f.getCpf());
+            
+            fc.salvar_edicao(f,FuncionarioView.cpf);
+            this.setVisible(false);
+            this.dispose();
+            JOptionPane.showMessageDialog(null, "Registro editado. ", "Alerta", JOptionPane.INFORMATION_MESSAGE);
+            
+
+        }
+
         
     }//GEN-LAST:event_btCadastrarActionPerformed
 
@@ -313,4 +344,38 @@ public class FuncionarioEditar extends javax.swing.JDialog {
     private javax.swing.JPanel painelDados;
     public javax.swing.JTextField telefoneTxt;
     // End of variables declaration//GEN-END:variables
+
+    private int validarCampos() {
+        int erros = 0;
+        
+        Border borderR = BorderFactory.createLineBorder(Color.red);
+        Border borderG = BorderFactory.createLineBorder(Color.GREEN);
+
+        if ("".equals(nomeTxt.getText())) {//Nome
+            nomeTxt.setBorder(borderR);
+            erros++;
+        } else {
+            nomeTxt.setBorder(borderG);
+        }
+
+        if ("".equals(cpfTxt.getText())) { //cpf
+            cpfTxt.setBorder(borderR);
+            erros++;
+        } else {
+            cpfTxt.setBorder(borderG);
+        }
+
+       
+
+        if ("".equals(loginTxt.getText())) {//login
+            loginTxt.setBorder(borderR);
+            erros++;
+        } else {
+            loginTxt.setBorder(borderG);
+        }
+
+        
+        return erros;
+
+    }
 }

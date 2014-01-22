@@ -6,8 +6,9 @@
 package app.model;
 
 import app.model.tablemodel.FuncionarioTableModel;
-import app.view.funcionario.FuncionarioEditar;
-import app.view.funcionario.FuncionarioView;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JTable;
 
 /**
  *
@@ -31,6 +31,7 @@ public class FuncionarioModel {
     private String query;
     public List<Funcionario> funcs = new ArrayList<Funcionario>();
     private FuncionarioTableModel fModel;
+    private MessageDigest md;
 
     /*Lista o usuários do sistema. FUncionários.
      */
@@ -42,12 +43,12 @@ public class FuncionarioModel {
         try {
             stm = DB.con.createStatement();
             rs = stm.executeQuery(query);
-           
+
             while (rs.next()) {
                 Funcionario func = new Funcionario();
                 func.setCpf(rs.getString("cpf"));
                 func.setNome(rs.getString("nome"));
-               // func.setCidade(rs.getString("cidade"));
+                // func.setCidade(rs.getString("cidade"));
                 func.setBairro(rs.getString("bairro"));
                 func.setLogin(rs.getString("login"));
                 func.setTelefone(rs.getString("telefone"));
@@ -55,7 +56,6 @@ public class FuncionarioModel {
 
             }
 
-            
         } catch (SQLException ex) {
             System.out.println("ERRO");
         }
@@ -66,6 +66,17 @@ public class FuncionarioModel {
     }
 
     public void cadastaFuncionario(Funcionario func) {
+        
+        /** MD5 **/
+        try {
+            md = MessageDigest.getInstance("MD5");
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(FuncionarioModel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        md.update(func.getSenha().getBytes(),0,func.getSenha().length());
+        func.setSenha(new BigInteger(1,md.digest()).toString(16));
+       /** **/
+       
         query = "INSERT INTO `academia`.`funcionario`"
                 + "(`cpf`,\n"
                 + "`nome`,\n"
@@ -95,32 +106,52 @@ public class FuncionarioModel {
 
             pstm.execute();
             pstm.close();
-            
-           
+
         } catch (SQLException ex) {
             System.out.println(ex);
         }
         DB.desconectar();
 
     }
+
     
-    public void atualizar_tabela(){
-        
-          Listar();
-           
-           List<Funcionario> lista = new ArrayList<Funcionario>();
-           for (Funcionario f : funcs) {
-           lista.add(new Funcionario(f.getCpf(),f.getNome(),f.getBairro(), f.getTelefone(), f.getLogin()));
-           fModel = new FuncionarioTableModel(lista);
-           FuncionarioView.funcionarioTable.setModel(fModel);
-        
-             }
-    
+
+    public void atualizar(Funcionario f, String cpf) {
+
+        query = "UPDATE academia.funcionario SET cpf = ? , nome = ? , endereco = ? , cidade = ? , bairro = ? , cep = ? , telefone = ? , login = ? "
+                + " WHERE cpf = ? ";
+        DB.conectar();
+        try {
+            pstm = DB.con.prepareStatement(query);
+
+            pstm.setString(1, f.getCpf());
+            pstm.setString(2, f.getNome());
+            pstm.setString(3, f.getEndereco());
+            pstm.setString(4, f.getCidade());
+            pstm.setString(5, f.getBairro());
+            pstm.setString(6, f.getCep());
+            pstm.setString(7, f.getTelefone());
+            pstm.setString(8, f.getLogin());
+            pstm.setString(9, cpf);
+
+            pstm.execute();
+            pstm.close();
+
+        } catch (SQLException ex) {
+
+            System.err.println(ex);
+        }
+        DB.desconectar();
     }
-    
-    public void  deletar(String cpf){
-         query = "DELETE FROM funcionario "
-                 + "WHERE cpf=?";
+
+    /**
+     * Deleta um funcionário.
+     *
+     * @param cpf
+     */
+    public void deletar(String cpf) {
+        query = "DELETE FROM funcionario "
+                + "WHERE cpf=?";
 
         DB.conectar();
 
@@ -129,8 +160,7 @@ public class FuncionarioModel {
             pstm.setString(1, cpf);
             pstm.execute();
             pstm.close();
-            
-            
+
         } catch (SQLException ex) {
             System.out.println(ex);
         }
@@ -138,20 +168,19 @@ public class FuncionarioModel {
         DB.desconectar();
 
     }
-    
-    
-    public Funcionario retorna_funcionario(String cpf){
-        
+
+    public Funcionario retorna_funcionario(String cpf) {
+
         query = "SELECT * FROM funcionario "
-                + " WHERE cpf='"+cpf+"'";
-        
+                + " WHERE cpf='" + cpf + "'";
+
         DB.conectar();
-       
+
         try {
             stm = DB.con.createStatement();
-             rs = stm.executeQuery(query);
-             
-             if(rs.next()){
+            rs = stm.executeQuery(query);
+
+            if (rs.next()) {
                 func = new Funcionario();
                 func.setCpf(rs.getString("cpf"));
                 func.setNome(rs.getString("nome"));
@@ -161,73 +190,97 @@ public class FuncionarioModel {
                 func.setEndereco(rs.getString("endereco"));
                 func.setTelefone(rs.getString("telefone"));
                 func.setLogin(rs.getString("login"));
-             }
-            
-           
-             
-             
+            }
+
         } catch (SQLException ex) {
             System.err.println(ex);
         }
-        
+
         DB.desconectar();
-        return func; 
+        return func;
+    }
+    
+    public List<Funcionario> filtrar(String filtro, String valor){
+         query = "SELECT * FROM funcionario "
+                + " WHERE " + filtro +" LIKE '%" + valor + "%'";
+         
+        DB.conectar();
+
+        try {
+            stm = DB.con.createStatement();
+            rs = stm.executeQuery(query);
+          
+            while (rs.next()) {
+                func = new Funcionario();
+                func.setCpf(rs.getString("cpf"));
+                func.setNome(rs.getString("nome"));
+                func.setCidade(rs.getString("cidade"));
+                func.setBairro(rs.getString("bairro"));
+                func.setCep(rs.getString("cep"));
+                func.setEndereco(rs.getString("endereco"));
+                func.setTelefone(rs.getString("telefone"));
+                func.setLogin(rs.getString("login"));
+                funcs.add(func);
+                
+            }
+
+        } catch (SQLException ex) {
+            System.err.println(ex);
+        }
+
+        DB.desconectar();
+        return funcs;
+        
     }
     
 
     /**
      * Valida CPF
      *
-     * @param   CPF
+     * @param CPF
      * @return
      */
-    public static boolean isCPF(String CPF) {
-        if (CPF.equals("00000000000") || CPF.equals("11111111111") || CPF.equals("22222222222") || CPF.equals("33333333333") || CPF.equals("44444444444") || CPF.equals("55555555555") || CPF.equals("66666666666") || CPF.equals("77777777777") || CPF.equals("88888888888") || CPF.equals("99999999999") || (CPF.length() != 11)) {
-            return (false);
-        }
-        char dig10, dig11;
-        int sm, i, r, num, peso;
+    public  boolean checarCpfExistente(String CPF) {
+        
+        query = "SELECT cpf FROM funcionario WHERE cpf ='"+CPF+"'";
+        DB.conectar();
 
-// Calculo do 1o. Digito Verificador 
-        sm = 0;
-        peso = 10;
-        for (i = 0; i < 9; i++) {
-// converte o i-esimo caractere do CPF em um numero: 
-// por exemplo, transforma o caractere '0' no inteiro 0 
-// (48 eh a posicao de '0' na tabela ASCII)
-            num = (int) (CPF.charAt(i) - 48);
-            sm = sm + (num * peso);
-            peso = peso - 1;
-        }
-        r = 11 - (sm % 11);
-        if ((r == 10) || (r == 11)) {
-            dig10 = '0';
-        } else {
-            dig10 = (char) (r + 48);
-// converte no respectivo caractere numerico 
-// Calculo do 2o. Digito Verificador
-            sm = 0;
-            peso = 11;
-            for (i = 0; i < 10; i++) {
-                num = (int) (CPF.charAt(i) - 48);
-                sm = sm + (num * peso);
-                peso = peso - 1;
-            }
-            r = 11 - (sm % 11);
-            if ((r == 10) || (r == 11)) {
-                dig11 = '0';
-            } else {
-                dig11 = (char) (r + 48);
-                // Verifica se os digitos calculados conferem com os digitos informados.
-                if ((dig10 == CPF.charAt(9)) && (dig11 == CPF.charAt(10))) {
-                    return (true);
-                } else {
-                    return (false);
-                }
+        try {
+            stm = DB.con.createStatement();
+            rs = stm.executeQuery(query);
+           if (rs.isBeforeFirst() ) {  
+            return false;
+            } 
 
-            }
+        } catch (SQLException ex) {
+            System.err.println(ex);
         }
-        return false;
 
+        DB.desconectar();
+        
+        return true;
     }
+    
+    
+    public boolean checarLoginExistente(String login){
+        
+        query = "SELECT login FROM funcionario WHERE login ='"+login+"'";
+        DB.conectar();
+
+        try {
+            stm = DB.con.createStatement();
+            rs = stm.executeQuery(query);
+           if (rs.isBeforeFirst() ) {  
+            return false;
+            } 
+
+        } catch (SQLException ex) {
+            System.err.println(ex);
+        }
+
+        DB.desconectar();
+        
+        return true;
+    }
+        
 }

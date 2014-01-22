@@ -79,6 +79,9 @@
     <Component class="javax.swing.JTextField" name="loginTxt">
     </Component>
     <Component class="javax.swing.JTextField" name="senhaTxt">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JPasswordField()"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JButton" name="jButton1">
       <Properties>

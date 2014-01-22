@@ -40,9 +40,11 @@ public class MenuView extends javax.swing.JFrame {
 
         menuPrincipal = new javax.swing.JMenuBar();
         menuAquivo = new javax.swing.JMenu();
+        miAlterarSenha = new javax.swing.JMenuItem();
         miSair = new javax.swing.JMenuItem();
         menuCadastrado = new javax.swing.JMenu();
         miFuncionario = new javax.swing.JMenuItem();
+        miAtividade = new javax.swing.JMenuItem();
         menuAjuda = new javax.swing.JMenu();
         miSobre = new javax.swing.JMenuItem();
 
@@ -51,6 +53,14 @@ public class MenuView extends javax.swing.JFrame {
         setName("menuFrame"); // NOI18N
 
         menuAquivo.setText("Arquivo");
+
+        miAlterarSenha.setText("Alterar Senha");
+        miAlterarSenha.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miAlterarSenhaActionPerformed(evt);
+            }
+        });
+        menuAquivo.add(miAlterarSenha);
 
         miSair.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.ALT_MASK));
         miSair.setText("Sair");
@@ -73,6 +83,10 @@ public class MenuView extends javax.swing.JFrame {
             }
         });
         menuCadastrado.add(miFuncionario);
+
+        miAtividade.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_MASK));
+        miAtividade.setText("Atividade");
+        menuCadastrado.add(miAtividade);
 
         menuPrincipal.add(menuCadastrado);
 
@@ -109,6 +123,11 @@ public class MenuView extends javax.swing.JFrame {
         FuncionarioController fc = new FuncionarioController();
         fc.despachar();
     }//GEN-LAST:event_miFuncionarioActionPerformed
+
+    private void miAlterarSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miAlterarSenhaActionPerformed
+        FuncionarioController fc = new FuncionarioController();
+        fc.alterar_senha_form();
+    }//GEN-LAST:event_miAlterarSenhaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -150,6 +169,8 @@ public class MenuView extends javax.swing.JFrame {
     private javax.swing.JMenu menuAquivo;
     private javax.swing.JMenu menuCadastrado;
     private javax.swing.JMenuBar menuPrincipal;
+    private javax.swing.JMenuItem miAlterarSenha;
+    private javax.swing.JMenuItem miAtividade;
     private javax.swing.JMenuItem miFuncionario;
     private javax.swing.JMenuItem miSair;
     private javax.swing.JMenuItem miSobre;
