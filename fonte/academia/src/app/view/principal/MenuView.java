@@ -11,7 +11,10 @@
 
 package app.view.principal;
 
+import app.controller.AtividadeController;
+import app.controller.AtletaController;
 import app.controller.FuncionarioController;
+import app.model.Atividade;
 import conf.Global;
 
 /**
@@ -45,6 +48,7 @@ public class MenuView extends javax.swing.JFrame {
         menuCadastrado = new javax.swing.JMenu();
         miFuncionario = new javax.swing.JMenuItem();
         miAtividade = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
         menuAjuda = new javax.swing.JMenu();
         miSobre = new javax.swing.JMenuItem();
 
@@ -54,6 +58,7 @@ public class MenuView extends javax.swing.JFrame {
 
         menuAquivo.setText("Arquivo");
 
+        miAlterarSenha.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icon-locked.png"))); // NOI18N
         miAlterarSenha.setText("Alterar Senha");
         miAlterarSenha.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -63,6 +68,7 @@ public class MenuView extends javax.swing.JFrame {
         menuAquivo.add(miAlterarSenha);
 
         miSair.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.ALT_MASK));
+        miSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icon-exit.png"))); // NOI18N
         miSair.setText("Sair");
         miSair.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -76,6 +82,7 @@ public class MenuView extends javax.swing.JFrame {
         menuCadastrado.setText("Cadastro");
 
         miFuncionario.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_MASK));
+        miFuncionario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icon-user2.png"))); // NOI18N
         miFuncionario.setText("Funcionário");
         miFuncionario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -85,8 +92,24 @@ public class MenuView extends javax.swing.JFrame {
         menuCadastrado.add(miFuncionario);
 
         miAtividade.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_MASK));
+        miAtividade.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icon-digg2.png"))); // NOI18N
         miAtividade.setText("Atividade");
+        miAtividade.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miAtividadeActionPerformed(evt);
+            }
+        });
         menuCadastrado.add(miAtividade);
+
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_T, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icon-walking.png"))); // NOI18N
+        jMenuItem1.setText("Atleta");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        menuCadastrado.add(jMenuItem1);
 
         menuPrincipal.add(menuCadastrado);
 
@@ -129,6 +152,16 @@ public class MenuView extends javax.swing.JFrame {
         fc.alterar_senha_form();
     }//GEN-LAST:event_miAlterarSenhaActionPerformed
 
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+       AtletaController ac = new AtletaController();
+       ac.despachar();
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void miAtividadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miAtividadeActionPerformed
+       AtividadeController ac = new AtividadeController();
+       ac.despachar();
+    }//GEN-LAST:event_miAtividadeActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -165,6 +198,7 @@ public class MenuView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenu menuAjuda;
     private javax.swing.JMenu menuAquivo;
     private javax.swing.JMenu menuCadastrado;

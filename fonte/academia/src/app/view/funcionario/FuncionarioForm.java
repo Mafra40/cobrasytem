@@ -308,15 +308,15 @@ public class FuncionarioForm extends javax.swing.JDialog {
         String id, nome, cpf, endereco, cidade, bairro, cep, senha, senha2, telefone, login;
         String msg = "";
 
-        Validador.valida_textField(nomeTxt, 100, true, 8, "Nome");
-        Validador.valida_textField(enderecoTxt, 100, false, 1, "Endereço");
-        Validador.valida_textField(cidadeTxt, 45, false, 2, "Cidade");
-        Validador.valida_textField(bairroTxt, 45, false, 3, "Bairro");
-        Validador.valida_textField(cepTxt, 15, true, 4, "CEP");
+        Validador.valida_textField(nomeTxt, 100, true, false, 8, "Nome");
+        Validador.valida_textField(enderecoTxt, 100, false, false, 1, "Endereço");
+        Validador.valida_textField(cidadeTxt, 45, false, false, 2, "Cidade");
+        Validador.valida_textField(bairroTxt, 45, false, false, 3, "Bairro");
+        Validador.valida_textField(cepTxt, 15, true, false, 4, "CEP");
         Validador.validaSenha(senhaTxt, senha2Txt, 32, true, 5, "Senhas");
-        Validador.valida_textField(telefoneTxt, 10, false, 6, "Telefone");
-        Validador.valida_textField(loginTxt, 35, true, 7, "Login");
-        Validador.validaCPF(cpfTxt.getText());
+        Validador.valida_textField(telefoneTxt, 10, false, false, 6, "Telefone");
+        Validador.valida_textField(loginTxt, 35, true, false, 7, "Login");
+        Validador.cpf(cpfTxt.getText());
         
         if (Validador.erros == 0) {
 

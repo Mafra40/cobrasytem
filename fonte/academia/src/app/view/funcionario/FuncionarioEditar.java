@@ -17,6 +17,7 @@ import java.awt.Color;
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.border.Border;
+import libs.Validador;
 
 /**
  *
@@ -51,18 +52,18 @@ public class FuncionarioEditar extends javax.swing.JDialog {
         painelDados = new javax.swing.JPanel();
         lbNome = new javax.swing.JLabel();
         nomeTxt = new javax.swing.JTextField();
-        lbCpf = new javax.swing.JLabel();
-        cpfTxt = new javax.swing.JTextField();
-        lbTelefone = new javax.swing.JLabel();
-        telefoneTxt = new javax.swing.JTextField();
-        lbCep = new javax.swing.JLabel();
-        cepTxt = new javax.swing.JTextField();
         lbEndereco = new javax.swing.JLabel();
         enderecoTxt = new javax.swing.JTextField();
         lbCidade = new javax.swing.JLabel();
         cidadeTxt = new javax.swing.JTextField();
         lbBairro = new javax.swing.JLabel();
         baixoTxt = new javax.swing.JTextField();
+        cpfTxt = new javax.swing.JFormattedTextField();
+        lbCep = new javax.swing.JLabel();
+        lbTelefone = new javax.swing.JLabel();
+        lbCpf = new javax.swing.JLabel();
+        cepTxt = new javax.swing.JFormattedTextField();
+        telefoneTxt = new javax.swing.JFormattedTextField();
         painelAcesso = new javax.swing.JTabbedPane();
         painelAutenticacao = new javax.swing.JPanel();
         lbLogin = new javax.swing.JLabel();
@@ -89,17 +90,35 @@ public class FuncionarioEditar extends javax.swing.JDialog {
 
         lbNome.setText("Nome");
 
-        lbCpf.setText("CPF");
-
-        lbTelefone.setText("Telefone");
-
-        lbCep.setText("CEP");
-
         lbEndereco.setText("Endereço");
 
         lbCidade.setText("Cidade");
 
         lbBairro.setText("Bairro");
+
+        try {
+            cpfTxt.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###.###.###-##")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+
+        lbCep.setText("CEP");
+
+        lbTelefone.setText("Telefone");
+
+        lbCpf.setText("CPF");
+
+        try {
+            cepTxt.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("#####-###")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+
+        try {
+            telefoneTxt.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("####-####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
 
         javax.swing.GroupLayout painelDadosLayout = new javax.swing.GroupLayout(painelDados);
         painelDados.setLayout(painelDadosLayout);
@@ -111,36 +130,31 @@ public class FuncionarioEditar extends javax.swing.JDialog {
                     .addComponent(lbNome)
                     .addGroup(painelDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addGroup(painelDadosLayout.createSequentialGroup()
-                            .addGroup(painelDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addGroup(painelDadosLayout.createSequentialGroup()
-                                    .addGroup(painelDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(lbCpf)
-                                        .addComponent(cpfTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGap(42, 42, 42)
-                                    .addGroup(painelDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(painelDadosLayout.createSequentialGroup()
-                                            .addGap(2, 2, 2)
-                                            .addComponent(lbTelefone))
-                                        .addComponent(telefoneTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGap(18, 18, 18))
-                                .addGroup(painelDadosLayout.createSequentialGroup()
-                                    .addComponent(lbCidade)
-                                    .addGap(106, 106, 106)))
+                            .addComponent(lbCidade)
+                            .addGap(127, 127, 127)
                             .addGroup(painelDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(lbCep)
-                                .addComponent(cepTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(painelDadosLayout.createSequentialGroup()
-                                    .addGap(21, 21, 21)
-                                    .addGroup(painelDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(baixoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(lbBairro)))))
+                                .addComponent(baixoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lbBairro))
+                            .addGap(35, 35, 35))
                         .addComponent(nomeTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 572, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(painelDadosLayout.createSequentialGroup()
                         .addGroup(painelDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lbEndereco)
                             .addComponent(enderecoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(25, 25, 25)
-                        .addComponent(cidadeTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(cidadeTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(painelDadosLayout.createSequentialGroup()
+                        .addGroup(painelDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbCpf)
+                            .addComponent(cpfTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(27, 27, 27)
+                        .addGroup(painelDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbTelefone)
+                            .addComponent(telefoneTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(26, 26, 26)
+                        .addGroup(painelDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbCep)
+                            .addComponent(cepTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         painelDadosLayout.setVerticalGroup(
@@ -150,7 +164,7 @@ public class FuncionarioEditar extends javax.swing.JDialog {
                 .addComponent(lbNome)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(nomeTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(11, 11, 11)
                 .addGroup(painelDadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbCpf)
                     .addComponent(lbTelefone)
@@ -186,7 +200,7 @@ public class FuncionarioEditar extends javax.swing.JDialog {
                 .addGroup(painelAutenticacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lbLogin)
                     .addComponent(loginTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(359, Short.MAX_VALUE))
+                .addContainerGap(371, Short.MAX_VALUE))
         );
         painelAutenticacaoLayout.setVerticalGroup(
             painelAutenticacaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -242,31 +256,54 @@ public class FuncionarioEditar extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCadastrarActionPerformed
-        String id, nome, cpf, endereco, cidade, bairro, cep, telefone, login;
-        fc = new FuncionarioController();
+         String id, nome, cpf, endereco, cidade, bairro, cep, senha, senha2, telefone, login;
+        String msg = "";
 
-        nome = nomeTxt.getText();
-        cpf = cpfTxt.getText();
-        endereco = enderecoTxt.getText();
-        cidade = cidadeTxt.getText();
-        bairro = baixoTxt.getText();
-        cep = cepTxt.getText();
-        telefone = telefoneTxt.getText();
-        login = loginTxt.getText();
+        Validador.valida_textField(nomeTxt, 100, true, false, 8, "Nome");
+        Validador.valida_textField(enderecoTxt, 100, false, false, 1, "Endereço");
+        Validador.valida_textField(cidadeTxt, 45, false, false, 2, "Cidade");
+        Validador.valida_textField(baixoTxt, 45, false, false, 3, "Bairro");
+        Validador.valida_textField(cepTxt, 15, true, false, 4, "CEP");
+        Validador.valida_textField(telefoneTxt, 10, false, false, 6, "Telefone");
+        Validador.valida_textField(loginTxt, 35, true, false, 7, "Login");
+        Validador.cpf(cpfTxt.getText());
+        
+        if (Validador.erros == 0) {
 
-        if (validarCampos() == 0) {
+            nome = nomeTxt.getText();
+            cpf = cpfTxt.getText();
+            endereco = enderecoTxt.getText();
+            cidade = cidadeTxt.getText();
+            bairro = baixoTxt.getText();
+            cep = cepTxt.getText();
+            telefone = telefoneTxt.getText();
+            login = loginTxt.getText();
 
-            //String[] Campos = {nome, cpf, endereco, cidade, bairro, cep, senha, senha2, telefone, login};
             Funcionario f = new Funcionario(cpf, nome, endereco, cidade, bairro, cep, telefone, login);
             FuncionarioController fc = new FuncionarioController();
-            //System.err.println(f.getCpf());
-            
-            fc.salvar_edicao(f,FuncionarioView.cpf);
-            this.setVisible(false);
-            this.dispose();
-            JOptionPane.showMessageDialog(null, "Registro editado. ", "Alerta", JOptionPane.INFORMATION_MESSAGE);
-            
+            fc.salvar_edicao(f, FuncionarioView.cpf);
 
+        } else {
+
+            for (int i = 0; i < 9; i++) {//Lista os erros
+                for (int j = 0; j < 3; j++) {
+                    if (null != Validador.arrayErros[i][j]) {
+                        msg = msg + Validador.arrayErros[i][j];
+                    }
+
+                }
+            }
+
+            JOptionPane.showMessageDialog(null, msg, "Erros", JOptionPane.ERROR_MESSAGE);
+            Validador.erros = 0;
+            for (int i = 0; i < 9; i++) {// Apaga os erros para não se acumular.
+                for (int j = 0; j < 3; j++) {
+                    if (null != Validador.arrayErros[i][j]) {
+                        Validador.arrayErros[i][j] = "";
+                    }
+
+                }
+            }
         }
 
         
@@ -323,9 +360,9 @@ public class FuncionarioEditar extends javax.swing.JDialog {
     public javax.swing.JTextField baixoTxt;
     private javax.swing.JButton btCadastrar;
     private javax.swing.JButton btCancelar;
-    public javax.swing.JTextField cepTxt;
+    public javax.swing.JFormattedTextField cepTxt;
     public javax.swing.JTextField cidadeTxt;
-    public javax.swing.JTextField cpfTxt;
+    public javax.swing.JFormattedTextField cpfTxt;
     public javax.swing.JTextField enderecoTxt;
     private javax.swing.JTabbedPane guiaPrincipal;
     private javax.swing.JLabel lbBairro;
@@ -342,7 +379,7 @@ public class FuncionarioEditar extends javax.swing.JDialog {
     private javax.swing.JTabbedPane painelAcesso;
     private javax.swing.JPanel painelAutenticacao;
     private javax.swing.JPanel painelDados;
-    public javax.swing.JTextField telefoneTxt;
+    public javax.swing.JFormattedTextField telefoneTxt;
     // End of variables declaration//GEN-END:variables
 
     private int validarCampos() {

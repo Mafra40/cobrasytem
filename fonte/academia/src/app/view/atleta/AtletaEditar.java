@@ -1,15 +1,17 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright (c) 2014 WISE.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    WISE - initial API and implementation and/or initial documentation
  */
 package app.view.atleta;
 
 import app.controller.AtletaController;
 import app.model.Atleta;
-import conf.Global;
-import java.awt.Image;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import libs.Validador;
 
@@ -17,36 +19,17 @@ import libs.Validador;
  *
  * @author WISE
  */
-public class AtletaCadastro extends javax.swing.JDialog {
+public class AtletaEditar extends javax.swing.JDialog {
+
+    private AtletaController ac;
+    private String file;
 
     /**
-     * Creates new form AtletaCadastro
+     * Creates new form AtletaEditar
      */
-    public static AtletaCadastro obj = null;
-    private Image image;
-    private ImageIcon imIcon;
-    private static String file;
-    private AtletaController ac;
-    private boolean success;
-
-    public static int atletaId;
-
-    public AtletaCadastro(java.awt.Frame parent, boolean modal) {
+    public AtletaEditar(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        ac = new AtletaController();
-        matriculaTxt.setText(ac.gerarMatricula());
-    }
-
-    public static AtletaCadastro formObj() {
-        if (obj == null) {
-            obj = new AtletaCadastro(null, true);
-        }
-        return obj;
-    }
-
-    public AtletaCadastro() {
-
     }
 
     /**
@@ -92,7 +75,7 @@ public class AtletaCadastro extends javax.swing.JDialog {
         btCancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Cadastro de atleta");
+        setTitle("Atleta Edição");
         setResizable(false);
         setType(java.awt.Window.Type.UTILITY);
 
@@ -160,7 +143,7 @@ public class AtletaCadastro extends javax.swing.JDialog {
             .addComponent(jScrollPane2)
         );
 
-        rgLb.setText("Rg");
+        rgLb.setText("RG");
 
         try {
             cepTxt.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("#####-###")));
@@ -317,7 +300,7 @@ public class AtletaCadastro extends javax.swing.JDialog {
                 .addComponent(jLabel70))
         );
 
-        btCadastrar.setText("Cadastrar");
+        btCadastrar.setText("Alterar");
         btCadastrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btCadastrarActionPerformed(evt);
@@ -341,7 +324,7 @@ public class AtletaCadastro extends javax.swing.JDialog {
                         .addContainerGap()
                         .addComponent(jPanel17, javax.swing.GroupLayout.PREFERRED_SIZE, 841, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 685, Short.MAX_VALUE)
+                        .addGap(0, 701, Short.MAX_VALUE)
                         .addComponent(btCadastrar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btCancelar)))
@@ -356,17 +339,16 @@ public class AtletaCadastro extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btCadastrar)
                     .addComponent(btCancelar))
-                .addContainerGap(32, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelarActionPerformed
-        this.setVisible(false);
-        this.dispose();
-
-    }//GEN-LAST:event_btCancelarActionPerformed
+    private void imagemBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imagemBtActionPerformed
+        ac = new AtletaController();
+        ac.escolherImagem("E");
+    }//GEN-LAST:event_imagemBtActionPerformed
 
     private void btCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCadastrarActionPerformed
         int matricula;
@@ -412,27 +394,11 @@ public class AtletaCadastro extends javax.swing.JDialog {
 
             ac = new AtletaController();
             Atleta a = new Atleta(matricula, rg, nome, dataNascimento, endereco, cidade, bairro, cep, sexo, ativo, observacao, telefone, foto);
-            if (ac.cadastrar(a) == true) {
-                int dialogResultado = JOptionPane.showConfirmDialog(null, "Deseja incluir atividade ao atleta?");
-                if (dialogResultado == JOptionPane.YES_OPTION) {
 
-                    this.setVisible(false);
-                    this.dispose();
-
-                    Atleta a2 = ac.retornaAtleta(a.getMatricula());
-                    ac.despacharAtvidadeForm(a2);
-                    
-                } else {
-
-                    this.setVisible(false);
-                    this.dispose();
-
-                    AtletaCadastro atletaCadastro = new AtletaCadastro(null, true);
-                    atletaCadastro.setVisible(true);
-                }
-
+            if (ac.salvaEdicao(a, AtletaView.matricula) == true) {
+                this.setVisible(false);
+                this.dispose();
             }
-
         } else {
             for (int i = 0; i < 15; i++) {//Lista os erros
                 for (int j = 0; j < 5; j++) {
@@ -454,13 +420,14 @@ public class AtletaCadastro extends javax.swing.JDialog {
                 }
             }
         }
+
+
     }//GEN-LAST:event_btCadastrarActionPerformed
 
-    private void imagemBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imagemBtActionPerformed
-        ac = new AtletaController();
-        ac.escolherImagem("C");
-
-    }//GEN-LAST:event_imagemBtActionPerformed
+    private void btCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelarActionPerformed
+        this.setVisible(false);
+        this.dispose();
+    }//GEN-LAST:event_btCancelarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -473,26 +440,26 @@ public class AtletaCadastro extends javax.swing.JDialog {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if (Global.TEMA.equals(info.getName())) {
+                if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AtletaCadastro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AtletaEditar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AtletaCadastro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AtletaEditar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AtletaCadastro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AtletaEditar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AtletaCadastro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AtletaEditar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                AtletaCadastro dialog = new AtletaCadastro(new javax.swing.JFrame(), true);
+                AtletaEditar dialog = new AtletaEditar(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -505,19 +472,19 @@ public class AtletaCadastro extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JCheckBox ativoCheck;
+    public javax.swing.JCheckBox ativoCheck;
     private javax.swing.JLabel bairroLb;
-    private javax.swing.JTextField bairroTxt;
+    public javax.swing.JTextField bairroTxt;
     private javax.swing.JButton btCadastrar;
     private javax.swing.JButton btCancelar;
     private javax.swing.JLabel cepLb;
-    private javax.swing.JFormattedTextField cepTxt;
+    public javax.swing.JFormattedTextField cepTxt;
     private javax.swing.JLabel cidadeLb;
-    private javax.swing.JTextField cidadeTxt;
+    public javax.swing.JTextField cidadeTxt;
     private javax.swing.JLabel dataNascLB;
-    private javax.swing.JFormattedTextField dataNascTxt;
+    public javax.swing.JFormattedTextField dataNascTxt;
     private javax.swing.JLabel enderecoLb;
-    private javax.swing.JTextField enderecoTxt;
+    public javax.swing.JTextField enderecoTxt;
     public static javax.swing.JLabel imageLb;
     private javax.swing.JButton imagemBt;
     public javax.swing.JPanel imagemPainel;
@@ -527,15 +494,15 @@ public class AtletaCadastro extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel19;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel matLb;
-    private javax.swing.JTextField matriculaTxt;
+    public javax.swing.JTextField matriculaTxt;
     private javax.swing.JLabel nomeLb;
-    private javax.swing.JTextField nomeTxt;
-    private javax.swing.JTextPane observacaoTxt;
+    public javax.swing.JTextField nomeTxt;
+    public javax.swing.JTextPane observacaoTxt;
     private javax.swing.JLabel rgLb;
-    private javax.swing.JTextField rgTxt;
-    private javax.swing.JComboBox sexoCombo;
+    public javax.swing.JTextField rgTxt;
+    public javax.swing.JComboBox sexoCombo;
     private javax.swing.JLabel sexoLb;
     private javax.swing.JLabel telefoneLB;
-    private javax.swing.JFormattedTextField telefoneTxt;
+    public javax.swing.JFormattedTextField telefoneTxt;
     // End of variables declaration//GEN-END:variables
 }

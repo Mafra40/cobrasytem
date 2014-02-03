@@ -3,7 +3,7 @@
 <Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JDialogFormInfo">
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="2"/>
-    <Property name="title" type="java.lang.String" value="Cadastro de atleta"/>
+    <Property name="title" type="java.lang.String" value="Atleta Edi&#xe7;&#xe3;o"/>
     <Property name="resizable" type="boolean" value="false"/>
     <Property name="type" type="java.awt.Window$Type" editor="org.netbeans.modules.form.editors.EnumEditor">
       <Value id="UTILITY"/>
@@ -35,7 +35,7 @@
                       <Component id="jPanel17" pref="841" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace min="0" pref="685" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="701" max="32767" attributes="0"/>
                       <Component id="btCadastrar" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="btCancelar" min="-2" max="-2" attributes="0"/>
@@ -55,7 +55,7 @@
                   <Component id="btCadastrar" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btCancelar" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="32" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -73,23 +73,23 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="550" max="-2" attributes="0"/>
                           <Component id="jLabel70" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <Group type="102" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="telefoneLB" min="-2" max="-2" attributes="0"/>
-                                      <Component id="telefoneTxt" min="-2" pref="89" max="-2" attributes="0"/>
+                                      <Component id="telefoneLB" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="telefoneTxt" alignment="0" min="-2" pref="89" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="sexoLb" min="-2" max="-2" attributes="0"/>
+                                      <Component id="sexoLb" alignment="0" min="-2" max="-2" attributes="0"/>
                                       <Component id="sexoCombo" alignment="0" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
@@ -114,7 +114,7 @@
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="rgTxt" max="32767" attributes="0"/>
+                                      <Component id="rgTxt" alignment="0" max="32767" attributes="0"/>
                                       <Group type="102" alignment="0" attributes="0">
                                           <Component id="rgLb" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
@@ -122,8 +122,8 @@
                                   </Group>
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="dataNascLB" min="-2" max="-2" attributes="0"/>
-                                      <Component id="dataNascTxt" min="-2" pref="70" max="-2" attributes="0"/>
+                                      <Component id="dataNascLB" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="dataNascTxt" alignment="0" min="-2" pref="70" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
@@ -143,14 +143,14 @@
                                   </Group>
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="cepTxt" pref="99" max="32767" attributes="0"/>
-                                      <Component id="cepLb" min="-2" max="-2" attributes="0"/>
+                                      <Component id="cepTxt" alignment="0" pref="99" max="32767" attributes="0"/>
+                                      <Component id="cepLb" alignment="0" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="imagemBt" min="-2" pref="25" max="-2" attributes="0"/>
+                              <Component id="imagemBt" alignment="0" min="-2" pref="25" max="-2" attributes="0"/>
                               <Component id="imagemPainel" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="0" pref="168" max="32767" attributes="0"/>
@@ -164,7 +164,7 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="matLb" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -210,7 +210,7 @@
                           </Group>
                           <EmptySpace min="-2" pref="51" max="-2" attributes="0"/>
                       </Group>
-                      <Group type="102" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
                           <Component id="imagemPainel" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="imagemBt" min="-2" max="-2" attributes="0"/>
@@ -229,6 +229,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="matriculaTxt">
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="nomeLb">
           <Properties>
@@ -236,6 +239,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="nomeTxt">
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="dataNascLB">
           <Properties>
@@ -248,6 +254,9 @@
               <Format format="##/##/####" subtype="-1" type="5"/>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="enderecoLb">
           <Properties>
@@ -255,6 +264,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="enderecoTxt">
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="cidadeLb">
           <Properties>
@@ -262,6 +274,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="cidadeTxt">
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="bairroLb">
           <Properties>
@@ -269,6 +284,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="bairroTxt">
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel70">
         </Component>
@@ -286,6 +304,9 @@
               </StringArray>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="sexoLb">
           <Properties>
@@ -325,6 +346,9 @@
                 <Property name="selected" type="boolean" value="true"/>
                 <Property name="text" type="java.lang.String" value="Ativo"/>
               </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+              </AuxValues>
             </Component>
           </SubComponents>
         </Container>
@@ -362,6 +386,9 @@
               <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
               <SubComponents>
                 <Component class="javax.swing.JTextPane" name="observacaoTxt">
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+                  </AuxValues>
                 </Component>
               </SubComponents>
             </Container>
@@ -369,10 +396,13 @@
         </Container>
         <Component class="javax.swing.JLabel" name="rgLb">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Rg"/>
+            <Property name="text" type="java.lang.String" value="RG"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="rgTxt">
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JFormattedTextField" name="cepTxt">
           <Properties>
@@ -380,6 +410,9 @@
               <Format format="#####-###" subtype="-1" type="5"/>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="telefoneLB">
           <Properties>
@@ -392,6 +425,9 @@
               <Format format="####-####" subtype="-1" type="5"/>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JButton" name="imagemBt">
           <Properties>
@@ -448,7 +484,7 @@
     </Container>
     <Component class="javax.swing.JButton" name="btCadastrar">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Cadastrar"/>
+        <Property name="text" type="java.lang.String" value="Alterar"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btCadastrarActionPerformed"/>

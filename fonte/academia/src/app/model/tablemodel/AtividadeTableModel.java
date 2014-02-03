@@ -1,26 +1,42 @@
+/*
+ * Copyright (c) 2014 WISE.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    WISE - initial API and implementation and/or initial documentation
+ */
 package app.model.tablemodel;
 
+import app.model.Atividade;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
-import app.model.Funcionario;
 
-public class FuncionarioTableModel extends AbstractTableModel {
+/**
+ *
+ * @author WISE
+ */
+public class AtividadeTableModel extends AbstractTableModel {
 
-    private List<Funcionario> linhas;
-    private String[] colunas = new String[]{"Nome", "CPF"};
+    private List<Atividade> linhas;
+    private String[] colunas = new String[]{"Id","Nome", "Valor", "Ativo"};
 
-    private static final int NOME = 0;
-    private static final int CPF = 1;
+    private static final int ID = 0;
+    private static final int NOME = 1;
+    private static final int VALOR = 2;
+    private static final int ATIVO = 3;
 
     // Cria um Func sem nenhuma linha
-    public FuncionarioTableModel() {
-        linhas = new ArrayList<Funcionario>();
+    public AtividadeTableModel() {
+        linhas = new ArrayList<Atividade>();
     }
 
     // Cria um SocioTableModel contendo a lista recebida por parâmetro
-    public FuncionarioTableModel(List<Funcionario> listaDeFuncionarios) {
-        linhas = new ArrayList<Funcionario>(listaDeFuncionarios);
+    public AtividadeTableModel(List<Atividade> listaDeAtividades) {
+        linhas = new ArrayList<Atividade>(listaDeAtividades);
     }
 
     @Override
@@ -41,9 +57,13 @@ public class FuncionarioTableModel extends AbstractTableModel {
     @Override
     public Class<?> getColumnClass(int columnIndex) {
         switch (columnIndex) {
+            case ID:
+                return String.class;
             case NOME:
                 return String.class;
-            case CPF:
+            case VALOR:
+                return String.class;
+            case ATIVO:
                 return String.class;
             default:
                 // Não deve ocorrer, pois só existem 2 colunas
@@ -59,13 +79,17 @@ public class FuncionarioTableModel extends AbstractTableModel {
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         // Pega o sócio referente a linha especificada.
-        Funcionario func = linhas.get(rowIndex);
+        Atividade a = linhas.get(rowIndex);
 
         switch (columnIndex) {
+            case ID:
+                return a.getId();
             case NOME:
-                return func.getNome();
-            case CPF:
-                return func.getCpf();
+                return a.getNome();
+            case VALOR:
+                return a.getValor();
+            case ATIVO:
+                return a.getAtivo();
             default:
                 // Não deve ocorrer, pois só existem 2 colunas
                 throw new IndexOutOfBoundsException("columnIndex out of bounds");
@@ -75,14 +99,20 @@ public class FuncionarioTableModel extends AbstractTableModel {
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         // Pega o sócio referente a linha especificada.
-        Funcionario func = linhas.get(rowIndex);
+        Atividade a = linhas.get(rowIndex);
 
         switch (columnIndex) {
-            case NOME:
-                func.setNome((String) aValue);
+            case ID:
+                a.setId((int) aValue);
                 break;
-            case CPF:
-                func.setCpf((String) aValue);
+            case NOME:
+                a.setNome((String) aValue);
+                break;
+            case VALOR:
+                a.setValor((Float) aValue);
+                break;
+            case ATIVO:
+                a.setAtivo((String) aValue);
                 break;
             default:
                 // Não deve ocorrer, pois só existem 2 colunas
@@ -97,25 +127,29 @@ public class FuncionarioTableModel extends AbstractTableModel {
         fireTableRowsDeleted(row, row);
     }
     
-     public void removeAll() {
+    public void removeAll() {
          for (int i = 0; i < linhas.size(); i++) {
              linhas.removeAll(linhas);
          }
          fireTableDataChanged();
        }
 
-    public void addRow(String nome, String cpf, int row) {
-        Funcionario func = new Funcionario();
-        func.setNome(nome);
-        func.setCpf(cpf);
-        linhas.add(func);
+    public void addRow(int id, String nome, Float valor, String ativo, int row) {
+        Atividade a = new Atividade();
+        a.setId(id);
+        a.setNome(nome);
+        a.setValor(valor);
+        a.setAtivo(ativo);
+        linhas.add(a);
         fireTableRowsInserted(row + 1, row + 1);
     }
 
-    public void updateRow(String nome, String cpf, int row) {
-        Funcionario func = new Funcionario();
-        func.setNome(nome);
-        func.setCpf(cpf);
+    public void updateRow(int id, String nome, Float valor, String ativo, int row) {
+        Atividade a = new Atividade();
+        a.setId(id);
+        a.setNome(nome);
+        a.setValor(valor);
+        a.setAtivo(ativo);
 
         fireTableRowsUpdated(row, row);
 

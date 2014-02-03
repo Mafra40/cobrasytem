@@ -10,8 +10,12 @@
  */
 package libs;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.InputVerifier;
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
@@ -32,7 +36,7 @@ public class Validador extends InputVerifier {
      public final static int TELEFONE = 7;
      public final static int LOGIN = 8;
      */
-    public static String[][] arrayErros = new String[15][10];
+    public static String[][] arrayErros = new String[15][15];
     public static int erros = 0;
 
     @Override
@@ -41,7 +45,17 @@ public class Validador extends InputVerifier {
 
     }
 
-    public static void valida_textField(JTextField Campo, int tamanho_maximo, boolean obrigatorio, int index_campo, String campoMsg) {
+    /**
+     *
+     *
+     * public static void validarCampoObrigatorio(JTextField campo){
+     *
+     * if ("".equals(Campo.getText())) { arrayErros[index_campo][0] = campoMsg +
+     * ": Campo obrigatório. \n"; erros++; } }
+     *
+     * }
+     */
+    public static void valida_textField(JTextField Campo, int tamanho_maximo, boolean obrigatorio, boolean soNumeros, int index_campo, String campoMsg) {
 
         /*Obrigatório*/
         if (obrigatorio == true) {
@@ -52,12 +66,20 @@ public class Validador extends InputVerifier {
         }
 
         /*Tamanho Máximo */
-        if (Campo.getText().length() > tamanho_maximo) {
-            arrayErros[index_campo][1] = campoMsg + ": Estouro de limite de caracteres. Máximo permitido: " + tamanho_maximo + " \n";
-            erros++;
+        if (tamanho_maximo != 0) {
+            if (Campo.getText().length() > tamanho_maximo) {
+                arrayErros[index_campo][1] = campoMsg + ": Estouro de limite de caracteres. Máximo permitido: " + tamanho_maximo + " \n";
+                erros++;
+            }
         }
 
-        //arrayErros[index_campo][2] = "";
+        if (soNumeros == true) {
+            if (!Campo.getText().matches("[0-9]+")) {
+                arrayErros[index_campo][2] = campoMsg + ": Somente números. Máximo permitido: " + tamanho_maximo + " \n";
+                erros++;
+            }
+        }
+
     }
 
     public static void validaSenha(JPasswordField senha, JPasswordField rSenha, int tamanho_maximo, boolean obrigatorio, int index_campo, String campoMsg) {
@@ -94,8 +116,7 @@ public class Validador extends InputVerifier {
         int iDigito1Aux = 0, iDigito2Aux = 0, iDigitoCPF;
         int iDigito1 = 0, iDigito2 = 0, iRestoDivisao = 0;
         String strDigitoVerificador, strDigitoResultado;
-
-        if (!strCpf.substring(0, 1).equals("")) {
+        if (!strCpf.equals("")) {
 
             if (strCpf.equals("111.111.111-11") || strCpf.equals("222.222.222-22") || strCpf.equals("333.333.333-33") || strCpf.equals("444.444.444-44") || strCpf.equals("555.555.555-55") || strCpf.equals("666.666.666-66") || strCpf.equals("777.777.777-77") || strCpf.equals("888.888.888-88") || strCpf.equals("999.999.999-99")) {
                 erros++;
@@ -140,6 +161,97 @@ public class Validador extends InputVerifier {
 
             return false;
         }
+
+    }
+
+    /**
+     * Validar imagem e o formato
+     *
+     * @param file
+     * @return *
+     */
+    public static Boolean validaFormato(String file) {
+        int IndexFile = file.lastIndexOf(".");
+       
+        String formato = "";
+
+        String[] formatosPermitidos = new String[]{"jpg", "jpeg", "png", ""};
+
+        if (IndexFile > 0 && IndexFile < file.length() - 1) {
+            formato = file.substring(IndexFile + 1);
+        }
+
+        for (int i = 0; i < formatosPermitidos.length; i++) {
+            if (formato.equals(formatosPermitidos[i])) {
+                return true;
+            }
+
+        }
+
+        return false;
+    }
+
+    public static void cpf(String cpf) {
+        if (validaCPF(cpf) == false) {
+            erros++;
+            arrayErros[0][0] = "CPF: inválido. \n";
+        }
+    }
+
+    /**
+     * Salva data no formato SQL.
+     *
+     * @param data
+     * @param indiceCampo
+     * @return
+     */
+    public static String data(String data, int indiceCampo) {
+        String[] split;
+        String dia, mes, ano;
+        StringBuilder sb = new StringBuilder();
+        if (data.equalsIgnoreCase("  /  /    ")) {
+            erros++;
+            arrayErros[indiceCampo][0] = "Data: Obrigatória. \n";
+            return null;
+        } else {
+
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            sdf.setLenient(false);
+
+            try {
+
+                Date date = sdf.parse(data);
+                split = data.split("/");
+
+                dia = split[0];
+                mes = split[1];
+                ano = split[2];
+
+                String novaData = ano + "-" + mes + "-" + dia;
+                return novaData;
+
+            } catch (ParseException e) {
+
+                erros++;
+                arrayErros[indiceCampo][0] = "Data: Invalida. \n";
+                return null;
+            }
+
+        }
+
+    }
+
+    public static String dataFormatada(String data) {
+
+        String[] split = data.split("-");
+
+        String ano = split[0];
+        String mes = split[1];
+        String dia = split[2];
+
+        String novaData = dia + "/" + mes + "/" + ano;
+        return novaData;
+
     }
 
 }

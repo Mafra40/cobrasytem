@@ -18,7 +18,7 @@ import javax.swing.JOptionPane;
  * @author WISE
  */
 public class FuncionarioController {
-
+    
     private FuncionarioView fc;
     private FuncionarioEditar fe;
     private FuncionarioModel fm;
@@ -26,19 +26,16 @@ public class FuncionarioController {
     private FuncionarioTableModel fModel;
     private Funcionario f;
     private FuncionarioSenha fs;
-
+    
     public static int linhaSelecionadaTabelela;
-
+    
     public void despachar() {
         fc = new FuncionarioView(null, true);
         fc.setVisible(true);
     }
-
+    
     public void cadastro(Funcionario func) {
         fm = new FuncionarioModel();
-        
-        
-        
         
         if (fm.checarCpfExistente(func.getCpf()) == true) {
             if (fm.checarLoginExistente(func.getLogin()) == true) {
@@ -53,9 +50,9 @@ public class FuncionarioController {
         } else {
             JOptionPane.showMessageDialog(null, "CPF está em uso.", "Erro", JOptionPane.ERROR_MESSAGE);
         }
-
+        
     }
-
+    
     public void deletar(String cpf, int LinhaSelecionada) {
         fm = new FuncionarioModel();
         fm.deletar(cpf);
@@ -68,7 +65,7 @@ public class FuncionarioController {
     public void editar(String cpf) {
         fe = new FuncionarioEditar(null, true);
         fm = new FuncionarioModel();
-
+        
         f = fm.retorna_funcionario(cpf);
         fe.baixoTxt.setText(f.getBairro());
         fe.cpfTxt.setText(f.getCpf());
@@ -78,20 +75,20 @@ public class FuncionarioController {
         fe.telefoneTxt.setText(f.getTelefone());
         fe.cidadeTxt.setText(f.getCidade());
         fe.loginTxt.setText(f.getLogin());
-
+        
         fe.setVisible(true);
     }
     /* salva a alteração */
-
+    
     public void salvar_edicao(Funcionario f, String cpf) {
         fm = new FuncionarioModel();
         fm.atualizar(f, cpf);
         fModel = (FuncionarioTableModel) FuncionarioView.funcionarioTable.getModel();
-
+        
         fModel.setValueAt(f.getNome(), linhaSelecionadaTabelela, 0);
         fModel.setValueAt(f.getCpf(), linhaSelecionadaTabelela, 1);
         fModel.fireTableDataChanged();
-
+        
     }
 
     /**
@@ -106,27 +103,25 @@ public class FuncionarioController {
     /* Filtrar os dados*/
     public void filtrar(String valor, String filtro) {
         fm = new FuncionarioModel();
-        List<Funcionario> lista = new ArrayList<Funcionario>();
+         List<Funcionario> lista = new ArrayList<Funcionario>();
 
-        lista = fm.filtrar(filtro, valor);
-
+         lista = fm.filtrar(filtro, valor);
+       
         fModel = (FuncionarioTableModel) FuncionarioView.funcionarioTable.getModel();
+        int count = fModel.getRowCount();
+        
+        fModel.removeAll();
 
-        for (int i = 0; i < fModel.getRowCount(); i++) {
-            fModel.removeRow(i);
-        }
+         if (lista.size() > 0) {
 
-        if (lista.size() > 0) {
+         for (int i = 0; i < lista.size(); i++) {
+         fModel.addRow(lista.get(i).getNome(), lista.get(i).getCpf(), i);
+         fModel.fireTableDataChanged();
 
-            for (int i = 0; i < lista.size(); i++) {
-                fModel.addRow(lista.get(i).getNome(), lista.get(i).getCpf(), i);
-                fModel.fireTableDataChanged();
-
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, "Nenhum registro encontrado.", "Alerta.", JOptionPane.INFORMATION_MESSAGE);
-        }
-
+         }
+         } else {
+         JOptionPane.showMessageDialog(null, "Nenhum registro encontrado.", "Alerta.", JOptionPane.INFORMATION_MESSAGE);
+         }
     }
-
+    
 }

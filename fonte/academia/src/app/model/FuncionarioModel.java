@@ -205,7 +205,8 @@ public class FuncionarioModel {
                 + " WHERE " + filtro +" LIKE '%" + valor + "%'";
          
         DB.conectar();
-
+     
+        
         try {
             stm = DB.con.createStatement();
             rs = stm.executeQuery(query);
