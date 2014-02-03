@@ -17,12 +17,16 @@ package app.model;
  */
 public class Atividade {
     
-   //private id;
+    private int id;
     private String nome;
     private String ativo;
     private float valor;
-    
 
+    public Atividade() {
+    }
+    
+    
+    
     public Atividade(String nome, String ativo, float valor) {
         this.nome = nome;
         this.ativo = ativo;
@@ -53,6 +57,14 @@ public class Atividade {
 
     public void setValor(float valor) {
         this.valor = valor;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
     
     

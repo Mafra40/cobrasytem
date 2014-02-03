@@ -55,7 +55,9 @@ public class FuncionarioView extends javax.swing.JDialog {
         //cria o modelo de Produto
         fModel = new FuncionarioTableModel(lista);
         //atribui o modelo à tabela
-        funcionarioTable.setModel(fModel);
+        funcionarioTable.setModel(fModel);/*Seta os tamanhos das colunas*/
+        funcionarioTable.getColumnModel().getColumn(0).setPreferredWidth(350);
+        funcionarioTable.getColumnModel().getColumn(1).setPreferredWidth(100);
 
     }
 
@@ -233,42 +235,60 @@ public class FuncionarioView extends javax.swing.JDialog {
     }//GEN-LAST:event_btCadastrarActionPerformed
 
     private void funcionarioTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_funcionarioTableMouseClicked
-
+        
+        
+        if (funcionarioTable.getModel().getRowCount() > 0){
+        
         linhaSelecionada = funcionarioTable.getSelectedRow();
         int coluna = funcionarioTable.getSelectedColumn();
-
+        int count = evt.getClickCount();
         cpf = funcionarioTable.getModel().getValueAt(linhaSelecionada, 1).toString();
         nome = funcionarioTable.getModel().getValueAt(linhaSelecionada, 0).toString();
 
         btEditar.setEnabled(true);
         btRemover.setEnabled(true);
+
+        if (count > 1) {
+            FuncionarioController fc = new FuncionarioController();
+            FuncionarioController.linhaSelecionadaTabelela = linhaSelecionada;
+            fc.editar(cpf);
+
+        }   
+        }
     }//GEN-LAST:event_funcionarioTableMouseClicked
 
     private void btRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btRemoverActionPerformed
         FuncionarioController fc = new FuncionarioController();
-        fc.deletar(cpf, linhaSelecionada);
+        int dialogResultado = JOptionPane.showConfirmDialog(null, "Deseja realmente remover?");
+        if (dialogResultado == JOptionPane.YES_OPTION) {
+            fc.deletar(cpf, linhaSelecionada);
+            btEditar.setEnabled(false);
+            btRemover.setEnabled(false);
+        }
     }//GEN-LAST:event_btRemoverActionPerformed
 
     private void btEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEditarActionPerformed
         FuncionarioController fc = new FuncionarioController();
         FuncionarioController.linhaSelecionadaTabelela = linhaSelecionada;
         fc.editar(cpf);
+        btEditar.setEnabled(false);
+        btRemover.setEnabled(false);
     }//GEN-LAST:event_btEditarActionPerformed
 
     private void btPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btPesquisarActionPerformed
         String pesquisa = pesquisaTxt.getText();
-        
-        if (radioCpf.isSelected() == true){
+
+        if (radioCpf.isSelected() == true) {
             Selecionado = "cpf";
         }
-        
-        if (radioNome.isSelected() == true){
+
+        if (radioNome.isSelected() == true) {
             Selecionado = "nome";
         }
         
-       FuncionarioController fc = new FuncionarioController();
-       fc.filtrar(pesquisa, Selecionado);
-        
+        FuncionarioController fc = new FuncionarioController();
+        fc.filtrar(pesquisa, Selecionado);
+
     }//GEN-LAST:event_btPesquisarActionPerformed
 
     /**

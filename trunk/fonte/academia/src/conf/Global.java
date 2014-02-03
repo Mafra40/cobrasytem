@@ -28,4 +28,15 @@ public class Global {
     public static final String DRIVER = "com.mysql.jdbc.Driver";
     public static final String URL = "jdbc:mysql://127.0.0.1/academia";
 
+    
+    
+    /**
+     * Configuração de diretorio;
+     * 
+     * 
+     * 
+     */
+    
+    
+    public static final String DIRETORIO_FOTOS_ATLETAS = System.getProperty("user.home")+"\\Atletas";
 }
