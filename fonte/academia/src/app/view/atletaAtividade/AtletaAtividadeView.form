@@ -117,6 +117,9 @@
             </Container>
             <Component class="javax.swing.JButton" name="incluirBt">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/images/icon-check.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Incluir"/>
               </Properties>
               <Events>
@@ -125,6 +128,9 @@
             </Component>
             <Component class="javax.swing.JButton" name="removerBt">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/images/icon-trash.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Remover"/>
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
@@ -134,6 +140,9 @@
             </Component>
             <Component class="javax.swing.JButton" name="fecharBt">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/images/icon-cross.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Fechar"/>
               </Properties>
               <Events>

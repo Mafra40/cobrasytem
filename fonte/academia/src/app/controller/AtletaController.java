@@ -141,7 +141,7 @@ public class AtletaController {
 
     }
 
-    public void editar(int matricula) {
+    public  void editar(int matricula) {
 
         ae = new AtletaEditar(null, true);
         am = new AtletaModel();

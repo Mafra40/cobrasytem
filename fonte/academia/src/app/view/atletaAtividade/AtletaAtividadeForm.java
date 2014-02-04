@@ -91,6 +91,7 @@ public class AtletaAtividadeForm extends javax.swing.JDialog {
         setResizable(false);
         setType(java.awt.Window.Type.UTILITY);
 
+        adicionarBt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icon-check.png"))); // NOI18N
         adicionarBt.setText("Adicionar");
         adicionarBt.setEnabled(false);
         adicionarBt.addActionListener(new java.awt.event.ActionListener() {
@@ -108,6 +109,7 @@ public class AtletaAtividadeForm extends javax.swing.JDialog {
         });
         jScrollPane1.setViewportView(lista);
 
+        fecharBt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icon-cross.png"))); // NOI18N
         fecharBt.setText("Fechar");
         fecharBt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

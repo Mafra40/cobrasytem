@@ -78,6 +78,7 @@ public class AtletaAtividadeView extends javax.swing.JDialog {
         });
         jScrollPane1.setViewportView(atletaAtividadeTabela);
 
+        incluirBt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icon-check.png"))); // NOI18N
         incluirBt.setText("Incluir");
         incluirBt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -85,6 +86,7 @@ public class AtletaAtividadeView extends javax.swing.JDialog {
             }
         });
 
+        removerBt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icon-trash.png"))); // NOI18N
         removerBt.setText("Remover");
         removerBt.setEnabled(false);
         removerBt.addActionListener(new java.awt.event.ActionListener() {
@@ -93,6 +95,7 @@ public class AtletaAtividadeView extends javax.swing.JDialog {
             }
         });
 
+        fecharBt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icon-cross.png"))); // NOI18N
         fecharBt.setText("Fechar");
         fecharBt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

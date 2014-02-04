@@ -49,6 +49,8 @@ public class MenuView extends javax.swing.JFrame {
         miFuncionario = new javax.swing.JMenuItem();
         miAtividade = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
+        menuFinanceiro = new javax.swing.JMenu();
+        contasReceberMenu = new javax.swing.JMenuItem();
         menuAjuda = new javax.swing.JMenu();
         miSobre = new javax.swing.JMenuItem();
 
@@ -112,6 +114,15 @@ public class MenuView extends javax.swing.JFrame {
         menuCadastrado.add(jMenuItem1);
 
         menuPrincipal.add(menuCadastrado);
+
+        menuFinanceiro.setText("Financeiro");
+
+        contasReceberMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, 0));
+        contasReceberMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/money_bag.png"))); // NOI18N
+        contasReceberMenu.setText("Contas a receber");
+        menuFinanceiro.add(contasReceberMenu);
+
+        menuPrincipal.add(menuFinanceiro);
 
         menuAjuda.setText("Ajuda");
 
@@ -198,10 +209,12 @@ public class MenuView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem contasReceberMenu;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenu menuAjuda;
     private javax.swing.JMenu menuAquivo;
     private javax.swing.JMenu menuCadastrado;
+    private javax.swing.JMenu menuFinanceiro;
     private javax.swing.JMenuBar menuPrincipal;
     private javax.swing.JMenuItem miAlterarSenha;
     private javax.swing.JMenuItem miAtividade;

@@ -298,14 +298,20 @@ public class AtividadeModel {
         return attm = new AtletaAtividadeTableModel(at);
 
     }
-
+    /**
+     * Retorna uma lista de Atividades que o atleta está cadastrado.
+     * 
+     * @param id do atleta.
+     * @return 
+     */
     public List<AtletaAtividade> listaAtletaAtividades2(int id) {
         query = "SELECT at.id as atividade_id, at.nome as nome_atividade, at.ativo, at.valor, at.ativo , a.nome as nome_atleta , a.id as atleta_id \n"
                 + "FROM atividade at, atletas a, atletas_has_atividade\n"
                 + "WHERE a.id = atletas_id\n"
                 + "AND atividade_id = at.id\n"
                 + "AND atletas_id = " + id;
-
+        
+        
         DB.conectar();
 
         try {

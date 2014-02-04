@@ -22,6 +22,7 @@ public class AtletaAtividade {
     private String nomeAtleta;
     private String ativoAtividade;
     private Float valorAtividade;
+    private int matricula;
 
     
     
@@ -106,4 +107,13 @@ public class AtletaAtividade {
         this.valorAtividade = valorAtividade;
     }
 
+    public int getMatricula() {
+        return matricula;
+    }
+
+    public void setMatricula(int matricula) {
+        this.matricula = matricula;
+    }
+    
+    
 }

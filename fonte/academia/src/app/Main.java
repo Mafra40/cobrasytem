@@ -13,7 +13,6 @@ package app;
 import app.controller.LoginController;
 import app.view.login.LoginView;
 import conf.Global;
-import java.io.File;
 
 /**
  *
