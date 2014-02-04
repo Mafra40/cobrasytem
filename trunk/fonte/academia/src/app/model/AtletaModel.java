@@ -178,7 +178,7 @@ public class AtletaModel {
         }
 
         DB.desconectar();
-        return "";
+        return "1";
 
     }
 

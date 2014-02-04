@@ -68,15 +68,15 @@
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="jScrollPane1" min="-2" pref="586" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="btFechar" min="-2" pref="81" max="-2" attributes="0"/>
-                              <Component id="btEditar" min="-2" pref="81" max="-2" attributes="0"/>
-                              <Component id="btRemover" min="-2" pref="81" max="-2" attributes="0"/>
-                              <Component id="btCadastrar" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="btCadastrar" alignment="0" max="32767" attributes="0"/>
+                              <Component id="btEditar" alignment="0" max="32767" attributes="0"/>
+                              <Component id="btFechar" alignment="0" max="32767" attributes="0"/>
+                              <Component id="btRemover" alignment="0" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
-                  <EmptySpace pref="19" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -141,6 +141,9 @@
         </Container>
         <Component class="javax.swing.JButton" name="btCadastrar">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/images/icon-user2.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Cadastrar"/>
           </Properties>
           <Events>
@@ -149,6 +152,9 @@
         </Component>
         <Component class="javax.swing.JButton" name="btRemover">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/images/icon-trash.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Remover"/>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
@@ -158,6 +164,9 @@
         </Component>
         <Component class="javax.swing.JButton" name="btEditar">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/images/icon-refresh3.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Editar"/>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
@@ -189,6 +198,9 @@
         </Component>
         <Component class="javax.swing.JButton" name="btPesquisar">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/images/icon-search.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Pesquisar"/>
           </Properties>
           <Events>
@@ -197,6 +209,9 @@
         </Component>
         <Component class="javax.swing.JButton" name="btFechar">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/images/icon-cross.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Fechar"/>
           </Properties>
           <Events>

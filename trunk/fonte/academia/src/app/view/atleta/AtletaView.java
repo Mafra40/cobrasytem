@@ -12,6 +12,7 @@ package app.view.atleta;
 
 import app.controller.AtividadeController;
 import app.controller.AtletaController;
+import app.controller.ContaController;
 import app.view.atletaAtividade.AtletaAtividadeView;
 import conf.Global;
 import javax.swing.JOptionPane;
@@ -65,6 +66,7 @@ public class AtletaView extends javax.swing.JDialog {
         removerBt = new javax.swing.JButton();
         nomeRadio = new javax.swing.JRadioButton();
         matRadio = new javax.swing.JRadioButton();
+        financeiroBt = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Atletas");
@@ -114,6 +116,7 @@ public class AtletaView extends javax.swing.JDialog {
             }
         });
 
+        atividadeBt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icon-digg2.png"))); // NOI18N
         atividadeBt.setText("Atividades");
         atividadeBt.setEnabled(false);
         atividadeBt.addActionListener(new java.awt.event.ActionListener() {
@@ -145,6 +148,15 @@ public class AtletaView extends javax.swing.JDialog {
         buttonGroup1.add(matRadio);
         matRadio.setText("Mat.");
 
+        financeiroBt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/money_bag.png"))); // NOI18N
+        financeiroBt.setText("Financiero");
+        financeiroBt.setEnabled(false);
+        financeiroBt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                financeiroBtActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -155,14 +167,13 @@ public class AtletaView extends javax.swing.JDialog {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(fecharBt, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(atividadeBt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(editarBt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(cadastrarBt))
-                                .addComponent(removerBt, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(fecharBt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(atividadeBt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(editarBt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cadastrarBt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(removerBt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(financeiroBt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(pesquisaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -195,6 +206,8 @@ public class AtletaView extends javax.swing.JDialog {
                         .addComponent(atividadeBt)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(removerBt)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(financeiroBt)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(fecharBt)))
                 .addContainerGap(20, Short.MAX_VALUE))
@@ -222,6 +235,7 @@ public class AtletaView extends javax.swing.JDialog {
         editarBt.setEnabled(false);
         removerBt.setEnabled(false);
         atividadeBt.setEnabled(false);
+        financeiroBt.setEnabled(false);
     }//GEN-LAST:event_editarBtActionPerformed
 
     private void atletaTabelaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_atletaTabelaMouseClicked
@@ -236,6 +250,7 @@ public class AtletaView extends javax.swing.JDialog {
             editarBt.setEnabled(true);
             removerBt.setEnabled(true);
             atividadeBt.setEnabled(true);
+            financeiroBt.setEnabled(true);
 
             if (count > 1) {
                 AtletaController ac = new AtletaController();
@@ -262,6 +277,7 @@ public class AtletaView extends javax.swing.JDialog {
             removerBt.setEnabled(false);
             editarBt.setEnabled(false);
             atividadeBt.setEnabled(false);
+            financeiroBt.setEnabled(false);
         }
     }//GEN-LAST:event_removerBtActionPerformed
 
@@ -280,6 +296,12 @@ public class AtletaView extends javax.swing.JDialog {
         ac.filtrar(pesquisa, Selecionado);
         
     }//GEN-LAST:event_btPesquisarActionPerformed
+
+    private void financeiroBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_financeiroBtActionPerformed
+        ContaController cc = new ContaController();
+        cc.chamarView(matricula, matricula);
+        
+    }//GEN-LAST:event_financeiroBtActionPerformed
 
     /**
      * @param args the command line arguments
@@ -331,6 +353,7 @@ public class AtletaView extends javax.swing.JDialog {
     private javax.swing.JButton cadastrarBt;
     private javax.swing.JButton editarBt;
     private javax.swing.JButton fecharBt;
+    private javax.swing.JButton financeiroBt;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JRadioButton matRadio;
     private javax.swing.JRadioButton nomeRadio;

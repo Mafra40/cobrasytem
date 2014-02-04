@@ -38,16 +38,13 @@
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="jScrollPane1" min="-2" pref="375" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="fecharBt" min="-2" pref="99" max="-2" attributes="0"/>
-                          <Group type="103" alignment="0" groupAlignment="0" attributes="0">
-                              <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="atividadeBt" max="32767" attributes="0"/>
-                                  <Component id="editarBt" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="cadastrarBt" alignment="0" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <Component id="removerBt" alignment="1" min="-2" pref="99" max="-2" attributes="0"/>
-                          </Group>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="fecharBt" max="32767" attributes="0"/>
+                          <Component id="atividadeBt" max="32767" attributes="0"/>
+                          <Component id="editarBt" alignment="0" max="32767" attributes="0"/>
+                          <Component id="cadastrarBt" alignment="0" max="32767" attributes="0"/>
+                          <Component id="removerBt" alignment="0" max="32767" attributes="0"/>
+                          <Component id="financeiroBt" alignment="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
@@ -88,6 +85,8 @@
                       <Component id="atividadeBt" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="removerBt" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="financeiroBt" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="fecharBt" min="-2" max="-2" attributes="0"/>
                   </Group>
@@ -163,6 +162,9 @@
     </Component>
     <Component class="javax.swing.JButton" name="atividadeBt">
       <Properties>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/images/icon-digg2.png"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Atividades"/>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
@@ -206,6 +208,18 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Mat."/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="financeiroBt">
+      <Properties>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/images/money_bag.png"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Financiero"/>
+        <Property name="enabled" type="boolean" value="false"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="financeiroBtActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

@@ -59,7 +59,7 @@ public class AtividadeController {
         am = new AtividadeModel();
 
         if (am.cadastrar(a) == true) {
-            JOptionPane.showMessageDialog(null, "Ativdade Cadastrada.", "Alerta", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Atividade Cadastrada.", "Alerta", JOptionPane.INFORMATION_MESSAGE);
 
             atm = (AtividadeTableModel) AtividadeView.tabelaAtividade.getModel();
             int count = atm.getRowCount();
@@ -118,15 +118,15 @@ public class AtividadeController {
         atm.fireTableDataChanged();
 
     }
-    
-   public void filtrar(String valor) {
+
+    public void filtrar(String valor) {
         am = new AtividadeModel();
         List<Atividade> lista = new ArrayList<Atividade>();
 
-        lista = am.filtrar( valor);
+        lista = am.filtrar(valor);
 
         atm = (AtividadeTableModel) AtividadeView.tabelaAtividade.getModel();
-        
+
         atm.removeAll();
 
         if (lista.size() > 0) {
@@ -140,7 +140,6 @@ public class AtividadeController {
             JOptionPane.showMessageDialog(null, "Nenhum registro encontrado.", "Alerta.", JOptionPane.INFORMATION_MESSAGE);
         }
     }
-    
 
     /**
      * AtletaAtividade
@@ -166,6 +165,8 @@ public class AtividadeController {
         return am.listarAtletaAtividade();
 
     }
+    /*Cadastra uma atividade num atleta
+     */
 
     public boolean cadastrarAtletaAtividade(int atividadeId, int atletaId) {
 
@@ -175,18 +176,20 @@ public class AtividadeController {
 
             DefaultListModel dm = (DefaultListModel) AtletaAtividadeForm.lista.getModel();
             dm.removeElement(AtletaAtividadeForm.lista.getSelectedValue());
-            
-            if (AtletaAtividadeView.atletaAtividadeTabela.getModel().getRowCount() > 0) {
-                aatm = (AtletaAtividadeTableModel) AtletaAtividadeView.atletaAtividadeTabela.getModel();
-                int count = aatm.getRowCount();
-                aatm.addRow(AtletaAtividadeForm.atividadeNome, Math.abs(Float.parseFloat(AtletaAtividadeForm.atividadeValor)), "S", count);
-            }
-                return true;
-            }
 
-            return false;
+           // int countRegistroTabela = AtletaAtividadeView.atletaAtividadeTabela.getModel().getRowCount();
+
+            aatm = (AtletaAtividadeTableModel) AtletaAtividadeView.atletaAtividadeTabela.getModel();
+            int count = aatm.getRowCount();
+            aatm.addRow(AtletaAtividadeForm.atividadeNome, Math.abs(Float.parseFloat(AtletaAtividadeForm.atividadeValor)), "S", count);
+
+            return true;
         }
-        /*Lista as atividades que o atleta não está cadastrado.*/
+
+        return false;
+    }
+    /*Lista as atividades que o atleta não está cadastrado.*/
+
     public List<Atividade> ListarAtletaAtividades(int atletaId) {
         am = new AtividadeModel();
 
