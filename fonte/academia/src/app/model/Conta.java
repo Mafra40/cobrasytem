@@ -4,7 +4,7 @@ package app.model;
  *
  * @author WISE
  */
-public class Conta {
+public class Conta extends Atleta{
 
     private int id;
     private int id_atleta;
@@ -13,8 +13,11 @@ public class Conta {
     private String situacao;
     private String lancamento;
     private String observacao;
+    private String datapago;
+    
+    private String nome;
 
-    public Conta() {
+    public Conta()  {
 
     }
 
@@ -83,4 +86,16 @@ public class Conta {
     public void setObservacao(String observacao) {
         this.observacao = observacao;
     }
+
+    public String getDatapago() {
+        return datapago;
+    }
+
+    public void setDatapago(String datapago) {
+        this.datapago = datapago;
+    }
+
+  
+    
+    
 }

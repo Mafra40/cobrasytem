@@ -8,42 +8,47 @@
  * Contributors:
  *    WISE - initial API and implementation and/or initial documentation
  */
-
 package app.controller;
 
+import static app.controller.LoginController.F_LOGIN;
 import app.model.LoginModel;
 import app.view.login.LoginView;
 import app.view.principal.MenuView;
 import javax.swing.JOptionPane;
 
-
 /**
  *
- * @author WISE 
+ * @author WISE
  */
 public class LoginController {
-  private LoginView lv;
-    
-    public void  LoginView(){
+
+    private LoginView lv;
+
+    public static int F_ID;
+    public static String F_LOGIN;
+
+    public void LoginView() {
         lv = new LoginView(null, true);
         lv.setVisible(true);
     }
-    
-    
-    public boolean Login(String login, String senha){
+
+    public boolean Login(String login, String senha) {
         LoginModel lm = new LoginModel();
-        
-      
-        if (lm.fazerLogin(login , senha) == true){
+
+        if (lm.fazerLogin(login, senha) == true) {
+
+            F_LOGIN = login;
+            F_ID = lm.retornaIdFuncionario(login);
+
             MenuView mf = new MenuView();
             mf.setVisible(true); //abre menu principal
-         return  true;  
-        }else {
-            
-           JOptionPane.showMessageDialog(null, "Acesso negado.", "Erro", JOptionPane.ERROR_MESSAGE); 
-           return false;
+            return true;
+        } else {
+
+            JOptionPane.showMessageDialog(null, "Acesso negado.", "Erro", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
-      
+
     }
-    
+
 }

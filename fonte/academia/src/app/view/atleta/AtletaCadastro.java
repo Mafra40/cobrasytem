@@ -30,10 +30,12 @@ public class AtletaCadastro extends javax.swing.JDialog {
     private boolean success;
 
     public static int atletaId;
+    public static String seDesejaColocarAtividade = "N";
 
     public AtletaCadastro(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        this.setLocationRelativeTo(null);
         ac = new AtletaController();
         matriculaTxt.setText(ac.gerarMatricula());
     }
@@ -317,6 +319,7 @@ public class AtletaCadastro extends javax.swing.JDialog {
                 .addComponent(jLabel70))
         );
 
+        btCadastrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icon-check.png"))); // NOI18N
         btCadastrar.setText("Cadastrar");
         btCadastrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -324,6 +327,7 @@ public class AtletaCadastro extends javax.swing.JDialog {
             }
         });
 
+        btCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icon-cross.png"))); // NOI18N
         btCancelar.setText("Cancelar");
         btCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -341,7 +345,7 @@ public class AtletaCadastro extends javax.swing.JDialog {
                         .addContainerGap()
                         .addComponent(jPanel17, javax.swing.GroupLayout.PREFERRED_SIZE, 841, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 685, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btCadastrar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btCancelar)))
@@ -418,14 +422,24 @@ public class AtletaCadastro extends javax.swing.JDialog {
 
                     this.setVisible(false);
                     this.dispose();
-
+                    seDesejaColocarAtividade = "S";
                     Atleta a2 = ac.retornaAtleta(a.getMatricula());
                     ac.despacharAtvidadeForm(a2);
-                    
-                } else {
 
+                } else {
+                    seDesejaColocarAtividade = "N";
                     this.setVisible(false);
                     this.dispose();
+
+                    nomeTxt.setText("");
+                    rgTxt.setText("");
+                    dataNascTxt.setText("");
+                    enderecoTxt.setText("");
+                    cidadeTxt.setText("");
+                    bairroTxt.setText("");
+                    cepTxt.setText("");
+                    telefoneTxt.setText("");
+                    observacaoTxt.setText("");
 
                     AtletaCadastro atletaCadastro = new AtletaCadastro(null, true);
                     atletaCadastro.setVisible(true);

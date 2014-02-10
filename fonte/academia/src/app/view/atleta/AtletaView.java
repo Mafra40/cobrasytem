@@ -16,6 +16,7 @@ import app.controller.ContaController;
 import app.view.atletaAtividade.AtletaAtividadeView;
 import conf.Global;
 import javax.swing.JOptionPane;
+import javax.swing.table.TableCellRenderer;
 
 /**
  *
@@ -36,13 +37,18 @@ public class AtletaView extends javax.swing.JDialog {
     public AtletaView(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        this.setLocationRelativeTo(null);
         ac = new AtletaController();
         atletaTabela.setModel(ac.listar());
         atletaTabela.getColumnModel().getColumn(0).setPreferredWidth(10); //Mat.
         atletaTabela.getColumnModel().getColumn(1).setPreferredWidth(150); //Nome.
         atletaTabela.getColumnModel().getColumn(2).setPreferredWidth(80); //RG.
         atletaTabela.getColumnModel().getColumn(3).setPreferredWidth(2); //Ativo.
-
+        
+        TableCellRenderer defaultRenderer = atletaTabela.getDefaultRenderer(Object.class);
+        TableCellRenderer r = new AtletaCellRender(defaultRenderer);
+        
+        atletaTabela.getColumnModel().getColumn(3).setCellRenderer(r);
     }
 
     /**
@@ -162,10 +168,19 @@ public class AtletaView extends javax.swing.JDialog {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(pesquisaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(nomeRadio)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(matRadio)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btPesquisar)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 531, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(fecharBt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -173,15 +188,7 @@ public class AtletaView extends javax.swing.JDialog {
                             .addComponent(editarBt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(cadastrarBt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(removerBt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(financeiroBt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(pesquisaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(nomeRadio)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(matRadio)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btPesquisar)))
+                            .addComponent(financeiroBt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -264,6 +271,7 @@ public class AtletaView extends javax.swing.JDialog {
     private void atividadeBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_atividadeBtActionPerformed
         AtividadeController avc = new AtividadeController();
         AtletaAtividadeView atv = new AtletaAtividadeView(null, true);
+        AtletaCadastro.seDesejaColocarAtividade = "N";
         atv.setVisible(true);
         avc.listarAtletaAtividade(matricula);
 

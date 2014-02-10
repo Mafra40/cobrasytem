@@ -124,30 +124,27 @@ public class AtividadeModel {
         return al;
 
     }
-    
+
     /*Filtrar pesquisa*/
-    
-    
-    public List<Atividade> filtrar( String valor){
-         query = "SELECT id, nome, valor, ativo FROM atividade "
+    public List<Atividade> filtrar(String valor) {
+        query = "SELECT id, nome, valor, ativo FROM atividade "
                 + " WHERE nome LIKE '%" + valor + "%'";
-         
+
         DB.conectar();
-     
-        
+
         try {
             stm = DB.con.createStatement();
             rs = stm.executeQuery(query);
-          
+
             while (rs.next()) {
                 a = new Atividade();
                 a.setId(rs.getInt("id"));
                 a.setNome(rs.getString("nome"));
                 a.setValor(rs.getFloat("valor"));
                 a.setAtivo(rs.getString("ativo"));
-               
+
                 al.add(a);
-                
+
             }
 
         } catch (SQLException ex) {
@@ -157,9 +154,8 @@ public class AtividadeModel {
         DB.desconectar();
         return al;
     }
-    
 
-    public void deletar(int id) {
+    public boolean deletar(int id) {
         query = "DELETE FROM atividade "
                 + "WHERE id=?";
 
@@ -171,11 +167,12 @@ public class AtividadeModel {
             pstm.execute();
             pstm.close();
 
+            return true;
         } catch (SQLException ex) {
-            System.out.println(ex);
+            return false;
         }
 
-        DB.desconectar();
+        
     }
 
     public Atividade retorna_atividade(int id) {
@@ -298,11 +295,12 @@ public class AtividadeModel {
         return attm = new AtletaAtividadeTableModel(at);
 
     }
+
     /**
      * Retorna uma lista de Atividades que o atleta está cadastrado.
-     * 
+     *
      * @param id do atleta.
-     * @return 
+     * @return
      */
     public List<AtletaAtividade> listaAtletaAtividades2(int id) {
         query = "SELECT at.id as atividade_id, at.nome as nome_atividade, at.ativo, at.valor, at.ativo , a.nome as nome_atleta , a.id as atleta_id \n"
@@ -310,8 +308,7 @@ public class AtividadeModel {
                 + "WHERE a.id = atletas_id\n"
                 + "AND atividade_id = at.id\n"
                 + "AND atletas_id = " + id;
-        
-        
+
         DB.conectar();
 
         try {

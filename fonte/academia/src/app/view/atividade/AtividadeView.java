@@ -13,6 +13,7 @@ package app.view.atividade;
 import app.controller.AtividadeController;
 import conf.Global;
 import javax.swing.JOptionPane;
+import javax.swing.table.TableCellRenderer;
 
 /**
  *
@@ -39,7 +40,12 @@ public class AtividadeView extends javax.swing.JDialog {
         tabelaAtividade.getColumnModel().getColumn(0).setPreferredWidth(20);
         tabelaAtividade.getColumnModel().getColumn(1).setPreferredWidth(200);
         tabelaAtividade.getColumnModel().getColumn(2).setPreferredWidth(50);
-         tabelaAtividade.getColumnModel().getColumn(3).setPreferredWidth(50);
+        tabelaAtividade.getColumnModel().getColumn(3).setPreferredWidth(50);
+
+        TableCellRenderer defaultRenderer = tabelaAtividade.getDefaultRenderer(Object.class);
+        TableCellRenderer r = new AtividadeCellRender(defaultRenderer);
+        
+        tabelaAtividade.getColumnModel().getColumn(3).setCellRenderer(r);
 
     }
 
@@ -96,6 +102,7 @@ public class AtividadeView extends javax.swing.JDialog {
             }
         });
 
+        btFechar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icon-cross.png"))); // NOI18N
         btFechar.setText("Fechar");
         btFechar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -218,11 +225,10 @@ public class AtividadeView extends javax.swing.JDialog {
     }//GEN-LAST:event_btEditarActionPerformed
 
     private void btPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btPesquisarActionPerformed
-          String pesquisa = pesquisaTxt.getText();
-          
-        
-         AtividadeController ac = new AtividadeController();
-         ac.filtrar(pesquisa);
+        String pesquisa = pesquisaTxt.getText();
+
+        AtividadeController ac = new AtividadeController();
+        ac.filtrar(pesquisa);
 
     }//GEN-LAST:event_btPesquisarActionPerformed
 

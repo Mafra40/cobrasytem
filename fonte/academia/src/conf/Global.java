@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 
  */
 package conf;
@@ -24,7 +24,7 @@ public class Global {
      *
      */
     public static final String USUARIO = "root";
-    public static final String SENHA = "ro160290ro";
+    public static final String SENHA = "jr1234cobra";
     public static final String DRIVER = "com.mysql.jdbc.Driver";
     public static final String URL = "jdbc:mysql://127.0.0.1/academia";
 

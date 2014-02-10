@@ -11,16 +11,12 @@
 package app.view.contas;
 
 import app.controller.ContaController;
-import app.model.Conta;
-import app.view.atleta.AtletaView;
-import com.sun.imageio.plugins.jpeg.JPEG;
-import conf.Global;
+import app.model.tablemodel.ContasReceberTableModel;
+import static app.view.contas.ContasAtletasView.tabelaMovimentacao;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.TableCellRenderer;
-import libs.Validador;
 
 /**
  *
@@ -28,16 +24,29 @@ import libs.Validador;
  */
 public class ContasView extends javax.swing.JDialog {
 
-    public static int linhaSelecionada;
-    public static int linhaSelecionadaMov;
-    public static float valorAtividade;
-    private static int idAtividade;
-    private static int idMov;
-    private static int cliques;
     private ContaController cc;
-    private Conta c;
-    private TableCellRenderer MyRenderer;
-    private static String situacaoMov;
+    /**
+     * Salva a linha selecionada na tabela Contas receber , pendencias e
+     * movimentação.
+     */
+    public static int linhaSelecionadaCR;
+    public static int linhaSelecionadaP;
+    public static int linhaSelecionadaM;
+    /**
+     * Salva o id do registro selecionado.
+     */
+    public static int idCR;
+    public static int idP;
+    public static int idM;
+
+    /**
+     * Salva a situação da CR ,P e M.
+     */
+    public static String situacaoCR;
+    public static String situacaoP;
+    public static String situacaoM;
+
+    private ContasReceberTableModel ctrm;
 
     /**
      * Creates new form ContasView
@@ -45,12 +54,14 @@ public class ContasView extends javax.swing.JDialog {
     public ContasView(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        cc = new ContaController();
+        setLocationRelativeTo(null);
+        popularContasReceberTabela();
+        popularPendencias();
+        popularMovimentacao();
 
-        tabelaMovimentacao.setModel(cc.listarContas(AtletaView.matricula));
+    }
 
-        tabelaMovimentacao.getColumnModel().getColumn(0).setPreferredWidth(10); //ID.
-        tabelaMovimentacao.getColumnModel().getColumn(0).setPreferredWidth(10); //ID.
+    public ContasView() {
 
     }
 
@@ -63,44 +74,47 @@ public class ContasView extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
+        buttonGroup1 = new javax.swing.ButtonGroup();
+        painel = new javax.swing.JTabbedPane();
+        contasReceberPainel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tabelaMovimentacao = new javax.swing.JTable();
-        jPanel2 = new javax.swing.JPanel();
-        salvarBt = new javax.swing.JButton();
-        dadosPagamento = new javax.swing.JPanel();
-        dataVencimentoTxt = new javax.swing.JFormattedTextField();
-        dataEmissaoTxt = new javax.swing.JFormattedTextField();
-        matriculaTxt = new javax.swing.JTextField();
-        matriculaLabel = new javax.swing.JLabel();
-        valorLabel = new javax.swing.JLabel();
-        dataEmissaoLabel = new javax.swing.JLabel();
-        dataVencimentoLabel = new javax.swing.JLabel();
-        jPanel3 = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        tabelaAtividades = new javax.swing.JTable();
-        atletaLabel = new javax.swing.JLabel();
-        nomeAtletaTxt = new javax.swing.JTextField();
-        valorTxt = new javax.swing.JFormattedTextField();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        obsTxt = new javax.swing.JTextArea();
-        obsLabel = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
-        contaTxt = new javax.swing.JTextField();
-        jPanel4 = new javax.swing.JPanel();
+        contasReceberTabela = new javax.swing.JTable();
+        botoesPaine = new javax.swing.JPanel();
         quitarBt = new javax.swing.JButton();
         removerBt = new javax.swing.JButton();
         fecharBt = new javax.swing.JButton();
         atualizarBt = new javax.swing.JButton();
+        pesquisarTxt = new javax.swing.JTextField();
+        nomeRadio = new javax.swing.JRadioButton();
+        situacaoSelect = new javax.swing.JComboBox();
+        pesquisarBt = new javax.swing.JButton();
+        pendenciasPainel = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        pendenciasTabela = new javax.swing.JTable();
+        botaoPainel2 = new javax.swing.JPanel();
+        quitarBt2 = new javax.swing.JButton();
+        removerBt2 = new javax.swing.JButton();
+        fecharBt2 = new javax.swing.JButton();
+        atualizarBt2 = new javax.swing.JButton();
+        movimentacaoPainel = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        movimentacaoTabela = new javax.swing.JTable();
+        botoesPaine1 = new javax.swing.JPanel();
+        quitarBt1 = new javax.swing.JButton();
+        removerBt1 = new javax.swing.JButton();
+        fecharBt1 = new javax.swing.JButton();
+        atualizarBt1 = new javax.swing.JButton();
+        nomeMRadio = new javax.swing.JRadioButton();
+        situacaoMSelect = new javax.swing.JComboBox();
+        pesquisarMTxt = new javax.swing.JTextField();
+        pesquisarMBt = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Financeiro");
         setResizable(false);
         setType(java.awt.Window.Type.UTILITY);
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Movimentação"));
-
-        tabelaMovimentacao.setModel(new javax.swing.table.DefaultTableModel(
+        contasReceberTabela.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -111,220 +125,14 @@ public class ContasView extends javax.swing.JDialog {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        tabelaMovimentacao.addMouseListener(new java.awt.event.MouseAdapter() {
+        contasReceberTabela.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tabelaMovimentacaoMouseClicked(evt);
+                contasReceberTabelaMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(tabelaMovimentacao);
+        jScrollPane1.setViewportView(contasReceberTabela);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1)
-                .addContainerGap())
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
-        salvarBt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icon-check.png"))); // NOI18N
-        salvarBt.setText("Salvar");
-        salvarBt.setEnabled(false);
-        salvarBt.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                salvarBtActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(salvarBt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(salvarBt)
-        );
-
-        dadosPagamento.setBorder(javax.swing.BorderFactory.createTitledBorder("Dados do pagamento"));
-
-        try {
-            dataVencimentoTxt.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
-
-        try {
-            dataEmissaoTxt.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
-        dataEmissaoTxt.setToolTipText("Clique duas vezes para atlerar a data de emissão.");
-        dataEmissaoTxt.setEnabled(false);
-        Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        String data = sdf.format(date);
-        dataEmissaoTxt.setText(data);
-        dataEmissaoTxt.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                dataEmissaoTxtMouseClicked(evt);
-            }
-        });
-
-        matriculaTxt.setEnabled(false);
-
-        matriculaLabel.setText("Matrícula");
-
-        valorLabel.setText("Valor");
-
-        dataEmissaoLabel.setText("Data. Emissão");
-
-        dataVencimentoLabel.setForeground(new java.awt.Color(255, 51, 51));
-        dataVencimentoLabel.setText("Data. Vencimento");
-
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Atividades"));
-        jPanel3.setToolTipText("Clique aqui para escolher uma atividade.");
-
-        tabelaAtividades.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        tabelaAtividades.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tabelaAtividadesMouseClicked(evt);
-            }
-        });
-        jScrollPane2.setViewportView(tabelaAtividades);
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 257, Short.MAX_VALUE)
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-        );
-
-        atletaLabel.setText("Atleta");
-
-        nomeAtletaTxt.setEnabled(false);
-
-        valorTxt.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00"))));
-
-        obsTxt.setColumns(20);
-        obsTxt.setRows(5);
-        jScrollPane3.setViewportView(obsTxt);
-
-        obsLabel.setText("Observação");
-
-        jLabel1.setText("Conta");
-
-        contaTxt.setEnabled(false);
-
-        javax.swing.GroupLayout dadosPagamentoLayout = new javax.swing.GroupLayout(dadosPagamento);
-        dadosPagamento.setLayout(dadosPagamentoLayout);
-        dadosPagamentoLayout.setHorizontalGroup(
-            dadosPagamentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(dadosPagamentoLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(dadosPagamentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(dadosPagamentoLayout.createSequentialGroup()
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addGroup(dadosPagamentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, dadosPagamentoLayout.createSequentialGroup()
-                                .addGroup(dadosPagamentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(dataEmissaoLabel)
-                                    .addComponent(dataEmissaoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(dadosPagamentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(dataVencimentoLabel)
-                                    .addComponent(dataVencimentoTxt))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(dadosPagamentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(dadosPagamentoLayout.createSequentialGroup()
-                                        .addComponent(valorLabel)
-                                        .addGap(0, 0, Short.MAX_VALUE))
-                                    .addComponent(valorTxt)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, dadosPagamentoLayout.createSequentialGroup()
-                                .addGroup(dadosPagamentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(obsLabel, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 0, Short.MAX_VALUE))))
-                    .addGroup(dadosPagamentoLayout.createSequentialGroup()
-                        .addGroup(dadosPagamentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(matriculaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(matriculaLabel))
-                        .addGap(18, 18, 18)
-                        .addGroup(dadosPagamentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(nomeAtletaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(atletaLabel))
-                        .addGap(18, 18, 18)
-                        .addGroup(dadosPagamentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(contaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
-        dadosPagamentoLayout.setVerticalGroup(
-            dadosPagamentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(dadosPagamentoLayout.createSequentialGroup()
-                .addGroup(dadosPagamentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(matriculaLabel)
-                    .addComponent(atletaLabel)
-                    .addComponent(jLabel1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(dadosPagamentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(matriculaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(nomeAtletaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(contaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(dadosPagamentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(dadosPagamentoLayout.createSequentialGroup()
-                        .addGroup(dadosPagamentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(dadosPagamentoLayout.createSequentialGroup()
-                                .addComponent(dataEmissaoLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(dataEmissaoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(dadosPagamentoLayout.createSequentialGroup()
-                                .addComponent(dataVencimentoLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(dataVencimentoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(dadosPagamentoLayout.createSequentialGroup()
-                                .addComponent(valorLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(valorTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(obsLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(23, Short.MAX_VALUE))
-        );
-
-        jPanel4.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        botoesPaine.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         quitarBt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/hand_thumbsup.png"))); // NOI18N
         quitarBt.setText("Quitar");
@@ -354,260 +162,610 @@ public class ContasView extends javax.swing.JDialog {
 
         atualizarBt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icon-refresh3.png"))); // NOI18N
         atualizarBt.setText("Atualizar");
-        atualizarBt.setEnabled(false);
         atualizarBt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 atualizarBtActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout botoesPaineLayout = new javax.swing.GroupLayout(botoesPaine);
+        botoesPaine.setLayout(botoesPaineLayout);
+        botoesPaineLayout.setHorizontalGroup(
+            botoesPaineLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(quitarBt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(removerBt, javax.swing.GroupLayout.DEFAULT_SIZE, 97, Short.MAX_VALUE)
+            .addComponent(removerBt, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
             .addComponent(fecharBt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(atualizarBt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
+        botoesPaineLayout.setVerticalGroup(
+            botoesPaineLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(botoesPaineLayout.createSequentialGroup()
                 .addGap(5, 5, 5)
                 .addComponent(quitarBt, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(atualizarBt)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(removerBt)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 159, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(fecharBt))
         );
+
+        buttonGroup1.add(nomeRadio);
+        nomeRadio.setText("Nome");
+
+        situacaoSelect.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Todas", "Abertas", "Vencidas", "Pagas" }));
+        situacaoSelect.setSelectedIndex(1);
+
+        pesquisarBt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icon-search.png"))); // NOI18N
+        pesquisarBt.setText("Pesquisar");
+        pesquisarBt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pesquisarBtActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout contasReceberPainelLayout = new javax.swing.GroupLayout(contasReceberPainel);
+        contasReceberPainel.setLayout(contasReceberPainelLayout);
+        contasReceberPainelLayout.setHorizontalGroup(
+            contasReceberPainelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(contasReceberPainelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(contasReceberPainelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(contasReceberPainelLayout.createSequentialGroup()
+                        .addComponent(pesquisarTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(nomeRadio)
+                        .addGap(18, 18, 18)
+                        .addComponent(situacaoSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(pesquisarBt)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(contasReceberPainelLayout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 823, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(botoesPaine, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+        );
+        contasReceberPainelLayout.setVerticalGroup(
+            contasReceberPainelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(contasReceberPainelLayout.createSequentialGroup()
+                .addGap(12, 12, 12)
+                .addGroup(contasReceberPainelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(pesquisarTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(nomeRadio)
+                    .addComponent(situacaoSelect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(pesquisarBt))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(contasReceberPainelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 363, Short.MAX_VALUE)
+                    .addComponent(botoesPaine, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(41, Short.MAX_VALUE))
+        );
+
+        painel.addTab("Contas a receber", contasReceberPainel);
+
+        pendenciasTabela.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        pendenciasTabela.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                pendenciasTabelaMouseClicked(evt);
+            }
+        });
+        jScrollPane3.setViewportView(pendenciasTabela);
+
+        botaoPainel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        quitarBt2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/hand_thumbsup.png"))); // NOI18N
+        quitarBt2.setText("Quitar");
+        quitarBt2.setEnabled(false);
+        quitarBt2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                quitarBt2ActionPerformed(evt);
+            }
+        });
+
+        removerBt2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icon-trash.png"))); // NOI18N
+        removerBt2.setText("Remover");
+        removerBt2.setEnabled(false);
+        removerBt2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removerBt2ActionPerformed(evt);
+            }
+        });
+
+        fecharBt2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icon-cross.png"))); // NOI18N
+        fecharBt2.setText("Fechar");
+        fecharBt2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fecharBt2ActionPerformed(evt);
+            }
+        });
+
+        atualizarBt2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icon-refresh3.png"))); // NOI18N
+        atualizarBt2.setText("Atualizar");
+        atualizarBt2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                atualizarBt2ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout botaoPainel2Layout = new javax.swing.GroupLayout(botaoPainel2);
+        botaoPainel2.setLayout(botaoPainel2Layout);
+        botaoPainel2Layout.setHorizontalGroup(
+            botaoPainel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(quitarBt2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(removerBt2, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
+            .addComponent(fecharBt2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(atualizarBt2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        botaoPainel2Layout.setVerticalGroup(
+            botaoPainel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(botaoPainel2Layout.createSequentialGroup()
+                .addGap(5, 5, 5)
+                .addComponent(quitarBt2, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(atualizarBt2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(removerBt2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(fecharBt2))
+        );
+
+        javax.swing.GroupLayout pendenciasPainelLayout = new javax.swing.GroupLayout(pendenciasPainel);
+        pendenciasPainel.setLayout(pendenciasPainelLayout);
+        pendenciasPainelLayout.setHorizontalGroup(
+            pendenciasPainelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pendenciasPainelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 823, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(botaoPainel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        pendenciasPainelLayout.setVerticalGroup(
+            pendenciasPainelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pendenciasPainelLayout.createSequentialGroup()
+                .addGap(44, 44, 44)
+                .addGroup(pendenciasPainelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 363, Short.MAX_VALUE)
+                    .addComponent(botaoPainel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(43, Short.MAX_VALUE))
+        );
+
+        painel.addTab("Pendencias", pendenciasPainel);
+
+        movimentacaoTabela.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        movimentacaoTabela.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                movimentacaoTabelaMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(movimentacaoTabela);
+
+        botoesPaine1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        quitarBt1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/hand_thumbsup.png"))); // NOI18N
+        quitarBt1.setText("Quitar");
+        quitarBt1.setEnabled(false);
+        quitarBt1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                quitarBt1ActionPerformed(evt);
+            }
+        });
+
+        removerBt1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icon-trash.png"))); // NOI18N
+        removerBt1.setText("Remover");
+        removerBt1.setEnabled(false);
+        removerBt1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removerBt1ActionPerformed(evt);
+            }
+        });
+
+        fecharBt1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icon-cross.png"))); // NOI18N
+        fecharBt1.setText("Fechar");
+        fecharBt1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fecharBt1ActionPerformed(evt);
+            }
+        });
+
+        atualizarBt1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icon-refresh3.png"))); // NOI18N
+        atualizarBt1.setText("Atualizar");
+        atualizarBt1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                atualizarBt1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout botoesPaine1Layout = new javax.swing.GroupLayout(botoesPaine1);
+        botoesPaine1.setLayout(botoesPaine1Layout);
+        botoesPaine1Layout.setHorizontalGroup(
+            botoesPaine1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(quitarBt1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(removerBt1, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
+            .addComponent(fecharBt1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(atualizarBt1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        botoesPaine1Layout.setVerticalGroup(
+            botoesPaine1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(botoesPaine1Layout.createSequentialGroup()
+                .addGap(5, 5, 5)
+                .addComponent(quitarBt1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(atualizarBt1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(removerBt1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(fecharBt1))
+        );
+
+        buttonGroup1.add(nomeMRadio);
+        nomeMRadio.setSelected(true);
+        nomeMRadio.setText("Nome");
+
+        situacaoMSelect.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Todas", "Abertas", "Vencidas", "Pagas" }));
+
+        pesquisarMBt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icon-search.png"))); // NOI18N
+        pesquisarMBt.setText("Pesquisar");
+        pesquisarMBt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pesquisarMBtActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout movimentacaoPainelLayout = new javax.swing.GroupLayout(movimentacaoPainel);
+        movimentacaoPainel.setLayout(movimentacaoPainelLayout);
+        movimentacaoPainelLayout.setHorizontalGroup(
+            movimentacaoPainelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(movimentacaoPainelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(movimentacaoPainelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(movimentacaoPainelLayout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 823, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(botoesPaine1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(movimentacaoPainelLayout.createSequentialGroup()
+                        .addComponent(pesquisarMTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(nomeMRadio)
+                        .addGap(18, 18, 18)
+                        .addComponent(situacaoMSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(pesquisarMBt)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        movimentacaoPainelLayout.setVerticalGroup(
+            movimentacaoPainelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(movimentacaoPainelLayout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addGroup(movimentacaoPainelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(pesquisarMTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(nomeMRadio)
+                    .addComponent(situacaoMSelect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(pesquisarMBt))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(movimentacaoPainelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 363, Short.MAX_VALUE)
+                    .addComponent(botoesPaine1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(43, Short.MAX_VALUE))
+        );
+
+        painel.addTab("Movimentação Geral", movimentacaoPainel);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(dadosPagamento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(0, 13, Short.MAX_VALUE))
+            .addComponent(painel)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(dadosPagamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(236, 236, 236)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 16, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())))
+            .addComponent(painel)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void atualizarBt1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_atualizarBt1ActionPerformed
+        popularMovimentacao();
+    }//GEN-LAST:event_atualizarBt1ActionPerformed
+
+    private void fecharBt1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fecharBt1ActionPerformed
+        this.setVisible(false);
+        this.dispose();
+    }//GEN-LAST:event_fecharBt1ActionPerformed
+
+    private void removerBt1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removerBt1ActionPerformed
+        cc = new ContaController();
+        if (cc.removerConta(idM) == true) {
+            movimentacaoTabela.clearSelection();
+            quitarBt1.setEnabled(false);
+            removerBt1.setEnabled(false);
+        }
+    }//GEN-LAST:event_removerBt1ActionPerformed
+
+    private void quitarBt1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quitarBt1ActionPerformed
+        cc = new ContaController();
+
+        if (situacaoM.equals("Pago")) {
+            JOptionPane.showMessageDialog(null, "A conta ja está quitada.", "Alerta", JOptionPane.INFORMATION_MESSAGE);
+
+        } else {
+
+            if (cc.quitarConta(idM) == true) {
+                movimentacaoTabela.clearSelection();
+                ctrm = new ContasReceberTableModel();
+                ctrm = (ContasReceberTableModel) movimentacaoTabela.getModel();
+                ctrm.setValueAt("Pago", linhaSelecionadaM, 6);
+                quitarBt1.setEnabled(false);
+                removerBt1.setEnabled(false);
+
+                linhaSelecionadaM = 0;
+                idM = 0;
+            }
+        }
+    }//GEN-LAST:event_quitarBt1ActionPerformed
+
+    private void movimentacaoTabelaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_movimentacaoTabelaMouseClicked
+        if (movimentacaoTabela.getModel().getRowCount() > 0) {
+            linhaSelecionadaM = movimentacaoTabela.getSelectedRow();
+            int coluna = movimentacaoTabela.getSelectedColumn();
+
+            idM = (int) movimentacaoTabela.getModel().getValueAt(linhaSelecionadaM, 0);
+            // System.err.println(idM);
+            situacaoM = (String) movimentacaoTabela.getModel().getValueAt(linhaSelecionadaM, 6);
+            //  System.err.println(situacaoM);
+            quitarBt1.setEnabled(true);
+            removerBt1.setEnabled(true);
+        }
+    }//GEN-LAST:event_movimentacaoTabelaMouseClicked
+
+    private void atualizarBt2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_atualizarBt2ActionPerformed
+        popularPendencias();
+    }//GEN-LAST:event_atualizarBt2ActionPerformed
+
+    private void fecharBt2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fecharBt2ActionPerformed
+        this.setVisible(false);
+        this.dispose();
+    }//GEN-LAST:event_fecharBt2ActionPerformed
+
+    private void removerBt2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removerBt2ActionPerformed
+        cc = new ContaController();
+        if (cc.removerConta(idP) == true) {
+            pendenciasTabela.clearSelection();
+            quitarBt2.setEnabled(false);
+            removerBt2.setEnabled(false);
+        }
+    }//GEN-LAST:event_removerBt2ActionPerformed
+
+    private void quitarBt2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quitarBt2ActionPerformed
+        cc = new ContaController();
+
+        if (situacaoP.equals("Pago")) {
+            JOptionPane.showMessageDialog(null, "A conta ja está quitada.", "Alerta", JOptionPane.INFORMATION_MESSAGE);
+
+        } else {
+
+            if (cc.quitarConta(idP) == true) {
+                pendenciasTabela.clearSelection();
+                ctrm = new ContasReceberTableModel();
+                ctrm = (ContasReceberTableModel) pendenciasTabela.getModel();
+
+                ctrm.removeRow(linhaSelecionadaP);
+                quitarBt2.setEnabled(false);
+                removerBt2.setEnabled(false);
+                linhaSelecionadaP = 0;
+                idP = 0;
+            }
+        }
+    }//GEN-LAST:event_quitarBt2ActionPerformed
+
+    private void pendenciasTabelaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pendenciasTabelaMouseClicked
+        if (pendenciasTabela.getModel().getRowCount() > 0) {
+            linhaSelecionadaP = pendenciasTabela.getSelectedRow();
+            int coluna = pendenciasTabela.getSelectedColumn();
+
+            idP = (int) pendenciasTabela.getModel().getValueAt(linhaSelecionadaCR, 0);
+            situacaoP = (String) pendenciasTabela.getModel().getValueAt(linhaSelecionadaCR, 6);
+            quitarBt2.setEnabled(true);
+            removerBt2.setEnabled(true);
+        }
+    }//GEN-LAST:event_pendenciasTabelaMouseClicked
+
+    private void atualizarBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_atualizarBtActionPerformed
+        popularContasReceberTabela();
+    }//GEN-LAST:event_atualizarBtActionPerformed
 
     private void fecharBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fecharBtActionPerformed
         this.setVisible(false);
         this.dispose();
     }//GEN-LAST:event_fecharBtActionPerformed
 
-    private void tabelaAtividadesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaAtividadesMouseClicked
-        if (tabelaAtividades.getModel().getRowCount() > 0) {
-            linhaSelecionada = tabelaAtividades.getSelectedRow();
-            int coluna = tabelaAtividades.getSelectedColumn();
-
-            idAtividade = (int) tabelaAtividades.getModel().getValueAt(linhaSelecionada, 0);
-            valorAtividade = (float) tabelaAtividades.getModel().getValueAt(linhaSelecionada, 2);
-
-            cc = new ContaController();
-            contaTxt.setText(cc.retornaIdConta());
-
-            /*Se tive setado os valores vai resetar*/
-            valorTxt.setText(Float.toString(valorAtividade).replace(".", ","));
-            dataVencimentoTxt.setText("");
-            obsTxt.setText("");
-            Date date = new Date();
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            String data = sdf.format(date);
-            dataEmissaoTxt.setText(data);
-
-            salvarBt.setEnabled(true);
-            atualizarBt.setEnabled(false);
-        }
-    }//GEN-LAST:event_tabelaAtividadesMouseClicked
-
-    private void salvarBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salvarBtActionPerformed
-        cc = new ContaController();
-        String msg = "";
-
-        String dataE = Validador.data(dataEmissaoTxt.getText(), 10);
-        String dataV = Validador.data(dataVencimentoTxt.getText(), 10);
-
-        if (Validador.erros == 0) {
-            int matricula = Integer.parseInt(matriculaTxt.getText());
-            c = new Conta();
-            c.setId(Integer.parseInt(contaTxt.getText()));
-            c.setLancamento(dataE);
-            c.setValor_total(Float.parseFloat(valorTxt.getText().toString().replace(",", ".")));
-            c.setSituacao("P");
-            c.setVencimento(dataV);
-            c.setObservacao(obsTxt.getText());
-
-            if (cc.cadastrarConta(c, matricula) == true) {
-                salvarBt.setEnabled(false);
-                valorTxt.setText("");
-                dataVencimentoTxt.setText("");
-                contaTxt.setText("");
-                tabelaAtividades.clearSelection();
-            }
-        } else {
-            for (int i = 0; i < 15; i++) {//Lista os erros
-                for (int j = 0; j < 5; j++) {
-                    if (null != Validador.arrayErros[i][j]) {
-                        msg = msg + Validador.arrayErros[i][j];
-                    }
-
-                }
-            }
-
-            JOptionPane.showMessageDialog(null, msg, "Erros", JOptionPane.ERROR_MESSAGE);
-            Validador.erros = 0;
-            for (int i = 0; i < 15; i++) {// Apaga os erros para não se acumular.
-                for (int j = 0; j < 5; j++) {
-                    if (null != Validador.arrayErros[i][j]) {
-                        Validador.arrayErros[i][j] = "";
-                    }
-
-                }
-            }
-        }
-    }//GEN-LAST:event_salvarBtActionPerformed
-
-    private void dataEmissaoTxtMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dataEmissaoTxtMouseClicked
-        int clique = evt.getClickCount();
-        if (clique > 1) {
-            dataEmissaoTxt.setEnabled(true);
-        }
-    }//GEN-LAST:event_dataEmissaoTxtMouseClicked
-
-    private void tabelaMovimentacaoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaMovimentacaoMouseClicked
-        cliques = evt.getClickCount();
-
-        if (cliques > 1) {
-            cc = new ContaController();
-            List<Conta> cl;
-            cl = cc.retornaContaSelecionada(idMov);
-
-            contaTxt.setText(String.valueOf(cl.get(0).getId()));
-            dataEmissaoTxt.setText(cl.get(0).getLancamento());
-            dataVencimentoTxt.setText(cl.get(0).getVencimento());
-            String valor = Float.toString(cl.get(0).getValor_total());
-            valorTxt.setText(valor.replace(".", ","));
-            obsTxt.setText(cl.get(0).getObservacao());
-
-            atualizarBt.setEnabled(true);
-            salvarBt.setEnabled(false);
-        }
-
-        if (tabelaMovimentacao.getModel().getRowCount() > 0) {
-            linhaSelecionadaMov = tabelaMovimentacao.getSelectedRow();
-            int coluna = tabelaMovimentacao.getSelectedColumn();
-
-            idMov = (int) tabelaMovimentacao.getModel().getValueAt(linhaSelecionadaMov, 0);
-            situacaoMov = (String) tabelaMovimentacao.getModel().getValueAt(linhaSelecionadaMov, 4);
-
-            removerBt.setEnabled(true);
-            quitarBt.setEnabled(true);
-        }
-    }//GEN-LAST:event_tabelaMovimentacaoMouseClicked
-
     private void removerBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removerBtActionPerformed
         cc = new ContaController();
-        if (cc.removerConta(idMov) == true) {
-            tabelaMovimentacao.clearSelection();
+        if (cc.removerConta(idCR) == true) {
+            contasReceberTabela.clearSelection();
             quitarBt.setEnabled(false);
             removerBt.setEnabled(false);
         }
-
     }//GEN-LAST:event_removerBtActionPerformed
 
     private void quitarBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quitarBtActionPerformed
         cc = new ContaController();
 
-        if (situacaoMov.equals("Pago")) {
+        if (situacaoCR.equals("Pago")) {
             JOptionPane.showMessageDialog(null, "A conta ja está quitada.", "Alerta", JOptionPane.INFORMATION_MESSAGE);
 
         } else {
 
-            if (cc.quitarConta(idMov) == true) {
-                tabelaMovimentacao.clearSelection();
+            if (cc.quitarConta(idCR) == true) {
+                contasReceberTabela.clearSelection();
+                ctrm = new ContasReceberTableModel();
+                ctrm = (ContasReceberTableModel) contasReceberTabela.getModel();
+
+                Date date = new Date();
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                String data = sdf.format(date);
+                ctrm.setValueAt(data + "", linhaSelecionadaCR, 4);
+                ctrm.setValueAt("Pago", linhaSelecionadaCR, 6);
+
+                linhaSelecionadaCR = 0;
+                idCR = 0;
+
                 quitarBt.setEnabled(false);
                 removerBt.setEnabled(false);
             }
         }
     }//GEN-LAST:event_quitarBtActionPerformed
 
-    private void atualizarBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_atualizarBtActionPerformed
-        cc = new ContaController();
+    private void contasReceberTabelaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_contasReceberTabelaMouseClicked
+        if (contasReceberTabela.getModel().getRowCount() > 0) {
+            linhaSelecionadaCR = contasReceberTabela.getSelectedRow();
+            int coluna = contasReceberTabela.getSelectedColumn();
 
-        String msg = "";
+            idCR = (int) contasReceberTabela.getModel().getValueAt(linhaSelecionadaCR, 0);
+            situacaoCR = (String) contasReceberTabela.getModel().getValueAt(linhaSelecionadaCR, 6);
+            quitarBt.setEnabled(true);
+            removerBt.setEnabled(true);
+        }
+    }//GEN-LAST:event_contasReceberTabelaMouseClicked
 
-        String dataE = Validador.data(dataEmissaoTxt.getText(), 10);
-        String dataV = Validador.data(dataVencimentoTxt.getText(), 10);
+    private void pesquisarBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pesquisarBtActionPerformed
 
-        if (Validador.erros == 0) {
+        String pesquisa = pesquisarTxt.getText();
+        String campos = null;
+        String situacao;
 
-            c = new Conta();
-            c.setId(Integer.parseInt(contaTxt.getText()));
-            c.setLancamento(dataE);
-            c.setValor_total(Float.parseFloat(valorTxt.getText().toString().replace(",", ".")));
-            c.setVencimento(dataV);
-            c.setObservacao(obsTxt.getText());
-
-            if (cc.atualizar(c) == true) {
-                tabelaMovimentacao.clearSelection();
-                quitarBt.setEnabled(false);
-                removerBt.setEnabled(false);
-                atualizarBt.setEnabled(false);
-            }
-        } else {
-            for (int i = 0; i < 15; i++) {//Lista os erros
-                for (int j = 0; j < 5; j++) {
-                    if (null != Validador.arrayErros[i][j]) {
-                        msg = msg + Validador.arrayErros[i][j];
-                    }
-
-                }
-            }
-
-            JOptionPane.showMessageDialog(null, msg, "Erros", JOptionPane.ERROR_MESSAGE);
-            Validador.erros = 0;
-            for (int i = 0; i < 15; i++) {// Apaga os erros para não se acumular.
-                for (int j = 0; j < 5; j++) {
-                    if (null != Validador.arrayErros[i][j]) {
-                        Validador.arrayErros[i][j] = "";
-                    }
-
-                }
-            }
+        if (nomeRadio.isSelected()) {
+            campos = "nome";
         }
 
+        situacao = String.valueOf(situacaoSelect.getSelectedIndex());
 
-    }//GEN-LAST:event_atualizarBtActionPerformed
+        switch (situacao) {
+            case "1":
+                situacao = "A";
+                break;
+            case "2":
+                situacao = "P";
+                break;
+            case "3":
+                situacao = "PG";
+                break;
+
+            case "0":
+                situacao = "NULL";
+                break;
+        }
+
+        cc = new ContaController();
+        cc.filtrar("receber",pesquisa, campos, situacao, contasReceberTabela);
+
+    }//GEN-LAST:event_pesquisarBtActionPerformed
+
+    private void pesquisarMBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pesquisarMBtActionPerformed
+        String pesquisa = pesquisarMTxt.getText();
+        String campos = null;
+        String situacao;
+
+        if (nomeMRadio.isSelected()) {
+            campos = "nome";
+        }
+
+        situacao = String.valueOf(situacaoMSelect.getSelectedIndex());
+
+        switch (situacao) {
+
+            case "0":
+                situacao = "NULL";
+                break;
+
+            case "1":
+                situacao = "A";
+                break;
+            case "2":
+                situacao = "P";
+                break;
+            case "3":
+                situacao = "PG";
+                break;
+
+        }
+
+        cc = new ContaController();
+        cc.filtrar("movimento" ,pesquisa, campos, situacao, movimentacaoTabela);
+    }//GEN-LAST:event_pesquisarMBtActionPerformed
+
+    public void popularContasReceberTabela() {
+        cc = new ContaController();
+        contasReceberTabela.setModel(cc.listaContasReceber());
+        contasReceberTabela.getColumnModel().getColumn(0).setPreferredWidth(5);
+        contasReceberTabela.getColumnModel().getColumn(1).setPreferredWidth(180);
+        contasReceberTabela.getColumnModel().getColumn(2).setPreferredWidth(20);
+        contasReceberTabela.getColumnModel().getColumn(3).setPreferredWidth(60);
+        contasReceberTabela.getColumnModel().getColumn(4).setPreferredWidth(60);
+        contasReceberTabela.getColumnModel().getColumn(5).setPreferredWidth(30);
+
+        TableCellRenderer defaultRenderer = contasReceberTabela.getDefaultRenderer(Object.class);
+        TableCellRenderer r = new ContasCellRender(defaultRenderer);
+
+        contasReceberTabela.getColumnModel().getColumn(6).setCellRenderer(r);
+
+    }
+
+    public void popularPendencias() {
+        cc = new ContaController();
+        pendenciasTabela.setModel(cc.listaPendencias());
+        pendenciasTabela.getColumnModel().getColumn(0).setPreferredWidth(5);
+        pendenciasTabela.getColumnModel().getColumn(1).setPreferredWidth(180);
+        pendenciasTabela.getColumnModel().getColumn(2).setPreferredWidth(20);
+        pendenciasTabela.getColumnModel().getColumn(3).setPreferredWidth(60);
+        pendenciasTabela.getColumnModel().getColumn(4).setPreferredWidth(60);
+        pendenciasTabela.getColumnModel().getColumn(5).setPreferredWidth(30);
+
+        TableCellRenderer defaultRenderer = pendenciasTabela.getDefaultRenderer(Object.class);
+        TableCellRenderer r = new ContasCellRender(defaultRenderer);
+
+        pendenciasTabela.getColumnModel().getColumn(6).setCellRenderer(r);
+    }
+
+    public void popularMovimentacao() {
+        cc = new ContaController();
+        movimentacaoTabela.setModel(cc.listaMovimentacao());
+        movimentacaoTabela.getColumnModel().getColumn(0).setPreferredWidth(5);
+        movimentacaoTabela.getColumnModel().getColumn(1).setPreferredWidth(180);
+        movimentacaoTabela.getColumnModel().getColumn(2).setPreferredWidth(20);
+        movimentacaoTabela.getColumnModel().getColumn(3).setPreferredWidth(60);
+        movimentacaoTabela.getColumnModel().getColumn(4).setPreferredWidth(60);
+        movimentacaoTabela.getColumnModel().getColumn(5).setPreferredWidth(30);
+
+        TableCellRenderer defaultRenderer = movimentacaoTabela.getDefaultRenderer(Object.class);
+        TableCellRenderer r = new ContasCellRender(defaultRenderer);
+
+        movimentacaoTabela.getColumnModel().getColumn(6).setCellRenderer(r);
+
+    }
 
     /**
      * @param args the command line arguments
@@ -620,24 +778,19 @@ public class ContasView extends javax.swing.JDialog {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if (Global.TEMA.equals(info.getName())) {
+                if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
-
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ContasView.class
-                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ContasView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ContasView.class
-                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ContasView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ContasView.class
-                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ContasView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ContasView.class
-                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ContasView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -657,34 +810,39 @@ public class ContasView extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel atletaLabel;
     private javax.swing.JButton atualizarBt;
-    public javax.swing.JTextField contaTxt;
-    private javax.swing.JPanel dadosPagamento;
-    private javax.swing.JLabel dataEmissaoLabel;
-    public static javax.swing.JFormattedTextField dataEmissaoTxt;
-    private javax.swing.JLabel dataVencimentoLabel;
-    public static javax.swing.JFormattedTextField dataVencimentoTxt;
+    private javax.swing.JButton atualizarBt1;
+    private javax.swing.JButton atualizarBt2;
+    private javax.swing.JPanel botaoPainel2;
+    private javax.swing.JPanel botoesPaine;
+    private javax.swing.JPanel botoesPaine1;
+    private javax.swing.ButtonGroup buttonGroup1;
+    public javax.swing.JPanel contasReceberPainel;
+    public static javax.swing.JTable contasReceberTabela;
     private javax.swing.JButton fecharBt;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
+    private javax.swing.JButton fecharBt1;
+    private javax.swing.JButton fecharBt2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JLabel matriculaLabel;
-    public javax.swing.JTextField matriculaTxt;
-    public javax.swing.JTextField nomeAtletaTxt;
-    private javax.swing.JLabel obsLabel;
-    private javax.swing.JTextArea obsTxt;
+    public javax.swing.JPanel movimentacaoPainel;
+    private javax.swing.JTable movimentacaoTabela;
+    private javax.swing.JRadioButton nomeMRadio;
+    private javax.swing.JRadioButton nomeRadio;
+    public javax.swing.JTabbedPane painel;
+    public javax.swing.JPanel pendenciasPainel;
+    private javax.swing.JTable pendenciasTabela;
+    private javax.swing.JButton pesquisarBt;
+    private javax.swing.JButton pesquisarMBt;
+    private javax.swing.JTextField pesquisarMTxt;
+    private javax.swing.JTextField pesquisarTxt;
     private javax.swing.JButton quitarBt;
+    private javax.swing.JButton quitarBt1;
+    private javax.swing.JButton quitarBt2;
     private javax.swing.JButton removerBt;
-    private javax.swing.JButton salvarBt;
-    public static javax.swing.JTable tabelaAtividades;
-    public static javax.swing.JTable tabelaMovimentacao;
-    private javax.swing.JLabel valorLabel;
-    private javax.swing.JFormattedTextField valorTxt;
+    private javax.swing.JButton removerBt1;
+    private javax.swing.JButton removerBt2;
+    private javax.swing.JComboBox situacaoMSelect;
+    private javax.swing.JComboBox situacaoSelect;
     // End of variables declaration//GEN-END:variables
 }

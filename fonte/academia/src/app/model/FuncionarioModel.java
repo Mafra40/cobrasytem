@@ -32,6 +32,7 @@ public class FuncionarioModel {
     public List<Funcionario> funcs = new ArrayList<Funcionario>();
     private FuncionarioTableModel fModel;
     private MessageDigest md;
+    private MessageDigest md2;
 
     /*Lista o usuários do sistema. FUncionários.
      */
@@ -65,18 +66,22 @@ public class FuncionarioModel {
         return funcs;
     }
 
-    public void cadastaFuncionario(Funcionario func) {
-        
-        /** MD5 **/
+    public boolean cadastaFuncionario(Funcionario func) {
+
+        /**
+         * MD5 *
+         */
         try {
             md = MessageDigest.getInstance("MD5");
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(FuncionarioModel.class.getName()).log(Level.SEVERE, null, ex);
         }
-        md.update(func.getSenha().getBytes(),0,func.getSenha().length());
-        func.setSenha(new BigInteger(1,md.digest()).toString(16));
-       /** **/
-       
+        md.update(func.getSenha().getBytes(), 0, func.getSenha().length());
+        func.setSenha(new BigInteger(1, md.digest()).toString(16));
+        /**
+         * *
+         */
+
         query = "INSERT INTO `academia`.`funcionario`"
                 + "(`cpf`,\n"
                 + "`nome`,\n"
@@ -106,17 +111,18 @@ public class FuncionarioModel {
 
             pstm.execute();
             pstm.close();
+            return true;
 
         } catch (SQLException ex) {
-            System.out.println(ex);
+            System.err.println(ex);
+
         }
         DB.desconectar();
+        return false;
 
     }
 
-    
-
-    public void atualizar(Funcionario f, String cpf) {
+    public boolean atualizar(Funcionario f, String cpf) {
 
         query = "UPDATE academia.funcionario SET cpf = ? , nome = ? , endereco = ? , cidade = ? , bairro = ? , cep = ? , telefone = ? , login = ? "
                 + " WHERE cpf = ? ";
@@ -137,11 +143,14 @@ public class FuncionarioModel {
             pstm.execute();
             pstm.close();
 
+            return true;
+
         } catch (SQLException ex) {
 
             System.err.println(ex);
         }
         DB.desconectar();
+        return false;
     }
 
     /**
@@ -199,18 +208,34 @@ public class FuncionarioModel {
         DB.desconectar();
         return func;
     }
-    
-    public List<Funcionario> filtrar(String filtro, String valor){
-         query = "SELECT * FROM funcionario "
-                + " WHERE " + filtro +" LIKE '%" + valor + "%'";
-         
+
+    public Boolean checarCpfEdicao(String cpfAtingo, String cpf) {
+        if (cpfAtingo == null ? cpf == null : cpfAtingo.equals(cpf)) {
+            return true;
+        }
+        return this.checarCpfExistente(cpf) != false;
+
+    }
+
+    public Boolean checarLoginEdicao(String loginAtingo, String login) {
+
+        if (loginAtingo == null ? login == null : loginAtingo.equals(login)) {
+            return true;
+        }
+        return this.checarLoginExistente(login) != false;
+
+    }
+
+    public List<Funcionario> filtrar(String filtro, String valor) {
+        query = "SELECT * FROM funcionario "
+                + " WHERE " + filtro + " LIKE '%" + valor + "%'";
+
         DB.conectar();
-     
-        
+
         try {
             stm = DB.con.createStatement();
             rs = stm.executeQuery(query);
-          
+
             while (rs.next()) {
                 func = new Funcionario();
                 func.setCpf(rs.getString("cpf"));
@@ -222,7 +247,7 @@ public class FuncionarioModel {
                 func.setTelefone(rs.getString("telefone"));
                 func.setLogin(rs.getString("login"));
                 funcs.add(func);
-                
+
             }
 
         } catch (SQLException ex) {
@@ -231,9 +256,8 @@ public class FuncionarioModel {
 
         DB.desconectar();
         return funcs;
-        
+
     }
-    
 
     /**
      * Valida CPF
@@ -241,47 +265,93 @@ public class FuncionarioModel {
      * @param CPF
      * @return
      */
-    public  boolean checarCpfExistente(String CPF) {
-        
-        query = "SELECT cpf FROM funcionario WHERE cpf ='"+CPF+"'";
+    public boolean checarCpfExistente(String CPF) {
+
+        query = "SELECT cpf FROM funcionario WHERE cpf ='" + CPF + "'";
         DB.conectar();
 
         try {
             stm = DB.con.createStatement();
             rs = stm.executeQuery(query);
-           if (rs.isBeforeFirst() ) {  
-            return false;
-            } 
+            if (rs.isBeforeFirst()) {
+                return false;
+            }
 
         } catch (SQLException ex) {
             System.err.println(ex);
         }
 
         DB.desconectar();
-        
+
         return true;
     }
-    
-    
-    public boolean checarLoginExistente(String login){
-        
-        query = "SELECT login FROM funcionario WHERE login ='"+login+"'";
+
+    public boolean checarLoginExistente(String login) {
+
+        query = "SELECT login FROM funcionario WHERE login ='" + login + "'";
         DB.conectar();
 
         try {
             stm = DB.con.createStatement();
             rs = stm.executeQuery(query);
-           if (rs.isBeforeFirst() ) {  
-            return false;
-            } 
+            if (rs.isBeforeFirst()) {
+                return false;
+            }
 
         } catch (SQLException ex) {
             System.err.println(ex);
         }
 
         DB.desconectar();
-        
+
         return true;
     }
-        
+
+    /**
+     * Alterar senha de um funcionário.
+     * @param id
+     */
+    public boolean alterarSenha(int id, String login, String senhaAtinga, String senhaNova) {
+        /**
+         * MD5 *
+         */
+        try {
+            md = MessageDigest.getInstance("MD5");
+            md2 = MessageDigest.getInstance("MD5");
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(LoginModel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        md.update(senhaAtinga.getBytes(), 0, senhaAtinga.length());
+        String senhaA = new BigInteger(1, md.digest()).toString(16);
+
+        md2.update(senhaNova.getBytes(), 0, senhaNova.length());
+        String senhaN = new BigInteger(1, md2.digest()).toString(16);
+
+        query = "UPDATE funcionario SET senha=? "
+                + " WHERE id = ? "
+                + "AND login = ? "
+                + "AND senha = ? ";
+
+        DB.conectar();
+        try {
+            pstm = DB.con.prepareStatement(query);
+
+            pstm.setString(1, senhaN);
+            pstm.setInt(2, id);
+            pstm.setString(3, login);
+            pstm.setString(4, senhaA);
+
+            pstm.execute();
+            pstm.close();
+
+            return true;
+
+        } catch (SQLException ex) {
+            System.err.println(ex);
+        }
+
+        DB.desconectar();
+        return false;
+    }
+
 }

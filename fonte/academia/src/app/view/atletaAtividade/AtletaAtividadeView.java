@@ -11,7 +11,9 @@
 package app.view.atletaAtividade;
 
 import app.controller.AtividadeController;
+import app.view.atividade.AtividadeCellRender;
 import app.view.atleta.AtletaView;
+import javax.swing.table.TableCellRenderer;
 
 /**
  *
@@ -32,10 +34,16 @@ public class AtletaAtividadeView extends javax.swing.JDialog {
     public AtletaAtividadeView(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-
+        this.setLocationRelativeTo(null);
         AtividadeController ac = new AtividadeController();
         atletaAtividadeTabela.setModel(ac.listarAtletaAtividade(AtletaView.matricula));
         atletaId = ac.recuperaIdAtleta(AtletaView.matricula);
+        
+        TableCellRenderer defaultRenderer =  atletaAtividadeTabela.getDefaultRenderer(Object.class);
+        TableCellRenderer r = new AtletaAtividadeCellRender(defaultRenderer);
+        
+         atletaAtividadeTabela.getColumnModel().getColumn(2).setCellRenderer(r);
+        
     }
 
     /**

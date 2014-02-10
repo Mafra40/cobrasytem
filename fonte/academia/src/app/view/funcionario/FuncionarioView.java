@@ -249,6 +249,7 @@ public class FuncionarioView extends javax.swing.JDialog {
         int count = evt.getClickCount();
         cpf = funcionarioTable.getModel().getValueAt(linhaSelecionada, 1).toString();
         nome = funcionarioTable.getModel().getValueAt(linhaSelecionada, 0).toString();
+       
 
         btEditar.setEnabled(true);
         btRemover.setEnabled(true);
