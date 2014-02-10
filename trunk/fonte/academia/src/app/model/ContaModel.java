@@ -76,6 +76,7 @@ public class ContaModel {
                 + "FROM atividade at, atletas a, atletas_has_atividade\n"
                 + "WHERE a.id = atletas_id\n"
                 + "AND atividade_id = at.id\n"
+                + "AND at.ativo = 'S'\n"
                 + "AND atletas_id = (SELECT id FROM atletas WHERE matricula=" + matricula + ")";
         DB.conectar();
 
@@ -115,7 +116,7 @@ public class ContaModel {
     public boolean cadastrarContaPagamento(Conta c, int matricula) {
 
         query = "INSERT INTO `contas_receber` \n"
-                + "SELECT ? as id , id as atletas_id, ? as vencimento , ? as valor_total , ? as situacao , ? as lacamento , ? as observacao  \n"
+                + "SELECT ? as id , id as atletas_id, ? as vencimento , ? as valor_total , ? as situacao , ? as lacamento , ? as observacao , ? as datapago  \n"
                 + "FROM atletas \n"
                 + "WHERE matricula=" + matricula;
 
@@ -129,13 +130,14 @@ public class ContaModel {
             pstm.setString(4, c.getSituacao());
             pstm.setString(5, c.getLancamento());
             pstm.setString(6, c.getObservacao());
+            pstm.setString(7, "0000-00-00");
 
             pstm.execute();
             pstm.close();
             return true;
 
         } catch (SQLException ex) {
-            System.out.println(ex);
+            System.out.println("Cadastrar conta: " + ex);
 
         }
         DB.desconectar();
@@ -186,10 +188,17 @@ public class ContaModel {
                 c.setId_atleta(rs.getInt("atletas_id"));
                 c.setVencimento(rs.getString("vencimento"));
                 c.setValor_total(rs.getFloat("valor_total"));
-                if (rs.getString("situacao").equals("PG")) {
-                    c.setSituacao("Pago");
-                } else {
-                    c.setSituacao("Pendente");
+
+                switch (rs.getString("situacao")) {
+                    case "PG":
+                        c.setSituacao("Pago");
+                        break;
+                    case "P":
+                        c.setSituacao("Pendente");
+                        break;
+                    case "A":
+                        c.setSituacao("Aberto");
+                        break;
                 }
 
                 //c.setSituacao(rs.getString("situacao"));
@@ -296,7 +305,8 @@ public class ContaModel {
 
         query = "UPDATE `contas_receber` "
                 + "SET "
-                + "situacao = 'PG' \n"
+                + "situacao = 'PG', \n"
+                + "datapago = CURDATE() \n"
                 + "WHERE id=? ";
 
         DB.conectar();
@@ -385,4 +395,245 @@ public class ContaModel {
         return false;
     }
 
+    /**
+     * Lista todas a contas pendentes do dia.
+     *
+     */
+    public List<Conta> listaContasReceber() {
+        query = "SELECT cr.id, cr.atletas_id ,  date_format(cr.vencimento ,  '%d/%m/%Y' ) as vencimento,  cr.valor_total , cr.situacao, date_format(cr.lancamento ,  '%d/%m/%Y' ) as lancamento  , cr.observacao ,date_format(cr.datapago ,  '%d/%m/%Y' ) as datapago ,\n"
+                + "a.nome  FROM contas_receber cr, atletas a \n"
+                + "WHERE a.id = cr.atletas_id\n"
+                + "AND vencimento = CURDATE() ;";
+        DB.conectar();
+        try {
+            stm = DB.con.createStatement();
+            rs = stm.executeQuery(query);
+
+            while (rs.next()) {
+                c = new Conta(rs.getInt("id"),
+                        rs.getInt("atletas_id"),
+                        rs.getString("vencimento"),
+                        rs.getFloat("valor_total"),
+                        rs.getString("situacao"),
+                        rs.getString("lancamento"),
+                        rs.getString("observacao"));
+
+                c.setNome(rs.getString("nome"));
+
+                switch (rs.getString("situacao")) {
+                    case "PG":
+                        c.setSituacao("Pago");
+                        break;
+                    case "P":
+                        c.setSituacao("Pendente");
+                        break;
+                    case "A":
+                        c.setSituacao("Aberto");
+                        break;
+                }
+
+                c.setDatapago(rs.getString("datapago"));
+
+                cl.add(c);
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("Falha ao lista: " + ex);
+        }
+
+        DB.desconectar();
+        return cl;
+    }
+
+    /*Lista todas as pendencias.*/
+    public List<Conta> listaPendencias() {
+        query = "SELECT cr.id, cr.atletas_id ,  date_format(cr.vencimento ,  '%d/%m/%Y' ) as vencimento,  cr.valor_total , cr.situacao, date_format(cr.lancamento ,  '%d/%m/%Y' ) as lancamento  , cr.observacao ,date_format(cr.datapago ,  '%d/%m/%Y' ) as datapago ,\n"
+                + "a.nome  FROM contas_receber cr, atletas a \n"
+                + "WHERE a.id = cr.atletas_id\n"
+                + "AND situacao = 'P' ";
+        DB.conectar();
+        try {
+            stm = DB.con.createStatement();
+            rs = stm.executeQuery(query);
+
+            while (rs.next()) {
+                c = new Conta(rs.getInt("id"),
+                        rs.getInt("atletas_id"),
+                        rs.getString("vencimento"),
+                        rs.getFloat("valor_total"),
+                        rs.getString("situacao"),
+                        rs.getString("lancamento"),
+                        rs.getString("observacao"));
+
+                c.setNome(rs.getString("nome"));
+
+                switch (rs.getString("situacao")) {
+                    case "PG":
+                        c.setSituacao("Pago");
+                        break;
+                    case "P":
+                        c.setSituacao("Pendente");
+                        break;
+                    case "A":
+                        c.setSituacao("Aberto");
+                        break;
+                }
+
+                c.setDatapago(rs.getString("datapago"));
+
+                cl.add(c);
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("Falha ao lista: " + ex);
+        }
+
+        DB.desconectar();
+        return cl;
+    }
+
+    /*Lista movimentação de todas as contas*/
+    public List<Conta> listaMovimentacao() {
+        query = "SELECT cr.id, cr.atletas_id ,  date_format(cr.vencimento ,  '%d/%m/%Y' ) as vencimento,  cr.valor_total , cr.situacao, date_format(cr.lancamento ,  '%d/%m/%Y' ) as lancamento  , cr.observacao ,date_format(cr.datapago ,  '%d/%m/%Y' ) as datapago ,\n"
+                + "a.nome  FROM contas_receber cr, atletas a \n"
+                + "WHERE a.id = cr.atletas_id\n";
+        DB.conectar();
+        try {
+            stm = DB.con.createStatement();
+            rs = stm.executeQuery(query);
+
+            while (rs.next()) {
+                c = new Conta(rs.getInt("id"),
+                        rs.getInt("atletas_id"),
+                        rs.getString("vencimento"),
+                        rs.getFloat("valor_total"),
+                        rs.getString("situacao"),
+                        rs.getString("lancamento"),
+                        rs.getString("observacao"));
+
+                c.setNome(rs.getString("nome"));
+
+                switch (rs.getString("situacao")) {
+                    case "PG":
+                        c.setSituacao("Pago");
+                        break;
+                    case "P":
+                        c.setSituacao("Pendente");
+                        break;
+                    case "A":
+                        c.setSituacao("Aberto");
+                        break;
+                }
+                c.setDatapago(rs.getString("datapago"));
+
+                cl.add(c);
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("Falha ao lista: " + ex);
+        }
+
+        DB.desconectar();
+        return cl;
+    }
+
+    /*ROTINA QUE ATUALIZARÁ OS CONTAS QUE ESTÃO ABERTA PARA VENCIDAS
+     CASO PASSE DA DATA DE VENCIMENTO.*/
+    public void rotinaAtualizarPendencias() {
+        query
+                = "UPDATE `contas_receber` \n"
+                + "SET situacao = 'P' \n"
+                + "WHERE curdate() not between lancamento AND vencimento \n" //datas não estiver entre o vencimento e lançamento
+                + "AND situacao = 'A'; \n";//onde todas as contas estiverem como aberto.
+
+        DB.conectar();
+        try {
+            pstm = DB.con.prepareStatement(query);
+
+            pstm.execute();
+            pstm.close();
+
+        } catch (SQLException ex) {
+            System.out.println("ROTINA CONTA: Falha ao atualizar as contas " + ex);
+        }
+        DB.desconectar();
+    }
+
+    public List<Conta> filtrar(String tipo, String pesquisaTxt, String campo, String campo2) {
+
+        if (tipo.equals("receber")) {
+
+            query = "SELECT cr.id, cr.atletas_id ,  date_format(cr.vencimento ,  '%d/%m/%Y' ) as vencimento,  cr.valor_total , cr.situacao, date_format(cr.lancamento ,  '%d/%m/%Y' ) as lancamento  , cr.observacao ,date_format(cr.datapago ,  '%d/%m/%Y' ) as datapago ,\n"
+                    + "a.nome  FROM contas_receber cr, atletas a \n"
+                    + "WHERE a.id = cr.atletas_id\n"
+                    + "AND vencimento = CURDATE() "
+                    + "AND cr.situacao ='" + campo2 + "' "
+                    + "AND a.nome LIKE'%" + pesquisaTxt + "%'";
+
+            if (campo2.equals("NULL")) {
+                query = "SELECT cr.id, cr.atletas_id ,  date_format(cr.vencimento ,  '%d/%m/%Y' ) as vencimento,  cr.valor_total , cr.situacao, date_format(cr.lancamento ,  '%d/%m/%Y' ) as lancamento  , cr.observacao ,date_format(cr.datapago ,  '%d/%m/%Y' ) as datapago ,\n"
+                        + "a.nome  FROM contas_receber cr, atletas a \n"
+                        + "WHERE a.id = cr.atletas_id\n"
+                        + "AND vencimento = CURDATE() "
+                        + "AND a.nome LIKE'%" + pesquisaTxt + "%'";
+            }
+        }
+
+        if (tipo.equals("movimento")) {
+            query = "SELECT cr.id, cr.atletas_id ,  date_format(cr.vencimento ,  '%d/%m/%Y' ) as vencimento,  cr.valor_total , cr.situacao, date_format(cr.lancamento ,  '%d/%m/%Y' ) as lancamento  , cr.observacao ,date_format(cr.datapago ,  '%d/%m/%Y' ) as datapago ,\n"
+                    + "a.nome  FROM contas_receber cr, atletas a \n"
+                    + "WHERE a.id = cr.atletas_id\n"
+                    + "AND cr.situacao ='" + campo2 + "' "
+                    + "AND a.nome LIKE'%" + pesquisaTxt + "%'";
+
+            if (campo2.equals("NULL")) {
+                query = "SELECT cr.id, cr.atletas_id ,  date_format(cr.vencimento ,  '%d/%m/%Y' ) as vencimento,  cr.valor_total , cr.situacao, date_format(cr.lancamento ,  '%d/%m/%Y' ) as lancamento  , cr.observacao ,date_format(cr.datapago ,  '%d/%m/%Y' ) as datapago ,\n"
+                        + "a.nome  FROM contas_receber cr, atletas a \n"
+                        + "WHERE a.id = cr.atletas_id\n"
+                        + "AND a.nome LIKE'%" + pesquisaTxt + "%'";
+            }
+        }
+
+
+        DB.conectar();
+
+        try {
+            stm = DB.con.createStatement();
+            rs = stm.executeQuery(query);
+
+            while (rs.next()) {
+                c = new Conta(rs.getInt("id"),
+                        rs.getInt("atletas_id"),
+                        rs.getString("vencimento"),
+                        rs.getFloat("valor_total"),
+                        rs.getString("situacao"),
+                        rs.getString("lancamento"),
+                        rs.getString("observacao"));
+
+                c.setNome(rs.getString("nome"));
+
+                switch (rs.getString("situacao")) {
+                    case "PG":
+                        c.setSituacao("Pago");
+                        break;
+                    case "P":
+                        c.setSituacao("Pendente");
+                        break;
+                    case "A":
+                        c.setSituacao("Aberto");
+                        break;
+                }
+
+                c.setDatapago(rs.getString("datapago"));
+
+                cl.add(c);
+            }
+
+        } catch (SQLException ex) {
+            System.err.println(ex);
+        }
+
+        DB.desconectar();
+        return cl;
+    }
 }

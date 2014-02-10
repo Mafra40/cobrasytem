@@ -30,6 +30,7 @@ public class AtletaEditar extends javax.swing.JDialog {
     public AtletaEditar(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -300,6 +301,7 @@ public class AtletaEditar extends javax.swing.JDialog {
                 .addComponent(jLabel70))
         );
 
+        btCadastrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icon-check.png"))); // NOI18N
         btCadastrar.setText("Alterar");
         btCadastrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -307,6 +309,7 @@ public class AtletaEditar extends javax.swing.JDialog {
             }
         });
 
+        btCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icon-cross.png"))); // NOI18N
         btCancelar.setText("Cancelar");
         btCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -324,7 +327,7 @@ public class AtletaEditar extends javax.swing.JDialog {
                         .addContainerGap()
                         .addComponent(jPanel17, javax.swing.GroupLayout.PREFERRED_SIZE, 841, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 701, Short.MAX_VALUE)
+                        .addGap(0, 665, Short.MAX_VALUE)
                         .addComponent(btCadastrar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btCancelar)))

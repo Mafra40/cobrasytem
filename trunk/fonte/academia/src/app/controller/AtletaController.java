@@ -227,10 +227,7 @@ public class AtletaController {
             atm.removeRow(linhaSelecionada);
 
             return true;
-        } else {
-            JOptionPane.showMessageDialog(null, "Falha ao deletar.", "Alerta", JOptionPane.ERROR_MESSAGE);
-
-        }
+        } 
 
         return false;
     }

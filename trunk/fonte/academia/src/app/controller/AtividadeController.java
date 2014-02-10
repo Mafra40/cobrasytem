@@ -60,10 +60,10 @@ public class AtividadeController {
 
         if (am.cadastrar(a) == true) {
             JOptionPane.showMessageDialog(null, "Atividade Cadastrada.", "Alerta", JOptionPane.INFORMATION_MESSAGE);
-
+            int id = am.retornaIdAtividade(a.getNome());
             atm = (AtividadeTableModel) AtividadeView.tabelaAtividade.getModel();
             int count = atm.getRowCount();
-            atm.addRow(a.getId(), a.getNome().toString(), a.getValor(), a.getAtivo(), count);
+            atm.addRow(id, a.getNome().toString(), a.getValor(), a.getAtivo(), count);
             return true;
         }
 
@@ -79,11 +79,15 @@ public class AtividadeController {
 
     public void deletar(int id, int LinhaSelecionada) {
         am = new AtividadeModel();
-        am.deletar(id);
-        JOptionPane.showMessageDialog(null, "Registro deletado.", "Alerta.", JOptionPane.INFORMATION_MESSAGE);
-        atm = new AtividadeTableModel();
-        atm = (AtividadeTableModel) AtividadeView.tabelaAtividade.getModel();
-        atm.removeRow(LinhaSelecionada);
+        if (am.deletar(id) == true) {
+            JOptionPane.showMessageDialog(null, "Registro deletado.", "Alerta.", JOptionPane.INFORMATION_MESSAGE);
+            atm = new AtividadeTableModel();
+            atm = (AtividadeTableModel) AtividadeView.tabelaAtividade.getModel();
+            atm.removeRow(LinhaSelecionada);
+        } else {
+            JOptionPane.showMessageDialog(null, "Não é possivel deletar uma atividade em uso.", "Alerta.", JOptionPane.ERROR_MESSAGE);
+        }
+
     }
 
     public void editar(int id) {
@@ -110,8 +114,9 @@ public class AtividadeController {
         am.atualizar(a, id);
         atm = (AtividadeTableModel) AtividadeView.tabelaAtividade.getModel();
         JOptionPane.showMessageDialog(null, "Registro atualizado.", "Alerta", JOptionPane.INFORMATION_MESSAGE);
+        int idAt = am.retornaIdAtividade(a.getNome());
 
-        atm.setValueAt(a.getId(), linhaSelecionadaTabelela, 0);
+        atm.setValueAt(idAt, linhaSelecionadaTabelela, 0);
         atm.setValueAt(a.getNome(), linhaSelecionadaTabelela, 1);
         atm.setValueAt(a.getValor(), linhaSelecionadaTabelela, 2);
         atm.setValueAt(a.getAtivo(), linhaSelecionadaTabelela, 3);
@@ -167,8 +172,9 @@ public class AtividadeController {
     }
     /*Cadastra uma atividade num atleta
      */
+    /*Se foi logo diretamente no cadastrado.*/
 
-    public boolean cadastrarAtletaAtividade(int atividadeId, int atletaId) {
+    public boolean cadastrarAtletaAtividade(int atividadeId, int atletaId, String DiretoATV) {
 
         am = new AtividadeModel();
         if (am.cadastrarAtletaAtividade(atividadeId, atletaId) == true) {
@@ -177,11 +183,12 @@ public class AtividadeController {
             DefaultListModel dm = (DefaultListModel) AtletaAtividadeForm.lista.getModel();
             dm.removeElement(AtletaAtividadeForm.lista.getSelectedValue());
 
-           // int countRegistroTabela = AtletaAtividadeView.atletaAtividadeTabela.getModel().getRowCount();
-
-            aatm = (AtletaAtividadeTableModel) AtletaAtividadeView.atletaAtividadeTabela.getModel();
-            int count = aatm.getRowCount();
-            aatm.addRow(AtletaAtividadeForm.atividadeNome, Math.abs(Float.parseFloat(AtletaAtividadeForm.atividadeValor)), "S", count);
+            // int countRegistroTabela = AtletaAtividadeView.atletaAtividadeTabela.getModel().getRowCount();
+            if (DiretoATV.equalsIgnoreCase("N")) {
+                aatm = (AtletaAtividadeTableModel) AtletaAtividadeView.atletaAtividadeTabela.getModel();
+                int count = aatm.getRowCount();
+                aatm.addRow(AtletaAtividadeForm.atividadeNome, Math.abs(Float.parseFloat(AtletaAtividadeForm.atividadeValor)), "S", count);
+            }
 
             return true;
         }

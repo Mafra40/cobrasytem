@@ -8,13 +8,14 @@
  * Contributors:
  *    WISE - initial API and implementation and/or initial documentation
  */
-
 package app.view.principal;
 
 import app.controller.AtividadeController;
 import app.controller.AtletaController;
+import app.controller.ContaController;
+import app.controller.FrequenciaController;
 import app.controller.FuncionarioController;
-import app.model.Atividade;
+import app.view.sobre.SobreView;
 import conf.Global;
 
 /**
@@ -23,13 +24,21 @@ import conf.Global;
  */
 public class MenuView extends javax.swing.JFrame {
 
+    private FrequenciaController fc;
+    private ContaController cc;
+
     /**
      * Creates new form MenuView
      */
     public MenuView() {
         this.setExtendedState(this.MAXIMIZED_BOTH);
-        setLocationRelativeTo(null);
+
         initComponents();
+        setLocationRelativeTo(null);
+
+        /*ROTINAS*/
+        carregarAta();
+        carregaRotinaContas();
     }
 
     /**
@@ -41,6 +50,10 @@ public class MenuView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        frequenciaBt = new javax.swing.JButton();
+        contasBt = new javax.swing.JButton();
+        freManual = new javax.swing.JButton();
         menuPrincipal = new javax.swing.JMenuBar();
         menuAquivo = new javax.swing.JMenu();
         miAlterarSenha = new javax.swing.JMenuItem();
@@ -51,12 +64,71 @@ public class MenuView extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         menuFinanceiro = new javax.swing.JMenu();
         contasReceberMenu = new javax.swing.JMenuItem();
+        pendenciasMenuBT = new javax.swing.JMenuItem();
+        moviMenuBt = new javax.swing.JMenuItem();
+        frequenciaMenu = new javax.swing.JMenu();
+        ataAtletasMenu = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
         menuAjuda = new javax.swing.JMenu();
         miSobre = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("COBRA SYSTEM");
         setName("menuFrame"); // NOI18N
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Atalhos"));
+
+        frequenciaBt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/clipboard.png"))); // NOI18N
+        frequenciaBt.setText("Frenquência");
+        frequenciaBt.setRequestFocusEnabled(false);
+        frequenciaBt.setRolloverEnabled(false);
+        frequenciaBt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                frequenciaBtActionPerformed(evt);
+            }
+        });
+
+        contasBt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/balance.png"))); // NOI18N
+        contasBt.setText("Contas");
+        contasBt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                contasBtActionPerformed(evt);
+            }
+        });
+
+        freManual.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/clipboard.png"))); // NOI18N
+        freManual.setText("F. Manual");
+        freManual.setRequestFocusEnabled(false);
+        freManual.setRolloverEnabled(false);
+        freManual.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                freManualActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(frequenciaBt)
+                .addGap(31, 31, 31)
+                .addComponent(freManual, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(contasBt, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(286, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(frequenciaBt, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(contasBt, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(freManual, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(24, Short.MAX_VALUE))
+        );
 
         menuAquivo.setText("Arquivo");
 
@@ -120,13 +192,63 @@ public class MenuView extends javax.swing.JFrame {
         contasReceberMenu.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, 0));
         contasReceberMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/money_bag.png"))); // NOI18N
         contasReceberMenu.setText("Contas a receber");
+        contasReceberMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                contasReceberMenuActionPerformed(evt);
+            }
+        });
         menuFinanceiro.add(contasReceberMenu);
 
+        pendenciasMenuBT.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/balance--minus.png"))); // NOI18N
+        pendenciasMenuBT.setText("Pendências");
+        pendenciasMenuBT.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pendenciasMenuBTActionPerformed(evt);
+            }
+        });
+        menuFinanceiro.add(pendenciasMenuBT);
+
+        moviMenuBt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/balance--arrow.png"))); // NOI18N
+        moviMenuBt.setText("Movimentação");
+        moviMenuBt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                moviMenuBtActionPerformed(evt);
+            }
+        });
+        menuFinanceiro.add(moviMenuBt);
+
         menuPrincipal.add(menuFinanceiro);
+
+        frequenciaMenu.setText("Frequência");
+
+        ataAtletasMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/clipboard.png"))); // NOI18N
+        ataAtletasMenu.setText("Ata de atletas");
+        ataAtletasMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ataAtletasMenuActionPerformed(evt);
+            }
+        });
+        frequenciaMenu.add(ataAtletasMenu);
+
+        jMenuItem3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/tick.png"))); // NOI18N
+        jMenuItem3.setText("Check in manual");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        frequenciaMenu.add(jMenuItem3);
+
+        menuPrincipal.add(frequenciaMenu);
 
         menuAjuda.setText("Ajuda");
 
         miSobre.setText("Sobre");
+        miSobre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miSobreActionPerformed(evt);
+            }
+        });
         menuAjuda.add(miSobre);
 
         menuPrincipal.add(menuAjuda);
@@ -137,11 +259,17 @@ public class MenuView extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 704, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 494, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(350, Short.MAX_VALUE))
         );
 
         getAccessibleContext().setAccessibleDescription("");
@@ -164,14 +292,75 @@ public class MenuView extends javax.swing.JFrame {
     }//GEN-LAST:event_miAlterarSenhaActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-       AtletaController ac = new AtletaController();
-       ac.despachar();
+        AtletaController ac = new AtletaController();
+        ac.despachar();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void miAtividadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miAtividadeActionPerformed
-       AtividadeController ac = new AtividadeController();
-       ac.despachar();
+        AtividadeController ac = new AtividadeController();
+        ac.despachar();
     }//GEN-LAST:event_miAtividadeActionPerformed
+
+    private void contasReceberMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contasReceberMenuActionPerformed
+        ContaController cc = new ContaController();
+        cc.chamarContasView(0);
+    }//GEN-LAST:event_contasReceberMenuActionPerformed
+
+    private void contasBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contasBtActionPerformed
+        ContaController cc = new ContaController();
+        cc.chamarContasView(0);
+    }//GEN-LAST:event_contasBtActionPerformed
+
+    private void pendenciasMenuBTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pendenciasMenuBTActionPerformed
+        ContaController cc = new ContaController();
+        cc.chamarContasView(1);
+    }//GEN-LAST:event_pendenciasMenuBTActionPerformed
+
+    private void moviMenuBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moviMenuBtActionPerformed
+        ContaController cc = new ContaController();
+        cc.chamarContasView(2);
+    }//GEN-LAST:event_moviMenuBtActionPerformed
+
+    private void frequenciaBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_frequenciaBtActionPerformed
+        FrequenciaController fc = new FrequenciaController();
+        fc.chamarViewFrequencia();
+    }//GEN-LAST:event_frequenciaBtActionPerformed
+
+    private void freManualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_freManualActionPerformed
+        FrequenciaController fc = new FrequenciaController();
+        fc.chamaChekinManualForm();
+    }//GEN-LAST:event_freManualActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+         FrequenciaController fc = new FrequenciaController();
+        fc.chamaChekinManualForm();
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void ataAtletasMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ataAtletasMenuActionPerformed
+      FrequenciaController fc = new FrequenciaController();
+        fc.chamarViewFrequencia();
+    }//GEN-LAST:event_ataAtletasMenuActionPerformed
+
+    private void miSobreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miSobreActionPerformed
+       SobreView sw = new SobreView(this, true);
+       sw.setVisible(true);
+    }//GEN-LAST:event_miSobreActionPerformed
+    /*FUNÇÃO DE ROTINA
+    
+     */
+
+    public void carregarAta() {
+        fc = new FrequenciaController();
+        fc.gerarAta();
+
+    }
+    /*ATUALIA TODA AS CONTAS*/
+
+    public void carregaRotinaContas() {
+        cc = new ContaController();
+        cc.rotinaAtualizarConta();
+    }
+    /*FIM FUNÇÕES DE ROTINA*/
 
     /**
      * @param args the command line arguments
@@ -209,8 +398,15 @@ public class MenuView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem ataAtletasMenu;
+    private javax.swing.JButton contasBt;
     private javax.swing.JMenuItem contasReceberMenu;
+    private javax.swing.JButton freManual;
+    private javax.swing.JButton frequenciaBt;
+    private javax.swing.JMenu frequenciaMenu;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JMenu menuAjuda;
     private javax.swing.JMenu menuAquivo;
     private javax.swing.JMenu menuCadastrado;
@@ -221,5 +417,7 @@ public class MenuView extends javax.swing.JFrame {
     private javax.swing.JMenuItem miFuncionario;
     private javax.swing.JMenuItem miSair;
     private javax.swing.JMenuItem miSobre;
+    private javax.swing.JMenuItem moviMenuBt;
+    private javax.swing.JMenuItem pendenciasMenuBT;
     // End of variables declaration//GEN-END:variables
 }

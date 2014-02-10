@@ -12,6 +12,8 @@ package app.view.atletaAtividade;
 
 import app.controller.AtividadeController;
 import app.model.Atividade;
+import app.view.atleta.AtletaCadastro;
+import app.view.atleta.AtletaView;
 import conf.Global;
 import java.util.List;
 import javax.swing.DefaultListModel;
@@ -33,6 +35,7 @@ public class AtletaAtividadeForm extends javax.swing.JDialog {
     public AtletaAtividadeForm(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        this.setLocationRelativeTo(null);
         ac = new AtividadeController();
 
         List<Atividade> l;
@@ -188,7 +191,7 @@ public class AtletaAtividadeForm extends javax.swing.JDialog {
 
     private void adicionarBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adicionarBtActionPerformed
         AtividadeController ac = new AtividadeController();
-        if (ac.cadastrarAtletaAtividade(atividadeId, AtletaAtividadeView.atletaId) == true){
+        if (ac.cadastrarAtletaAtividade(atividadeId, AtletaAtividadeView.atletaId , AtletaCadastro.seDesejaColocarAtividade) == true){
             adicionarBt.setEnabled(false);
         }
     }//GEN-LAST:event_adicionarBtActionPerformed

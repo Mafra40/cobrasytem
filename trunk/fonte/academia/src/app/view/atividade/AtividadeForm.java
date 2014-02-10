@@ -29,8 +29,9 @@ public class AtividadeForm extends javax.swing.JDialog {
      */
     public AtividadeForm(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        setLocationRelativeTo(null);
         initComponents();
+        
+        setLocationRelativeTo(null);
     }
 
     
@@ -104,6 +105,7 @@ public class AtividadeForm extends javax.swing.JDialog {
 
         painelAtividade.addTab("Dados da atividade", pAtividade);
 
+        btCadastrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icon-check.png"))); // NOI18N
         btCadastrar.setText("Cadastrar");
         btCadastrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -111,6 +113,7 @@ public class AtividadeForm extends javax.swing.JDialog {
             }
         });
 
+        btCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icon-cross.png"))); // NOI18N
         btCancelar.setText("Cancelar");
         btCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -171,7 +174,6 @@ public class AtividadeForm extends javax.swing.JDialog {
                 ativo = "N";
             }
             
-         //   System.err.println(nome + " " + ativo + " " + valor);
             
            ac = new AtividadeController();
            Atividade a = new Atividade(nome, ativo, valor);

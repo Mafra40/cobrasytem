@@ -11,6 +11,7 @@
 package app;
 
 import app.controller.LoginController;
+import app.controller.PrincipalController;
 import app.view.login.LoginView;
 import conf.Global;
 
@@ -46,8 +47,8 @@ public class Main {
          java.util.logging.Logger.getLogger(LoginView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
          }
         
-         LoginController lc = new LoginController();
-         lc.LoginView();
+         PrincipalController p = new PrincipalController();
+         p.login();
         
         
         

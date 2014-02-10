@@ -32,9 +32,8 @@ public class FuncionarioEditar extends javax.swing.JDialog {
      */
     public FuncionarioEditar(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        setLocationRelativeTo(null);
         initComponents();
-
+         this.setLocationRelativeTo(null);
     }
 
     /**
@@ -71,7 +70,7 @@ public class FuncionarioEditar extends javax.swing.JDialog {
         msgSenha = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setAlwaysOnTop(true);
+        setResizable(false);
         setType(java.awt.Window.Type.UTILITY);
 
         btCadastrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icon-check.png"))); // NOI18N
@@ -220,38 +219,36 @@ public class FuncionarioEditar extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(painelAcesso)
-                    .addComponent(guiaPrincipal)
-                    .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(painelAcesso, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(guiaPrincipal, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(13, 13, 13)
                         .addComponent(msgSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btCadastrar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btCancelar)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(16, 16, 16)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(guiaPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(painelAcesso, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btCancelar)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btCadastrar)
-                            .addComponent(btCancelar))
-                        .addGap(15, 15, 15))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(61, 61, 61)
-                        .addComponent(msgSenha)
-                        .addContainerGap(26, Short.MAX_VALUE))))
+                        .addComponent(btCadastrar)
+                        .addGap(32, 32, 32)
+                        .addComponent(msgSenha))))
         );
 
         pack();
@@ -283,7 +280,7 @@ public class FuncionarioEditar extends javax.swing.JDialog {
 
             Funcionario f = new Funcionario(cpf, nome, endereco, cidade, bairro, cep, telefone, login);
             FuncionarioController fc = new FuncionarioController();
-            fc.salvar_edicao(f, FuncionarioView.cpf);
+            fc.salvar_edicao(f);
 
         } else {
 

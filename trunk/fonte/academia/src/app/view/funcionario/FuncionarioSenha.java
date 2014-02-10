@@ -8,8 +8,11 @@
  * Contributors:
  *    WISE - initial API and implementation and/or initial documentation
  */
-
 package app.view.funcionario;
+
+import app.controller.FuncionarioController;
+import javax.swing.JOptionPane;
+import libs.Validador;
 
 /**
  *
@@ -17,12 +20,17 @@ package app.view.funcionario;
  */
 public class FuncionarioSenha extends javax.swing.JDialog {
 
+    private FuncionarioController fc;
+    private String msg;
+
     /**
      * Creates new form FuncionarioSenha
      */
     public FuncionarioSenha(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
+
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -38,16 +46,15 @@ public class FuncionarioSenha extends javax.swing.JDialog {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jPasswordField1 = new javax.swing.JPasswordField();
-        jPasswordField2 = new javax.swing.JPasswordField();
-        jPasswordField3 = new javax.swing.JPasswordField();
+        senhaAtual = new javax.swing.JPasswordField();
+        senhaNova = new javax.swing.JPasswordField();
+        senhaNova2 = new javax.swing.JPasswordField();
         jLabel3 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        alterarBt = new javax.swing.JButton();
+        cancelarBt = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Alteração de senha");
-        setAlwaysOnTop(true);
         setResizable(false);
         setType(java.awt.Window.Type.UTILITY);
 
@@ -69,9 +76,9 @@ public class FuncionarioSenha extends javax.swing.JDialog {
                     .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPasswordField1, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
-                    .addComponent(jPasswordField2)
-                    .addComponent(jPasswordField3))
+                    .addComponent(senhaAtual, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
+                    .addComponent(senhaNova)
+                    .addComponent(senhaNova2))
                 .addContainerGap(61, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -80,26 +87,33 @@ public class FuncionarioSenha extends javax.swing.JDialog {
                 .addGap(27, 27, 27)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(senhaAtual, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(17, 17, 17)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jPasswordField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(senhaNova, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jPasswordField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(senhaNova2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
-                .addContainerGap(44, Short.MAX_VALUE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Alterar Senha", jPanel1);
 
-        jButton1.setText("Alterar");
-
-        jButton2.setText("Cacenlar");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        alterarBt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icon-check.png"))); // NOI18N
+        alterarBt.setText("Alterar");
+        alterarBt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                alterarBtActionPerformed(evt);
+            }
+        });
+
+        cancelarBt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icon-cross.png"))); // NOI18N
+        cancelarBt.setText("Cacenlar");
+        cancelarBt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelarBtActionPerformed(evt);
             }
         });
 
@@ -108,35 +122,64 @@ public class FuncionarioSenha extends javax.swing.JDialog {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton2)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(alterarBt)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cancelarBt))
+                    .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(jButton1))
-                .addContainerGap())
+                    .addComponent(cancelarBt)
+                    .addComponent(alterarBt))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void cancelarBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarBtActionPerformed
         setVisible(false);
         dispose();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_cancelarBtActionPerformed
+
+    private void alterarBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_alterarBtActionPerformed
+        fc = new FuncionarioController();
+
+        Validador.validaSenha(senhaNova, senhaNova2, 32, true, 5, "Senhas");
+        if (Validador.erros == 0) {
+            fc.alterarSenha(senhaAtual.getText(), senhaNova.getText());
+        } else {
+
+            for (int i = 0; i < 9; i++) {//Lista os erros
+                for (int j = 0; j < 3; j++) {
+                    if (null != Validador.arrayErros[i][j]) {
+                        msg = msg + Validador.arrayErros[i][j];
+                    }
+
+                }
+            }
+
+            JOptionPane.showMessageDialog(null, msg, "Erros", JOptionPane.ERROR_MESSAGE);
+            Validador.erros = 0;
+            for (int i = 0; i < 9; i++) {// Apaga os erros para não se acumular.
+                for (int j = 0; j < 3; j++) {
+                    if (null != Validador.arrayErros[i][j]) {
+                        Validador.arrayErros[i][j] = "";
+                    }
+
+                }
+            }
+        }
+    }//GEN-LAST:event_alterarBtActionPerformed
 
     /**
      * @param args the command line arguments
@@ -181,15 +224,15 @@ public class FuncionarioSenha extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton alterarBt;
+    private javax.swing.JButton cancelarBt;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JPasswordField jPasswordField2;
-    private javax.swing.JPasswordField jPasswordField3;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JPasswordField senhaAtual;
+    private javax.swing.JPasswordField senhaNova;
+    private javax.swing.JPasswordField senhaNova2;
     // End of variables declaration//GEN-END:variables
 }

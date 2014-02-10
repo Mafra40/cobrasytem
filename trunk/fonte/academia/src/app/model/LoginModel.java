@@ -23,22 +23,21 @@ public class LoginModel {
     MessageDigest md;
 
     public Boolean fazerLogin(String login, String senha) {
-        /** MD5 **/
+        /**
+         * MD5 *
+         */
         try {
             md = MessageDigest.getInstance("MD5");
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(LoginModel.class.getName()).log(Level.SEVERE, null, ex);
         }
-        md.update(senha.getBytes(),0,senha.length());
-        senha = new BigInteger(1,md.digest()).toString(16);
-        
-        
+        md.update(senha.getBytes(), 0, senha.length());
+        senha = new BigInteger(1, md.digest()).toString(16);
+
         String query = "SELECT senha, login FROM funcionario WHERE "
                 + "senha='" + senha + "'"
                 + " and login='" + login + "' ";
 
-        
-        
         DB.conectar();
         try {
             stm = DB.con.createStatement();
@@ -68,6 +67,28 @@ public class LoginModel {
         DB.desconectar();
         return logado;
 
+    }
+
+    public int retornaIdFuncionario(String login) {
+        String query = "SELECT id FROM funcionario WHERE login='" + login + "'";
+
+        DB.conectar();
+        try {
+            stm = DB.con.createStatement();
+            rs = stm.executeQuery(query);
+
+             if (rs.next()) {
+                int id = rs.getInt("id");
+                return id;
+
+            }
+
+        } catch (SQLException ex) {
+            System.err.println(ex);
+        }
+
+        DB.desconectar();
+        return 0;
     }
 
 }

@@ -115,6 +115,7 @@ public class AtletaModel {
             if (status == JFileChooser.APPROVE_OPTION) {
                 try {
                     file = fc.getSelectedFile().getPath();
+                    System.err.println(file);
                     return file;
                 } catch (Exception e) {
                     System.err.println(e);
@@ -319,7 +320,7 @@ public class AtletaModel {
     }
 
     public Boolean checarAtleta(int matriculaAntiga, int matricula) {
-       
+
         if (matriculaAntiga == matricula) {
             return true;
         }
@@ -389,10 +390,8 @@ public class AtletaModel {
     /**
      * Fim edição
      */
-    
-    
-    public boolean deletar(int matricula){
-        
+    public boolean deletar(int matricula) {
+
         query = "DELETE FROM atletas "
                 + "WHERE matricula=?";
 
@@ -403,40 +402,37 @@ public class AtletaModel {
             pstm.setInt(1, matricula);
             pstm.execute();
             pstm.close();
-            
+
             return true;
 
         } catch (SQLException ex) {
-            System.out.println(ex);
+            JOptionPane.showMessageDialog(null, "Não é recomendado deletar um atleta que já possua movimentação no sistema. Recomendado: Desativar o atleta em 'Editar'", "Alerta", JOptionPane.ERROR_MESSAGE);
         }
 
         DB.desconectar();
         return false;
     }
-    
+
     /*Filtrar pesquisa*/
-    
-    
-    public List<Atleta> filtrar(String filtro, String valor){
-         query = "SELECT matricula, nome, rg, ativo FROM atletas "
-                + " WHERE " + filtro +" LIKE '%" + valor + "%'";
-         
+    public List<Atleta> filtrar(String filtro, String valor) {
+        query = "SELECT matricula, nome, rg, ativo FROM atletas "
+                + " WHERE " + filtro + " LIKE '%" + valor + "%'";
+
         DB.conectar();
-     
-        
+
         try {
             stm = DB.con.createStatement();
             rs = stm.executeQuery(query);
-          
+
             while (rs.next()) {
                 a = new Atleta();
                 a.setMatricula(rs.getInt("matricula"));
                 a.setNome(rs.getString("nome"));
                 a.setRg(rs.getString("rg"));
                 a.setAtivo(rs.getString("ativo"));
-               
+
                 al.add(a);
-                
+
             }
 
         } catch (SQLException ex) {
@@ -445,5 +441,33 @@ public class AtletaModel {
 
         DB.desconectar();
         return al;
+    }
+
+    /**
+     * Ativa o atleta se ele estiver inativo na hora de fazer um lançamento de
+     * contas.
+     */
+    public boolean ativarAtelta(Atleta a) {
+        query = "UPDATE `atletas` "
+                + "SET "
+                + "ativo = 'S' "
+                + "WHERE matricula=? ";
+
+        DB.conectar();
+        try {
+            pstm = DB.con.prepareStatement(query);
+
+            pstm.setInt(1, a.getMatricula());
+
+            pstm.execute();
+            pstm.close();
+
+            return true;
+
+        } catch (SQLException ex) {
+            System.out.println("Falha ao ativar na hora de lançar nota: "+ex);
+        }
+        DB.desconectar();
+        return false;
     }
 }

@@ -33,8 +33,8 @@ public class FuncionarioForm extends javax.swing.JDialog {
      */
     public FuncionarioForm(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        setLocationRelativeTo(null);
         initComponents();
+         this.setLocationRelativeTo(null);
     }
 
     /**
@@ -319,7 +319,7 @@ public class FuncionarioForm extends javax.swing.JDialog {
         Validador.valida_textField(telefoneTxt, 10, false, false, 6, "Telefone");
         Validador.valida_textField(loginTxt, 35, true, false, 7, "Login");
         Validador.cpf(cpfTxt.getText());
-        
+
         if (Validador.erros == 0) {
 
             nome = nomeTxt.getText();
@@ -335,7 +335,19 @@ public class FuncionarioForm extends javax.swing.JDialog {
 
             Funcionario f = new Funcionario(cpf, nome, endereco, cidade, bairro, cep, telefone, login, senha);
             FuncionarioController fc = new FuncionarioController();
-            fc.cadastro(f);
+            if (fc.cadastro(f) == true) {
+
+                nomeTxt.setText("");
+                cpfTxt.setText("");
+                enderecoTxt.setText("");
+                cidadeTxt.setText("");
+                bairroTxt.setText("");
+                cepTxt.setText("");
+                senhaTxt.setText("");
+                senha2Txt.setText("");
+                telefoneTxt.setText("");
+                loginTxt.setText("");
+            }
 
         } else {
 
@@ -362,8 +374,6 @@ public class FuncionarioForm extends javax.swing.JDialog {
 
 
     }//GEN-LAST:event_btCadastrarActionPerformed
-
-    
 
     /**
      * @param args the command line arguments
