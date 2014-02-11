@@ -22,7 +22,7 @@ import libs.Validador;
 public class AtletaEditar extends javax.swing.JDialog {
 
     private AtletaController ac;
-    private String file;
+    public static String file;
 
     /**
      * Creates new form AtletaEditar
@@ -351,6 +351,7 @@ public class AtletaEditar extends javax.swing.JDialog {
     private void imagemBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imagemBtActionPerformed
         ac = new AtletaController();
         ac.escolherImagem("E");
+        AtletaController.botaoEditarImagem = 1;
     }//GEN-LAST:event_imagemBtActionPerformed
 
     private void btCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCadastrarActionPerformed
@@ -397,8 +398,12 @@ public class AtletaEditar extends javax.swing.JDialog {
 
             ac = new AtletaController();
             Atleta a = new Atleta(matricula, rg, nome, dataNascimento, endereco, cidade, bairro, cep, sexo, ativo, observacao, telefone, foto);
-
+          
+            
             if (ac.salvaEdicao(a, AtletaView.matricula) == true) {
+                
+                
+                file = null;
                 this.setVisible(false);
                 this.dispose();
             }

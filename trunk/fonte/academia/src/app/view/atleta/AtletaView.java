@@ -25,10 +25,10 @@ import javax.swing.table.TableCellRenderer;
 public class AtletaView extends javax.swing.JDialog {
 
     private final AtletaController ac;
-    public int linhaSelecionada;
-    public static int matricula;
-    public static int atletaId;
-    public static String Selecionado;
+    public int linhaSelecionada = 0;
+    public static int matricula = 0;
+    public static int atletaId = 0;
+    public static String Selecionado = "";
    
 
     /**
@@ -238,6 +238,8 @@ public class AtletaView extends javax.swing.JDialog {
         AtletaController ac = new AtletaController();
         AtletaController.linhaSelecionadaTabelela = linhaSelecionada;
         ac.editar(matricula);
+        
+        matricula = 0;
 
         editarBt.setEnabled(false);
         removerBt.setEnabled(false);
