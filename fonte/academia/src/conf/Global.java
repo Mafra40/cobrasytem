@@ -39,4 +39,5 @@ public class Global {
     
     
     public static final String DIRETORIO_FOTOS_ATLETAS = System.getProperty("user.home")+"\\Atletas";
+    public static final String DIRETORIO_LOGS = System.getProperty("user.home")+"\\Logs";
 }

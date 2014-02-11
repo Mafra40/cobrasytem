@@ -15,6 +15,7 @@ import app.controller.AtletaController;
 import app.controller.ContaController;
 import app.controller.FrequenciaController;
 import app.controller.FuncionarioController;
+import app.view.frequencia.FrequenciaDataPicker;
 import app.view.sobre.SobreView;
 import conf.Global;
 
@@ -71,6 +72,7 @@ public class MenuView extends javax.swing.JFrame {
         frequenciaMenu = new javax.swing.JMenu();
         ataAtletasMenu = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
+        frequenciaDiariaBt = new javax.swing.JMenuItem();
         menuAjuda = new javax.swing.JMenu();
         miSobre = new javax.swing.JMenuItem();
 
@@ -98,8 +100,9 @@ public class MenuView extends javax.swing.JFrame {
             }
         });
 
-        freManual.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/clipboard.png"))); // NOI18N
-        freManual.setText("F. Manual");
+        freManual.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/tick.png"))); // NOI18N
+        freManual.setText("Chek in M.");
+        freManual.setToolTipText("Chek in manual.");
         freManual.setRequestFocusEnabled(false);
         freManual.setRolloverEnabled(false);
         freManual.addActionListener(new java.awt.event.ActionListener() {
@@ -115,11 +118,11 @@ public class MenuView extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(frequenciaBt)
-                .addGap(31, 31, 31)
+                .addGap(18, 18, 18)
                 .addComponent(freManual, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(contasBt, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(286, Short.MAX_VALUE))
+                .addComponent(contasBt, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(293, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -241,6 +244,15 @@ public class MenuView extends javax.swing.JFrame {
         });
         frequenciaMenu.add(jMenuItem3);
 
+        frequenciaDiariaBt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/book-open-bookmark.png"))); // NOI18N
+        frequenciaDiariaBt.setText("Frequência Diaria");
+        frequenciaDiariaBt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                frequenciaDiariaBtActionPerformed(evt);
+            }
+        });
+        frequenciaMenu.add(frequenciaDiariaBt);
+
         menuPrincipal.add(frequenciaMenu);
 
         menuAjuda.setText("Ajuda");
@@ -347,6 +359,12 @@ public class MenuView extends javax.swing.JFrame {
        SobreView sw = new SobreView(this, true);
        sw.setVisible(true);
     }//GEN-LAST:event_miSobreActionPerformed
+
+    private void frequenciaDiariaBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_frequenciaDiariaBtActionPerformed
+        FrequenciaDataPicker fd = new FrequenciaDataPicker(this, true);
+        fd.setVisible(true);
+        
+    }//GEN-LAST:event_frequenciaDiariaBtActionPerformed
     /*FUNÇÃO DE ROTINA
     
      */
@@ -410,6 +428,7 @@ public class MenuView extends javax.swing.JFrame {
     private javax.swing.JMenuItem contasReceberMenu;
     private javax.swing.JButton freManual;
     private javax.swing.JButton frequenciaBt;
+    private javax.swing.JMenuItem frequenciaDiariaBt;
     private javax.swing.JMenu frequenciaMenu;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem3;

@@ -19,6 +19,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultListModel;
+import libs.Logs;
 
 /**
  *
@@ -61,7 +62,9 @@ public class AtividadeModel {
             return true;
 
         } catch (SQLException ex) {
-            System.out.println(ex);
+            Logs LogError = new Logs();
+            LogError.gravarLogError("" + ex);
+
         }
         DB.desconectar();
         return false;
@@ -88,7 +91,8 @@ public class AtividadeModel {
             }
 
         } catch (SQLException ex) {
-            System.out.println("ERRO");
+            Logs LogError = new Logs();
+            LogError.gravarLogError("" + ex);
         }
 
         DB.desconectar();
@@ -117,7 +121,8 @@ public class AtividadeModel {
             }
 
         } catch (SQLException ex) {
-            System.out.println("ERRO");
+            Logs LogError = new Logs();
+            LogError.gravarLogError("" + ex);
         }
 
         DB.desconectar();
@@ -148,7 +153,8 @@ public class AtividadeModel {
             }
 
         } catch (SQLException ex) {
-            System.err.println(ex);
+            Logs LogError = new Logs();
+            LogError.gravarLogError("" + ex);
         }
 
         DB.desconectar();
@@ -169,10 +175,11 @@ public class AtividadeModel {
 
             return true;
         } catch (SQLException ex) {
+            Logs LogError = new Logs();
+            LogError.gravarLogError("" + ex);
             return false;
         }
 
-        
     }
 
     public Atividade retorna_atividade(int id) {
@@ -195,7 +202,8 @@ public class AtividadeModel {
             }
 
         } catch (SQLException ex) {
-            System.err.println(ex);
+            Logs LogError = new Logs();
+            LogError.gravarLogError("" + ex);
         }
 
         DB.desconectar();
@@ -251,7 +259,8 @@ public class AtividadeModel {
             return true;
 
         } catch (SQLException ex) {
-            System.out.println(ex);
+             Logs LogError = new Logs();
+            LogError.gravarLogError(""+ex);
         }
         DB.desconectar();
         return false;
@@ -288,7 +297,8 @@ public class AtividadeModel {
             }
 
         } catch (SQLException ex) {
-            System.out.println(ex);
+             Logs LogError = new Logs();
+            LogError.gravarLogError(""+ex);
         }
 
         DB.desconectar();
@@ -328,7 +338,8 @@ public class AtividadeModel {
             }
 
         } catch (SQLException ex) {
-            System.out.println(ex);
+            Logs LogError = new Logs();
+            LogError.gravarLogError(""+ex);
         }
 
         DB.desconectar();
@@ -352,7 +363,8 @@ public class AtividadeModel {
             }
 
         } catch (SQLException ex) {
-            System.out.println("ERRO");
+            Logs LogError = new Logs();
+            LogError.gravarLogError(""+ex);
         }
 
         DB.desconectar();
@@ -377,7 +389,8 @@ public class AtividadeModel {
             }
 
         } catch (SQLException ex) {
-            System.out.println("ERRO");
+            Logs LogError = new Logs();
+            LogError.gravarLogError(""+ex);
         }
 
         DB.desconectar();
@@ -405,7 +418,8 @@ public class AtividadeModel {
             return true;
 
         } catch (SQLException ex) {
-            System.out.println(ex);
+             Logs LogError = new Logs();
+            LogError.gravarLogError(""+ex);
         }
         DB.desconectar();
         return false;
@@ -429,7 +443,8 @@ public class AtividadeModel {
             return true;
 
         } catch (SQLException ex) {
-            System.out.println(ex);
+            Logs LogError = new Logs();
+            LogError.gravarLogError(""+ex);
         }
 
         DB.desconectar();
@@ -451,7 +466,8 @@ public class AtividadeModel {
             }
 
         } catch (SQLException ex) {
-            System.out.println("ERRO");
+             Logs LogError = new Logs();
+            LogError.gravarLogError(""+ex);
         }
 
         DB.desconectar();

@@ -18,6 +18,7 @@ import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import static libs.Validador.data;
 
 /**
  *
@@ -172,7 +173,7 @@ public class Validador extends InputVerifier {
      */
     public static Boolean validaFormato(String file) {
         int IndexFile = file.lastIndexOf(".");
-       
+
         String formato = "";
 
         String[] formatosPermitidos = new String[]{"jpg", "jpeg", "png", ""};
@@ -238,6 +239,36 @@ public class Validador extends InputVerifier {
             }
 
         }
+
+    }
+
+    /**
+     * Valida 2 datas se a data de emissão é maior do que a do vencimento.
+     */
+    public static boolean validaData(String dataE, String dataV, int indiceCampo) {
+        StringBuilder sb = new StringBuilder();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        sdf.setLenient(false);
+
+        try {
+
+            Date dateE = sdf.parse(dataE);
+            Date dateV = sdf.parse(dataV);
+
+            if (dateE.after(dateV)) {
+                erros++;
+                arrayErros[indiceCampo][0] = "A data de emissão não pode ser maior do que a data de vencimento. \n";
+                return false;
+            } else {
+                return true;
+            }
+
+        } catch (ParseException e) {
+            System.err.println(e);
+
+        }
+        return false;
 
     }
 

@@ -15,7 +15,12 @@ import app.view.contas.ContasAtletasView;
 import static app.view.contas.ContasAtletasView.tabelaAtividades;
 import app.view.contas.ContasView;
 import java.sql.CallableStatement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 
@@ -234,13 +239,74 @@ public class ContaController {
         if (contas.size() > 0) {
 
             for (int i = 0; i < contas.size(); i++) {
-                ctrm.addRow(contas.get(i).getId(), contas.get(i).getNome(),contas.get(i).getLancamento(), contas.get(i).getVencimento(), contas.get(i).getDatapago(), contas.get(i).getValor_total(), contas.get(i).getSituacao(), i);
+                ctrm.addRow(contas.get(i).getId(), contas.get(i).getNome(), contas.get(i).getLancamento(), contas.get(i).getVencimento(), contas.get(i).getDatapago(), contas.get(i).getValor_total(), contas.get(i).getSituacao(), i);
                 ctrm.fireTableDataChanged();
 
             }
         } else {
             JOptionPane.showMessageDialog(null, "Nenhum registro encontrado.", "Alerta.", JOptionPane.INFORMATION_MESSAGE);
         }
+    }
+
+    public boolean lancamentoRapido(String dataV, float valor, String nomeAtleta) {
+
+        String dataE = "";
+        String dataVencimento = "";
+        String mesS = "";
+
+      
+
+        String[] split = dataV.split("/");
+
+        int ano = Integer.parseInt(split[2]);
+        int mes = Integer.parseInt(split[1]);
+        int dia = Integer.parseInt(split[0]);
+        
+        dataE =  ano + "-" + mes + "-" + dia;
+
+        if (mes == 12) {
+            mes = 01;
+        } else {
+            mes++;
+        }
+
+        if (mes == 02) {
+            if (dia == 29 || dia == 30 || dia == 31) {
+                dia = 28;
+            }
+        }
+
+        if (mes == 04 || mes == 06 || mes == 9 || mes == 11) {
+            if (dia == 31) {
+                dia = 30;
+            }
+        }
+        if (mes == 1 || mes == 2 || mes == 3 || mes == 4 || mes == 5 || mes == 6 || mes == 7 || mes == 8 || mes == 9 ){
+            mesS = "0"+mes;
+        }
+
+        dataVencimento = ano + "-" + mesS + "-" + dia;
+        
+        
+        cm = new ContaModel();
+        Conta c = new Conta();
+        int matricula = cm.retornaMatriculaAtleta(nomeAtleta);
+        int idConta = Integer.parseInt(cm.retornaIdConta());
+        c.setId(idConta);
+        c.setVencimento(dataVencimento);
+        c.setMatricula(matricula);
+        c.setSituacao("A");
+        c.setLancamento(dataE);
+        c.setValor_total(valor);
+        c.setObservacao("");
+        c.setDatapago("0000-00-00");
+
+        if (cm.cadastrarContaPagamento(c, matricula) == true){
+            return true;
+        }else {
+            return false;
+        }
+        
     }
 
     /**

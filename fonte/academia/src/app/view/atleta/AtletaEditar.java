@@ -102,7 +102,7 @@ public class AtletaEditar extends javax.swing.JDialog {
 
         cepLb.setText("CEP");
 
-        sexoCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Masculino", "Femnino" }));
+        sexoCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Masculino", "Feminino" }));
 
         sexoLb.setText("Sexo");
 

@@ -75,6 +75,8 @@ public class FrequenciaManual extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Frequência Manual");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        setResizable(false);
+        setType(java.awt.Window.Type.UTILITY);
 
         matriculaTxt.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         matriculaTxt.addActionListener(new java.awt.event.ActionListener() {

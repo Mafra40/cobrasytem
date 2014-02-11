@@ -459,9 +459,15 @@ public class ContasAtletasView extends javax.swing.JDialog {
     private void salvarBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salvarBtActionPerformed
         cc = new ContaController();
         String msg = "";
-
+        
+        Validador.validaData(dataEmissaoTxt.getText(), dataVencimentoTxt.getText(), 9);
+        
         String dataE = Validador.data(dataEmissaoTxt.getText(), 10);
         String dataV = Validador.data(dataVencimentoTxt.getText(), 10);
+        
+        
+        
+        
 
         if (Validador.erros == 0) {
             int matricula = Integer.parseInt(matriculaTxt.getText());

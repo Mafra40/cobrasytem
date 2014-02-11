@@ -120,7 +120,7 @@ public class AtletaCadastro extends javax.swing.JDialog {
 
         cepLb.setText("CEP");
 
-        sexoCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Masculino", "Femnino" }));
+        sexoCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Masculino", "Feminino" }));
 
         sexoLb.setText("Sexo");
 
@@ -162,7 +162,7 @@ public class AtletaCadastro extends javax.swing.JDialog {
             .addComponent(jScrollPane2)
         );
 
-        rgLb.setText("Rg");
+        rgLb.setText("RG");
 
         try {
             cepTxt.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("#####-###")));

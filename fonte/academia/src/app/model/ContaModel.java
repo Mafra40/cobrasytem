@@ -175,7 +175,9 @@ public class ContaModel {
         query = "SELECT id, atletas_id, date_format(vencimento ,  '%d/%m/%Y' ) as vencimento,"
                 + "valor_total, situacao, date_format(lancamento ,  '%d/%m/%Y' ) as lancamento, observacao "
                 + "FROM contas_receber "
-                + "WHERE atletas_id=(SELECT id FROM atletas WHERE matricula= " + matricula + ") ";
+                + "WHERE atletas_id=(SELECT id FROM atletas WHERE matricula= " + matricula + ") "
+                + "ORDER BY vencimento desc "
+                + "";
         DB.conectar();
         try {
             stm = DB.con.createStatement();
@@ -403,7 +405,9 @@ public class ContaModel {
         query = "SELECT cr.id, cr.atletas_id ,  date_format(cr.vencimento ,  '%d/%m/%Y' ) as vencimento,  cr.valor_total , cr.situacao, date_format(cr.lancamento ,  '%d/%m/%Y' ) as lancamento  , cr.observacao ,date_format(cr.datapago ,  '%d/%m/%Y' ) as datapago ,\n"
                 + "a.nome  FROM contas_receber cr, atletas a \n"
                 + "WHERE a.id = cr.atletas_id\n"
-                + "AND vencimento = CURDATE() ;";
+                + "AND vencimento = CURDATE() "
+                + "ORDER BY  cr.vencimento desc "
+                + "LIMIT 300";
         DB.conectar();
         try {
             stm = DB.con.createStatement();
@@ -450,7 +454,9 @@ public class ContaModel {
         query = "SELECT cr.id, cr.atletas_id ,  date_format(cr.vencimento ,  '%d/%m/%Y' ) as vencimento,  cr.valor_total , cr.situacao, date_format(cr.lancamento ,  '%d/%m/%Y' ) as lancamento  , cr.observacao ,date_format(cr.datapago ,  '%d/%m/%Y' ) as datapago ,\n"
                 + "a.nome  FROM contas_receber cr, atletas a \n"
                 + "WHERE a.id = cr.atletas_id\n"
-                + "AND situacao = 'P' ";
+                + "AND situacao = 'P' "
+                + "ORDER BY  cr.vencimento desc "
+                + "LIMIT 300";
         DB.conectar();
         try {
             stm = DB.con.createStatement();
@@ -496,7 +502,9 @@ public class ContaModel {
     public List<Conta> listaMovimentacao() {
         query = "SELECT cr.id, cr.atletas_id ,  date_format(cr.vencimento ,  '%d/%m/%Y' ) as vencimento,  cr.valor_total , cr.situacao, date_format(cr.lancamento ,  '%d/%m/%Y' ) as lancamento  , cr.observacao ,date_format(cr.datapago ,  '%d/%m/%Y' ) as datapago ,\n"
                 + "a.nome  FROM contas_receber cr, atletas a \n"
-                + "WHERE a.id = cr.atletas_id\n";
+                + "WHERE a.id = cr.atletas_id\n"
+                + "ORDER BY  cr.vencimento desc "
+                + "LIMIT 300";
         DB.conectar();
         try {
             stm = DB.con.createStatement();
@@ -568,14 +576,18 @@ public class ContaModel {
                     + "WHERE a.id = cr.atletas_id\n"
                     + "AND vencimento = CURDATE() "
                     + "AND cr.situacao ='" + campo2 + "' "
-                    + "AND a.nome LIKE'%" + pesquisaTxt + "%'";
+                    + "AND a.nome LIKE'%" + pesquisaTxt + "%' "
+                    + "ORDER BY  cr.vencimento desc "
+                    + "LIMIT 300";
 
             if (campo2.equals("NULL")) {
                 query = "SELECT cr.id, cr.atletas_id ,  date_format(cr.vencimento ,  '%d/%m/%Y' ) as vencimento,  cr.valor_total , cr.situacao, date_format(cr.lancamento ,  '%d/%m/%Y' ) as lancamento  , cr.observacao ,date_format(cr.datapago ,  '%d/%m/%Y' ) as datapago ,\n"
                         + "a.nome  FROM contas_receber cr, atletas a \n"
                         + "WHERE a.id = cr.atletas_id\n"
                         + "AND vencimento = CURDATE() "
-                        + "AND a.nome LIKE'%" + pesquisaTxt + "%'";
+                        + "AND a.nome LIKE'%" + pesquisaTxt + "%' "
+                        + "ORDER BY  cr.vencimento desc "
+                        + "LIMIT 300 ";
             }
         }
 
@@ -584,13 +596,17 @@ public class ContaModel {
                     + "a.nome  FROM contas_receber cr, atletas a \n"
                     + "WHERE a.id = cr.atletas_id\n"
                     + "AND cr.situacao ='" + campo2 + "' "
-                    + "AND a.nome LIKE'%" + pesquisaTxt + "%'";
+                    + "AND a.nome LIKE'%" + pesquisaTxt + "%' "
+                    + "ORDER BY  cr.vencimento desc "
+                    + "LIMIT 300 ";
 
             if (campo2.equals("NULL")) {
                 query = "SELECT cr.id, cr.atletas_id ,  date_format(cr.vencimento ,  '%d/%m/%Y' ) as vencimento,  cr.valor_total , cr.situacao, date_format(cr.lancamento ,  '%d/%m/%Y' ) as lancamento  , cr.observacao ,date_format(cr.datapago ,  '%d/%m/%Y' ) as datapago ,\n"
                         + "a.nome  FROM contas_receber cr, atletas a \n"
                         + "WHERE a.id = cr.atletas_id\n"
-                        + "AND a.nome LIKE'%" + pesquisaTxt + "%'";
+                        + "AND a.nome LIKE'%" + pesquisaTxt + "%' "
+                        + "ORDER BY  cr.vencimento desc "
+                        + "LIMIT 300";
             }
         }
 
@@ -635,5 +651,27 @@ public class ContaModel {
 
         DB.desconectar();
         return cl;
+    }
+    
+    /*Retorna matricula atleta pelo nome*/
+    
+    public int retornaMatriculaAtleta(String nome){
+        int matricula = 0;
+        query = "SELECT matricula FROM atletas WHERE nome='"+nome+"'";
+        DB.conectar();
+        try {
+            stm = DB.con.createStatement();
+            rs = stm.executeQuery(query);
+
+            if(rs.next()) {
+             matricula = rs.getInt("matricula");
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("Falha ao lista: " + ex);
+        }
+
+        DB.desconectar();
+        return matricula;
     }
 }
