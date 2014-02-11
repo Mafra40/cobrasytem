@@ -26,6 +26,7 @@ public class MenuView extends javax.swing.JFrame {
 
     private FrequenciaController fc;
     private ContaController cc;
+    private AtletaController ac;
 
     /**
      * Creates new form MenuView
@@ -39,6 +40,7 @@ public class MenuView extends javax.swing.JFrame {
         /*ROTINAS*/
         carregarAta();
         carregaRotinaContas();
+        carregaAtualziarAtleta();
     }
 
     /**
@@ -359,6 +361,11 @@ public class MenuView extends javax.swing.JFrame {
     public void carregaRotinaContas() {
         cc = new ContaController();
         cc.rotinaAtualizarConta();
+    }
+    
+    public void carregaAtualziarAtleta(){
+        ac = new AtletaController();
+        ac.carregarRotina();
     }
     /*FIM FUNÇÕES DE ROTINA*/
 

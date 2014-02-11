@@ -39,6 +39,7 @@ public class AtletaController {
     public static String arquivoImagem = "";
     public static String arquivoImagemCaminho = "";
     public static int linhaSelecionadaTabelela;
+    public static int botaoEditarImagem = 0;
 
     public static String rgAntigo; //Edição de atleta.
 
@@ -141,17 +142,19 @@ public class AtletaController {
 
     }
 
-    public  void editar(int matricula) {
+    public void editar(int matricula) {
 
         ae = new AtletaEditar(null, true);
         am = new AtletaModel();
 
         a = am.retorna_atleta(matricula);
+
         ae.matriculaTxt.setText(String.valueOf(a.getMatricula()));
         ae.nomeTxt.setText(a.getNome());
         ae.rgTxt.setText(a.getRg());
 
-        rgAntigo = a.getRg(); //seta o rg antigo. caso for tracado.
+        rgAntigo = a.getRg(); //seta o rg antigo. caso for trocado.
+
         String data = Validador.dataFormatada(a.getData_nascimento());
         ae.dataNascTxt.setText(data);
 
@@ -173,7 +176,7 @@ public class AtletaController {
         } else {
             ae.sexoCombo.setSelectedIndex(1);
         }
-
+        AtletaEditar.file = a.getFoto();
         am.mostrarImagem(a.getFoto());
 
         ae.setVisible(true);
@@ -185,7 +188,12 @@ public class AtletaController {
 
         if (am.checarAtleta(matricula, a.getMatricula()) == true) {
 
-            if (am.chegarAtletaRg(a.getRg(), rgAntigo)) {
+            if (am.chegarAtletaRg(a.getRg(), rgAntigo) == true) {
+               
+
+                if (arquivoImagem == "" || arquivoImagem == null) {
+                    arquivoImagem = a.getFoto();
+                }
 
                 if (!"".equals(arquivoImagem)) {/*checa se tem imagem.*/
 
@@ -227,7 +235,7 @@ public class AtletaController {
             atm.removeRow(linhaSelecionada);
 
             return true;
-        } 
+        }
 
         return false;
     }
@@ -239,7 +247,7 @@ public class AtletaController {
         lista = am.filtrar(filtro, valor);
 
         atm = (AtletaTableModel) AtletaView.atletaTabela.getModel();
-        
+
         atm.removeAll();
 
         if (lista.size() > 0) {
@@ -267,4 +275,9 @@ public class AtletaController {
     }
 
     /*Fim atleta atividade*/
+    /*ROTINAS*/
+    public void carregarRotina() {
+        am = new AtletaModel();
+        am.rotinaSelecionaAtleta();
+    }
 }

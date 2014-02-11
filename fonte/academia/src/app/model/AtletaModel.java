@@ -50,6 +50,8 @@ public class AtletaModel {
     private AtletaModel am;
     private ImageIcon imIcon;
 
+    
+    
     public boolean cadastrar(Atleta a) {
 
         query = "INSERT INTO `academia`.`atletas`"
@@ -115,7 +117,7 @@ public class AtletaModel {
             if (status == JFileChooser.APPROVE_OPTION) {
                 try {
                     file = fc.getSelectedFile().getPath();
-                    System.err.println(file);
+                    // System.err.println(file);
                     return file;
                 } catch (Exception e) {
                     System.err.println(e);
@@ -264,7 +266,7 @@ public class AtletaModel {
      * @param matricula
      * @return
      */
-    public Atleta retorna_atleta(int matricula) {
+    public  Atleta retorna_atleta(int matricula) {
         query = "SELECT * FROM atletas "
                 + " WHERE matricula=" + matricula;
 
@@ -312,6 +314,7 @@ public class AtletaModel {
                 Image newImg = img.getScaledInstance(196, 210, java.awt.Image.SCALE_SMOOTH);
                 ImageIcon newIcon = new ImageIcon(newImg);
                 AtletaEditar.imageLb.setIcon(newIcon);
+                
             } else {
                 JOptionPane.showMessageDialog(null, "Formato de imagem não permitido. Formatos permitidos: jpg, jpeg, png", "Alerta", JOptionPane.ERROR_MESSAGE);
             }
@@ -339,7 +342,7 @@ public class AtletaModel {
 
     public boolean editar(Atleta a, int matricula) {
 
-        query = "UPDATE `academia`.`atletas` "
+        query = "UPDATE `atletas` "
                 + "SET "
                 + "matricula = ? , \n"
                 + "rg = ? , \n"
@@ -355,6 +358,8 @@ public class AtletaModel {
                 + "telefone = ? , \n"
                 + "foto = ? \n "
                 + "WHERE matricula=? ";
+        
+       // System.err.println(query);
 
         DB.conectar();
         try {
@@ -465,9 +470,58 @@ public class AtletaModel {
             return true;
 
         } catch (SQLException ex) {
-            System.out.println("Falha ao ativar na hora de lançar nota: "+ex);
+            System.out.println("Falha ao ativar na hora de lançar nota: " + ex);
         }
         DB.desconectar();
         return false;
+    }
+
+    /**
+     * Esta rotina desativa um atleta caso ele esteja com uma conta PENDENTE no
+     * sistema.
+     */
+    public void rotinaSelecionaAtleta() {
+        query = "SELECT a.id , a.nome  FROM atletas a, contas_receber c\n"
+                + "WHERE a.id = c.atletas_id\n"
+                + "AND c.situacao = \"P\";";
+        DB.conectar();
+
+        try {
+            stm = DB.con.createStatement();
+            rs = stm.executeQuery(query);
+
+            while (rs.next()) {
+                a = new Atleta();
+                a.setId(rs.getInt("id"));
+                a.setNome(rs.getString("nome"));
+                al.add(a);
+            }
+
+        } catch (SQLException ex) {
+            System.err.println(ex);
+        }
+
+        query = "UPDATE `atletas` "
+                + "SET "
+                + "ativo = 'N' "
+                + "WHERE id=? ";
+
+        try {
+            pstm = DB.con.prepareStatement(query);
+
+            for (int i = 0; i < al.size(); i++) {
+                Atleta aa = al.get(i);
+                pstm.setInt(1, aa.getId());
+
+                pstm.addBatch();
+            }
+
+            pstm.executeBatch();
+            pstm.close();
+        } catch (SQLException ex) {
+            System.err.println(ex);
+        }
+        DB.desconectar();
+
     }
 }
