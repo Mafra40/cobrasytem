@@ -13,9 +13,11 @@ package app.controller;
 import app.model.Atleta;
 import app.model.AtletaModel;
 import app.model.Conta;
+import app.model.Frequencia;
 import app.model.FrequenciaModel;
 import app.model.tablemodel.FrequenciaTableModel;
 import app.model.tablemodel.PendenciasTableModel;
+import app.view.frequencia.FrequenciaDiaria;
 import app.view.frequencia.FrequenciaManual;
 import app.view.frequencia.FrequenciaLista;
 import app.view.frequencia.FrequenciaView;
@@ -35,6 +37,8 @@ public class FrequenciaController {
     private Atleta a;
     private AtletaModel am;
     private FrequenciaManual frm;
+    private FrequenciaTableModel ftm;
+    public static List<Frequencia> fl;
 
     public boolean gerarAta() {
         fm = new FrequenciaModel();
@@ -142,7 +146,7 @@ public class FrequenciaController {
 
                     PendenciasTableModel ptm = new PendenciasTableModel(cl);
                     FrequenciaManual.pendenciasTabela.setModel(ptm);
-                    
+
                     FrequenciaManual.acessoLabel.setForeground(Color.red);
                     FrequenciaManual.acessoLabel.setText("ACESSO NEGADO.");
 
@@ -159,10 +163,11 @@ public class FrequenciaController {
                         }
 
                     } else { /*se não existir insere*/
-                        if(fm.insereFaltante(a) == true){
+
+                        if (fm.insereFaltante(a) == true) {
                             FrequenciaManual.acessoLabel.setForeground(Color.BLUE);
                             FrequenciaManual.acessoLabel.setText("ACESSO LIBERADO.");
-                        }else {
+                        } else {
                             System.err.println("Erro");
                         }
                     }
@@ -192,5 +197,23 @@ public class FrequenciaController {
         }
 
     }
+
+    public void frequenciaDiaria(String data) {
+
+        fm = new FrequenciaModel();
+        fl = (fm.frequenciaDiaria(data));
+        
+        if (fl.size() > 0 ){
+
+        FrequenciaDiaria fd = new FrequenciaDiaria(null, true);
+
+        fd.setVisible(true);
+        }
+        else {
+             JOptionPane.showMessageDialog(null, "Ata com esta data não existe.", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+   
 
 }

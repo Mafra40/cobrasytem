@@ -46,6 +46,30 @@ public class ContasView extends javax.swing.JDialog {
     public static String situacaoP;
     public static String situacaoM;
 
+    /**
+     * Salva as datas.
+     */
+    public static String dataER;
+    public static String dataVR;
+    public static String dataVP;
+    public static String dataEP;
+    public static String dataVM;
+    public static String dataEM;
+
+    /*
+     Valores
+     */
+    public static float valorR;
+    public static float valorP;
+    public static float valorM;
+
+    /**
+     * NOME
+     */
+    public static String nomeR;
+    public static String nomeP;
+    public static String nomeM;
+
     private ContasReceberTableModel ctrm;
 
     /**
@@ -514,15 +538,33 @@ public class ContasView extends javax.swing.JDialog {
         } else {
 
             if (cc.quitarConta(idM) == true) {
-                movimentacaoTabela.clearSelection();
-                ctrm = new ContasReceberTableModel();
-                ctrm = (ContasReceberTableModel) movimentacaoTabela.getModel();
-                ctrm.setValueAt("Pago", linhaSelecionadaM, 6);
-                quitarBt1.setEnabled(false);
-                removerBt1.setEnabled(false);
+                int dialogResultado = JOptionPane.showConfirmDialog(null, "Deseja gerar um novo lançamento com este atleta?");
+                if (dialogResultado == JOptionPane.YES_OPTION) {
 
-                linhaSelecionadaM = 0;
-                idM = 0;
+                    if (cc.lancamentoRapido(dataVM, valorM, nomeM) == true) {
+                        JOptionPane.showMessageDialog(null, "Lançamento concluido.", "Alerta", JOptionPane.INFORMATION_MESSAGE);
+                        movimentacaoTabela.clearSelection();
+                        ctrm = new ContasReceberTableModel();
+                        ctrm = (ContasReceberTableModel) movimentacaoTabela.getModel();
+                        ctrm.setValueAt("Pago", linhaSelecionadaM, 6);
+                        quitarBt1.setEnabled(false);
+                        removerBt1.setEnabled(false);
+
+                        linhaSelecionadaM = 0;
+                        idM = 0;
+                    }
+                } else {
+                    movimentacaoTabela.clearSelection();
+                    ctrm = new ContasReceberTableModel();
+                    ctrm = (ContasReceberTableModel) movimentacaoTabela.getModel();
+                    ctrm.setValueAt("Pago", linhaSelecionadaM, 6);
+                    quitarBt1.setEnabled(false);
+                    removerBt1.setEnabled(false);
+
+                    linhaSelecionadaM = 0;
+                    idM = 0;
+                }
+
             }
         }
     }//GEN-LAST:event_quitarBt1ActionPerformed
@@ -533,9 +575,11 @@ public class ContasView extends javax.swing.JDialog {
             int coluna = movimentacaoTabela.getSelectedColumn();
 
             idM = (int) movimentacaoTabela.getModel().getValueAt(linhaSelecionadaM, 0);
-            // System.err.println(idM);
             situacaoM = (String) movimentacaoTabela.getModel().getValueAt(linhaSelecionadaM, 6);
-            //  System.err.println(situacaoM);
+            nomeM = (String) movimentacaoTabela.getModel().getValueAt(linhaSelecionadaCR, 1);
+            dataEM = (String) movimentacaoTabela.getModel().getValueAt(linhaSelecionadaCR, 2);
+            dataVM = (String) movimentacaoTabela.getModel().getValueAt(linhaSelecionadaCR, 3);
+            valorM = (float) movimentacaoTabela.getModel().getValueAt(linhaSelecionadaCR, 5);
             quitarBt1.setEnabled(true);
             removerBt1.setEnabled(true);
         }
@@ -568,15 +612,34 @@ public class ContasView extends javax.swing.JDialog {
         } else {
 
             if (cc.quitarConta(idP) == true) {
-                pendenciasTabela.clearSelection();
-                ctrm = new ContasReceberTableModel();
-                ctrm = (ContasReceberTableModel) pendenciasTabela.getModel();
 
-                ctrm.removeRow(linhaSelecionadaP);
-                quitarBt2.setEnabled(false);
-                removerBt2.setEnabled(false);
-                linhaSelecionadaP = 0;
-                idP = 0;
+                int dialogResultado = JOptionPane.showConfirmDialog(null, "Deseja gerar um novo lançamento com este atleta?");
+                if (dialogResultado == JOptionPane.YES_OPTION) {
+
+                    if (cc.lancamentoRapido(dataVP, valorP, nomeP) == true) {
+                        JOptionPane.showMessageDialog(null, "Lançamento concluido.", "Alerta", JOptionPane.INFORMATION_MESSAGE);
+                        pendenciasTabela.clearSelection();
+                        ctrm = new ContasReceberTableModel();
+                        ctrm = (ContasReceberTableModel) pendenciasTabela.getModel();
+
+                        ctrm.removeRow(linhaSelecionadaP);
+                        quitarBt2.setEnabled(false);
+                        removerBt2.setEnabled(false);
+                        linhaSelecionadaP = 0;
+                        idP = 0;
+                    }
+                } else {
+                    pendenciasTabela.clearSelection();
+                    ctrm = new ContasReceberTableModel();
+                    ctrm = (ContasReceberTableModel) pendenciasTabela.getModel();
+
+                    ctrm.removeRow(linhaSelecionadaP);
+                    quitarBt2.setEnabled(false);
+                    removerBt2.setEnabled(false);
+                    linhaSelecionadaP = 0;
+                    idP = 0;
+                }
+
             }
         }
     }//GEN-LAST:event_quitarBt2ActionPerformed
@@ -588,6 +651,10 @@ public class ContasView extends javax.swing.JDialog {
 
             idP = (int) pendenciasTabela.getModel().getValueAt(linhaSelecionadaCR, 0);
             situacaoP = (String) pendenciasTabela.getModel().getValueAt(linhaSelecionadaCR, 6);
+            nomeP = (String) pendenciasTabela.getModel().getValueAt(linhaSelecionadaCR, 1);
+            dataEP = (String) pendenciasTabela.getModel().getValueAt(linhaSelecionadaCR, 2);
+            dataVP = (String) pendenciasTabela.getModel().getValueAt(linhaSelecionadaCR, 3);
+            valorP = (float) pendenciasTabela.getModel().getValueAt(linhaSelecionadaCR, 5);
             quitarBt2.setEnabled(true);
             removerBt2.setEnabled(true);
         }
@@ -624,17 +691,37 @@ public class ContasView extends javax.swing.JDialog {
                 ctrm = new ContasReceberTableModel();
                 ctrm = (ContasReceberTableModel) contasReceberTabela.getModel();
 
-                Date date = new Date();
-                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-                String data = sdf.format(date);
-                ctrm.setValueAt(data + "", linhaSelecionadaCR, 4);
-                ctrm.setValueAt("Pago", linhaSelecionadaCR, 6);
+                int dialogResultado = JOptionPane.showConfirmDialog(null, "Deseja gerar um novo lançamento com este atleta?");
+                if (dialogResultado == JOptionPane.YES_OPTION) {
 
-                linhaSelecionadaCR = 0;
-                idCR = 0;
+                    if (cc.lancamentoRapido(dataVR, valorR, nomeR) == true) {
+                        JOptionPane.showMessageDialog(null, "Lançamento concluido.", "Alerta", JOptionPane.INFORMATION_MESSAGE);
+                        Date date = new Date();
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                        String data = sdf.format(date);
+                        ctrm.setValueAt(data + "", linhaSelecionadaCR, 4);
+                        ctrm.setValueAt("Pago", linhaSelecionadaCR, 6);
 
-                quitarBt.setEnabled(false);
-                removerBt.setEnabled(false);
+                        linhaSelecionadaCR = 0;
+                        idCR = 0;
+
+                        quitarBt.setEnabled(false);
+                        removerBt.setEnabled(false);
+                    }
+                } else {
+                    Date date = new Date();
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                    String data = sdf.format(date);
+                    ctrm.setValueAt(data + "", linhaSelecionadaCR, 4);
+                    ctrm.setValueAt("Pago", linhaSelecionadaCR, 6);
+
+                    linhaSelecionadaCR = 0;
+                    idCR = 0;
+
+                    quitarBt.setEnabled(false);
+                    removerBt.setEnabled(false);
+                }
+
             }
         }
     }//GEN-LAST:event_quitarBtActionPerformed
@@ -646,6 +733,10 @@ public class ContasView extends javax.swing.JDialog {
 
             idCR = (int) contasReceberTabela.getModel().getValueAt(linhaSelecionadaCR, 0);
             situacaoCR = (String) contasReceberTabela.getModel().getValueAt(linhaSelecionadaCR, 6);
+            nomeR = (String) contasReceberTabela.getModel().getValueAt(linhaSelecionadaCR, 1);
+            dataER = (String) contasReceberTabela.getModel().getValueAt(linhaSelecionadaCR, 2);
+            dataVR = (String) contasReceberTabela.getModel().getValueAt(linhaSelecionadaCR, 3);
+            valorR = (float) contasReceberTabela.getModel().getValueAt(linhaSelecionadaCR, 5);
             quitarBt.setEnabled(true);
             removerBt.setEnabled(true);
         }
@@ -680,7 +771,7 @@ public class ContasView extends javax.swing.JDialog {
         }
 
         cc = new ContaController();
-        cc.filtrar("receber",pesquisa, campos, situacao, contasReceberTabela);
+        cc.filtrar("receber", pesquisa, campos, situacao, contasReceberTabela);
 
     }//GEN-LAST:event_pesquisarBtActionPerformed
 
@@ -714,7 +805,7 @@ public class ContasView extends javax.swing.JDialog {
         }
 
         cc = new ContaController();
-        cc.filtrar("movimento" ,pesquisa, campos, situacao, movimentacaoTabela);
+        cc.filtrar("movimento", pesquisa, campos, situacao, movimentacaoTabela);
     }//GEN-LAST:event_pesquisarMBtActionPerformed
 
     public void popularContasReceberTabela() {

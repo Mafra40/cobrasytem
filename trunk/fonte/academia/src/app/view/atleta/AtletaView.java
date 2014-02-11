@@ -131,6 +131,7 @@ public class AtletaView extends javax.swing.JDialog {
             }
         });
 
+        fecharBt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icon-cross.png"))); // NOI18N
         fecharBt.setText("Fechar");
         fecharBt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

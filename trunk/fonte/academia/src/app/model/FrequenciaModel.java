@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import libs.Logs;
 import libs.Validador;
 
 /**
@@ -56,7 +57,8 @@ public class FrequenciaModel {
             }
 
         } catch (SQLException ex) {
-            System.out.println(ex);
+            Logs LogError = new Logs();
+            LogError.gravarLogError("" + ex);
         }
 
         DB.desconectar();
@@ -99,7 +101,8 @@ public class FrequenciaModel {
             return true;
 
         } catch (SQLException ex) {
-            System.out.println("Falha ao inserir a frenquencia: " + ex);
+          Logs LogError = new Logs();
+            LogError.gravarLogError("" + ex);
         }
         DB.desconectar();
         return false;
@@ -125,7 +128,8 @@ public class FrequenciaModel {
             return true;
 
         } catch (SQLException ex) {
-            System.out.println("Falha ao inserir a frenquencia: " + ex);
+          Logs LogError = new Logs();
+            LogError.gravarLogError("" + ex);
         }
         DB.desconectar();
         return false;
@@ -156,7 +160,8 @@ public class FrequenciaModel {
             }
 
         } catch (SQLException ex) {
-            System.out.println(ex);
+            Logs LogError = new Logs();
+            LogError.gravarLogError("" + ex);
         }
         DB.desconectar();
         return false;
@@ -189,7 +194,8 @@ public class FrequenciaModel {
             }
 
         } catch (SQLException ex) {
-            System.out.println(ex);
+            Logs LogError = new Logs();
+            LogError.gravarLogError("" + ex);
         }
         DB.desconectar();
 
@@ -239,7 +245,8 @@ public class FrequenciaModel {
             }
 
         } catch (SQLException ex) {
-            System.out.println(ex);
+            Logs LogError = new Logs();
+            LogError.gravarLogError("" + ex);
         }
         DB.desconectar();
 
@@ -276,10 +283,11 @@ public class FrequenciaModel {
             }
 
         } catch (SQLException ex) {
-            System.out.println(ex);
+            Logs LogError = new Logs();
+            LogError.gravarLogError("" + ex);
         }
         DB.desconectar();
-       // System.err.println("N remove e retorna tudo");
+        // System.err.println("N remove e retorna tudo");
 
         return cl;
     }
@@ -317,7 +325,8 @@ public class FrequenciaModel {
             }
 
         } catch (SQLException ex) {
-            System.out.println(ex);
+           Logs LogError = new Logs();
+            LogError.gravarLogError("" + ex);
         }
         DB.desconectar();
         return false;
@@ -345,7 +354,8 @@ public class FrequenciaModel {
             return true;
 
         } catch (SQLException ex) {
-            System.out.println("Falha ao atualizar a frenquencia: " + ex);
+           Logs LogError = new Logs();
+            LogError.gravarLogError("" + ex);
         }
         DB.desconectar();
 
@@ -388,6 +398,41 @@ public class FrequenciaModel {
             }
         }
 
+    }
+
+    public List<Frequencia> frequenciaDiaria(String data) {
+        
+        
+         query = "SELECT a.id , a.matricula, a.nome , f.presenca, date_format(f.data ,  '%d/%m/%Y' ) as data\n"
+                + "FROM atletas a , frequencia f\n"
+                + "WHERE a.id = f.atletas_id\n"
+                + "AND f.data = '"+data+"' \n"
+                + "ORDER BY f.presenca DESC;";
+        DB.conectar();
+        
+       
+        
+        try {
+            stm = DB.con.createStatement();
+            rs = stm.executeQuery(query);
+
+            while (rs.next()) {
+                Frequencia f = new Frequencia();
+                f.setId(rs.getInt("id"));
+                f.setMatricula(rs.getInt("matricula"));
+                f.setNome(rs.getString("nome"));
+                f.setPrensenca(rs.getString("presenca"));
+                f.setDataF(rs.getString("data"));
+                fl.add(f);
+            }
+
+        } catch (SQLException ex) {
+            Logs LogError = new Logs();
+            LogError.gravarLogError("" + ex);
+        }
+        DB.desconectar();
+        
+        return fl;
     }
 
 }
