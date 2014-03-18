@@ -670,6 +670,13 @@ public class ContasView extends javax.swing.JDialog {
 
     private void atualizarBt1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_atualizarBt1ActionPerformed
         popularMovimentacao();
+        quitarBt1.setEnabled(false);
+        removerBt1.setEnabled(false);
+
+        linhaSelecionadaM = 0;
+        idM = 0;
+        movimentacaoTabela.clearSelection();
+        matM = 0;
     }//GEN-LAST:event_atualizarBt1ActionPerformed
 
     private void fecharBt1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fecharBt1ActionPerformed
@@ -702,13 +709,13 @@ public class ContasView extends javax.swing.JDialog {
                 if (dialogResultado2 == JOptionPane.YES_OPTION) {
                     if (ac.ativarAtleta(matM) == true) {
                         int dialogResultado3 = JOptionPane.showConfirmDialog(null, "Atleta ativado. Deseja adicioná-lo na ata de presença?");
-                         if (dialogResultado3 == JOptionPane.YES_OPTION) {
-                             
-                             Atleta a = new Atleta();
-                             a = ac.retornaAtleta(matM);
-                             FrequenciaController fc = new FrequenciaController();
-                             fc.addNaFrequencia(a.getId());
-                         }
+                        if (dialogResultado3 == JOptionPane.YES_OPTION) {
+
+                            Atleta a = new Atleta();
+                            a = ac.retornaAtleta(matM);
+                            FrequenciaController fc = new FrequenciaController();
+                            fc.addNaFrequencia(a.getId());
+                        }
                     }
 
                 }
@@ -771,6 +778,12 @@ public class ContasView extends javax.swing.JDialog {
 
     private void atualizarBt2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_atualizarBt2ActionPerformed
         popularPendencias();
+        quitarBt1.setEnabled(false);
+        removerBt1.setEnabled(false);
+        linhaSelecionadaM = 0;
+        idM = 0;
+        matM = 0;
+        movimentacaoTabela.clearSelection();
     }//GEN-LAST:event_atualizarBt2ActionPerformed
 
     private void fecharBt2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fecharBt2ActionPerformed
@@ -802,14 +815,14 @@ public class ContasView extends javax.swing.JDialog {
                 int dialogResultado2 = JOptionPane.showConfirmDialog(null, "O atleta está inativo deseja ativalo?");
                 if (dialogResultado2 == JOptionPane.YES_OPTION) {
                     if (ac.ativarAtleta(matP) == true) {
-                         int dialogResultado3 = JOptionPane.showConfirmDialog(null, "Atleta ativado. Deseja adicioná-lo na ata de presença?");
-                         if (dialogResultado3 == JOptionPane.YES_OPTION) {
-                             
-                             Atleta a = new Atleta();
-                             a = ac.retornaAtleta(matP);
-                             FrequenciaController fc = new FrequenciaController();
-                             fc.addNaFrequencia(a.getId());
-                         }
+                        int dialogResultado3 = JOptionPane.showConfirmDialog(null, "Atleta ativado. Deseja adicioná-lo na ata de presença?");
+                        if (dialogResultado3 == JOptionPane.YES_OPTION) {
+
+                            Atleta a = new Atleta();
+                            a = ac.retornaAtleta(matP);
+                            FrequenciaController fc = new FrequenciaController();
+                            fc.addNaFrequencia(a.getId());
+                        }
                     }
 
                 }
@@ -884,6 +897,12 @@ public class ContasView extends javax.swing.JDialog {
 
     private void atualizarBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_atualizarBtActionPerformed
         popularContasReceberTabela();
+        linhaSelecionadaCR = 0;
+        idCR = 0;
+        matR = 0;
+
+        quitarBt.setEnabled(false);
+        removerBt.setEnabled(false);
     }//GEN-LAST:event_atualizarBtActionPerformed
 
     private void fecharBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fecharBtActionPerformed
@@ -916,13 +935,13 @@ public class ContasView extends javax.swing.JDialog {
                 if (dialogResultado2 == JOptionPane.YES_OPTION) {
                     if (ac.ativarAtleta(matR) == true) {
                         int dialogResultado3 = JOptionPane.showConfirmDialog(null, "Atleta ativado. Deseja adicioná-lo na ata de presença?");
-                         if (dialogResultado3 == JOptionPane.YES_OPTION) {
-                             
-                             Atleta a = new Atleta();
-                             a = ac.retornaAtleta(matR);
-                             FrequenciaController fc = new FrequenciaController();
-                             fc.addNaFrequencia(a.getId());
-                         }
+                        if (dialogResultado3 == JOptionPane.YES_OPTION) {
+
+                            Atleta a = new Atleta();
+                            a = ac.retornaAtleta(matR);
+                            FrequenciaController fc = new FrequenciaController();
+                            fc.addNaFrequencia(a.getId());
+                        }
                     }
 
                 }
@@ -937,7 +956,7 @@ public class ContasView extends javax.swing.JDialog {
                 int dialogResultado = JOptionPane.showConfirmDialog(null, "Deseja gerar um novo lançamento com este atleta?");
                 if (dialogResultado == JOptionPane.YES_OPTION) {
 
-                    if (cc.lancamentoRapido(dataVR, valorR, nomeR, null,null) == true) {
+                    if (cc.lancamentoRapido(dataVR, valorR, nomeR, null, null) == true) {
                         JOptionPane.showMessageDialog(null, "Operação concluída.", "Alerta", JOptionPane.INFORMATION_MESSAGE);
                         Date date = new Date();
                         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -1029,8 +1048,8 @@ public class ContasView extends javax.swing.JDialog {
         if (nomeMRadio.isSelected()) {
             campos = "nome";
         }
-        
-        if (matriculaGeralRadio.isSelected()){
+
+        if (matriculaGeralRadio.isSelected()) {
             campos = "matricula";
         }
 
@@ -1079,8 +1098,6 @@ public class ContasView extends javax.swing.JDialog {
             campos = "matricula";
         }
 
-        
-
         cc = new ContaController();
         cc.filtrar("pendente", pesquisa, campos, "P", pendenciasTabela);
     }//GEN-LAST:event_pesquisarPBtActionPerformed
@@ -1092,7 +1109,7 @@ public class ContasView extends javax.swing.JDialog {
         TableCellRenderer r2 = new ContasCellRender(defaultRenderer);
         TableCellRenderer r3 = new ContasCellRender(defaultRenderer);
         TableCellRenderer r4 = new ContasCellRender(defaultRenderer);
-        
+
         contasReceberTabela.setModel(cc.listaContasReceber());
         contasReceberTabela.getColumnModel().getColumn(0).setPreferredWidth(5);
         contasReceberTabela.getColumnModel().getColumn(1).setPreferredWidth(5);
@@ -1135,7 +1152,7 @@ public class ContasView extends javax.swing.JDialog {
         TableCellRenderer r2 = new ContasCellRender(defaultRenderer);
         TableCellRenderer r3 = new ContasCellRender(defaultRenderer);
         TableCellRenderer r4 = new ContasCellRender(defaultRenderer);
-        
+
         pendenciasTabela.getColumnModel().getColumn(3).setCellRenderer(r2);
         pendenciasTabela.getColumnModel().getColumn(4).setCellRenderer(r3);
         pendenciasTabela.getColumnModel().getColumn(5).setCellRenderer(r4);
@@ -1169,7 +1186,7 @@ public class ContasView extends javax.swing.JDialog {
         TableCellRenderer r2 = new ContasCellRender(defaultRenderer);
         TableCellRenderer r3 = new ContasCellRender(defaultRenderer);
         TableCellRenderer r4 = new ContasCellRender(defaultRenderer);
-        
+
         movimentacaoTabela.getColumnModel().getColumn(3).setCellRenderer(r2);
         movimentacaoTabela.getColumnModel().getColumn(4).setCellRenderer(r3);
         movimentacaoTabela.getColumnModel().getColumn(5).setCellRenderer(r4);

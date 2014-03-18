@@ -248,4 +248,11 @@ public class AtividadeController {
     }
 
     /*Fim AtletaAtividade*/
+    
+    
+    public List<Atividade> listarAtividade(){
+        am = new AtividadeModel();
+        return am.listarAtividade();
+        
+    }
 }

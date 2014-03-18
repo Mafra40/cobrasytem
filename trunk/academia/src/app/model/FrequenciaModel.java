@@ -36,6 +36,8 @@ public class FrequenciaModel {
     public List<Atleta> al = new ArrayList<Atleta>();
     public List<Frequencia> fl = new ArrayList<Frequencia>();
 
+    public List<Atividade> alv = new ArrayList<Atividade>();
+
     private PreparedStatement pstm;
     private Atleta a;
     public ArrayList<Conta> cl = new ArrayList<Conta>();
@@ -180,17 +182,30 @@ public class FrequenciaModel {
 
     /**
      * Lista a ata dos atletas ativos.
+     *
+     * @param idAtividade int
      */
-    public List<Frequencia> listaAta() {
+    public List<Frequencia> listaAta(int idAtividade) {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date date = new Date(); //data de hoje
         String data = dateFormat.format(date);
 
-        query = "SELECT a.id , a.matricula, a.nome , f.presenca, date_format(f.data ,  '%d/%m/%Y' ) as data\n"
-                + "FROM atletas a , frequencia f\n"
-                + "WHERE a.id = f.atletas_id\n"
-                + "AND f.data = '" + data + "'\n"
-                + "ORDER BY a.nome ASC;";
+        if (idAtividade == 0) { //geral
+            query = "SELECT a.id , a.matricula, a.nome , f.presenca, date_format(f.data ,  '%d/%m/%Y' ) as data \n"
+                    + "                FROM atletas a , frequencia f\n"
+                    + "                WHERE a.id = f.atletas_id\n"
+                    + "                AND f.data = curdate()\n"
+                    + "                ORDER BY a.nome ASC;\n";
+        } else {
+
+            query = "SELECT a.id , a.matricula, a.nome , f.presenca, date_format(f.data ,  '%d/%m/%Y' ) as data  \n"
+                    + " FROM atletas a , frequencia f , atletas_has_atividade atv \n"
+                    + " WHERE a.id = f.atletas_id\n"
+                    + " AND a.id = atv.atletas_id "
+                    + " AND atv.atividade_id=" + idAtividade
+                    + " AND f.data = '" + data + "'\n"
+                    + " ORDER BY a.nome ASC;";
+        }
         DB.conectar();
 
         try {
@@ -478,6 +493,33 @@ public class FrequenciaModel {
         return fl;
     }
 
+    public int verificaFrequencia(int idAtleta) {
+        int qtd = 0;
+        query = "SELECT count(atletas_id) as qtd "
+                + " FROM frequencia "
+                + " WHERE atletas_id = " + idAtleta
+                + " AND data = curdate()";
+
+        try {
+
+            DB.conectar();
+
+            stm = DB.con.createStatement();
+            rs = stm.executeQuery(query);
+
+            while (rs.next()) {
+                qtd = rs.getInt("qtd");
+            }
+
+        } catch (SQLException ex) {
+            Logs LogError = new Logs();
+            LogError.gravarLogError("" + ex);
+        }
+        DB.desconectar();
+        return qtd;
+
+    }
+
     /**
      * Adiciona um atleta na lista de frequência na data que foi lançado.
      *
@@ -498,6 +540,33 @@ public class FrequenciaModel {
 
             pstm.setInt(1, idAtleta);
             pstm.setString(2, "P");
+
+            pstm.execute();
+            pstm.close();
+            return true;
+
+        } catch (SQLException ex) {
+            Logs LogError = new Logs();
+            LogError.gravarLogError("" + ex);
+        }
+        DB.desconectar();
+
+        return false;
+    }
+
+    public boolean atualizaFrequencia(int idAtleta) {
+        query = "UPDATE frequencia SET presenca = ? "
+                + "WHERE atletas_id = ? "
+                + "AND data = curdate()";
+
+        try {
+
+            DB.conectar();
+
+            pstm = DB.con.prepareStatement(query);
+
+            pstm.setString(1, "P");
+            pstm.setInt(2, idAtleta);
 
             pstm.execute();
             pstm.close();
