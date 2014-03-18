@@ -1,69 +1,66 @@
 /*
- * Copyright (c) 2014 WISE.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *    WISE - initial API and implementation and/or initial documentation
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
 package app.view.contas;
 
+import app.controller.AtividadeController;
 import app.controller.AtletaController;
 import app.controller.ContaController;
 import app.controller.FrequenciaController;
 import app.model.Atleta;
+import app.model.AtletaAtividade;
 import app.model.Conta;
+import app.model.tablemodel.AtividadesTableModel;
 import app.model.tablemodel.ContaTableModel;
 import conf.Global;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.TableCellRenderer;
 import libs.Validador;
 
 /**
  *
- * @author WISE
+ * @author MafraWise
  */
-public class ContasAtletasView extends javax.swing.JDialog {
+public class ContasAtletasLancamento extends javax.swing.JDialog {
 
-    public static int linhaSelecionada;
-    public static int linhaSelecionadaMov;
-    public static float valorAtividade;
-    private static int idAtividade;
-    private static int idMov;
-    private static int cliques;
     private ContaController cc;
-    private Conta c;
-    private static Conta contaRapida;
-    private TableCellRenderer MyRenderer;
-    private static String situacaoMov;
-    private ContaTableModel ctm;
+    private AtividadeController ac;
+    private AtividadesTableModel atm;
+
+    private int cliques;
+
+    private static int idMov;
     private static String dataV;
     private static float valor;
+    private static String situacaoMov;
+    private static int linhaSelecionada;
+
+    private static int linhaSelecionadaMov;
+    private static int idAtividade;
+
+    private static float valorAtividade;
+
+    private Conta c;
+    private ContaTableModel ctm;
 
     /**
-     * Creates new form ContasView
+     * Creates new form ContasAtletasLancamento
      */
-    public ContasAtletasView(java.awt.Frame parent, boolean modal) {
+    public ContasAtletasLancamento(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
-        /* cc = new ContaController();
-         if (AtletaView.matricula != 0) {
-         tabelaMovimentacao.setModel(cc.listarContas(AtletaView.matricula));
-         }else {
-         //   System.err.println("oi " + matriculaTxt.getText());
-         tabelaMovimentacao.setModel(cc.listarContas(Integer.parseInt(matriculaTxt.getText())));
-         }
 
-         tabelaMovimentacao.getColumnModel().getColumn(0).setPreferredWidth(10); //ID.
-         */
-
+        atm = new AtividadesTableModel();
+        tabelaAtividades.setModel(atm);
     }
 
     /**
@@ -75,15 +72,9 @@ public class ContasAtletasView extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tabelaMovimentacao = new javax.swing.JTable();
-        jPanel2 = new javax.swing.JPanel();
-        salvarBt = new javax.swing.JButton();
         dadosPagamento = new javax.swing.JPanel();
         dataVencimentoTxt = new javax.swing.JFormattedTextField();
         dataEmissaoTxt = new javax.swing.JFormattedTextField();
-        matriculaTxt = new javax.swing.JTextField();
         matriculaLabel = new javax.swing.JLabel();
         valorLabel = new javax.swing.JLabel();
         dataEmissaoLabel = new javax.swing.JLabel();
@@ -99,6 +90,12 @@ public class ContasAtletasView extends javax.swing.JDialog {
         obsLabel = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         contaTxt = new javax.swing.JTextField();
+        matriculaTxt = new javax.swing.JFormattedTextField();
+        jPanel2 = new javax.swing.JPanel();
+        salvarBt = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tabelaMovimentacao = new javax.swing.JTable();
         jPanel4 = new javax.swing.JPanel();
         quitarBt = new javax.swing.JButton();
         removerBt = new javax.swing.JButton();
@@ -110,65 +107,6 @@ public class ContasAtletasView extends javax.swing.JDialog {
         setTitle("Financeiro");
         setResizable(false);
         setType(java.awt.Window.Type.UTILITY);
-
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Movimentação"));
-
-        tabelaMovimentacao.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        tabelaMovimentacao.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tabelaMovimentacaoMouseClicked(evt);
-            }
-        });
-        jScrollPane1.setViewportView(tabelaMovimentacao);
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1)
-                .addContainerGap())
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
-        salvarBt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icon-check.png"))); // NOI18N
-        salvarBt.setText("Salvar");
-        salvarBt.setEnabled(false);
-        salvarBt.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                salvarBtActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(salvarBt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(salvarBt)
-        );
 
         dadosPagamento.setBorder(javax.swing.BorderFactory.createTitledBorder("Dados do pagamento"));
 
@@ -194,8 +132,6 @@ public class ContasAtletasView extends javax.swing.JDialog {
                 dataEmissaoTxtMouseClicked(evt);
             }
         });
-
-        matriculaTxt.setEnabled(false);
 
         matriculaLabel.setText("Matrícula");
 
@@ -256,6 +192,18 @@ public class ContasAtletasView extends javax.swing.JDialog {
 
         contaTxt.setEnabled(false);
 
+        matriculaTxt.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
+        matriculaTxt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                matriculaTxtActionPerformed(evt);
+            }
+        });
+        matriculaTxt.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                matriculaTxtKeyPressed(evt);
+            }
+        });
+
         javax.swing.GroupLayout dadosPagamentoLayout = new javax.swing.GroupLayout(dadosPagamento);
         dadosPagamento.setLayout(dadosPagamentoLayout);
         dadosPagamentoLayout.setHorizontalGroup(
@@ -288,9 +236,12 @@ public class ContasAtletasView extends javax.swing.JDialog {
                                 .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(dadosPagamentoLayout.createSequentialGroup()
                         .addGroup(dadosPagamentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(matriculaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(matriculaLabel))
-                        .addGap(18, 18, 18)
+                            .addGroup(dadosPagamentoLayout.createSequentialGroup()
+                                .addComponent(matriculaLabel)
+                                .addGap(75, 75, 75))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dadosPagamentoLayout.createSequentialGroup()
+                                .addComponent(matriculaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(19, 19, 19)))
                         .addGroup(dadosPagamentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(nomeAtletaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(atletaLabel))
@@ -310,9 +261,9 @@ public class ContasAtletasView extends javax.swing.JDialog {
                     .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(dadosPagamentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(matriculaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(nomeAtletaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(contaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(contaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(matriculaTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(dadosPagamentoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -335,6 +286,65 @@ public class ContasAtletasView extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(23, Short.MAX_VALUE))
+        );
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        salvarBt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/icon-check.png"))); // NOI18N
+        salvarBt.setText("Salvar");
+        salvarBt.setEnabled(false);
+        salvarBt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                salvarBtActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(salvarBt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(salvarBt)
+        );
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Movimentação"));
+
+        tabelaMovimentacao.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        tabelaMovimentacao.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabelaMovimentacaoMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tabelaMovimentacao);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1)
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel4.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -421,7 +431,7 @@ public class ContasAtletasView extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(0, 13, Short.MAX_VALUE))
+                .addGap(0, 9, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -445,25 +455,30 @@ public class ContasAtletasView extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void fecharBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fecharBtActionPerformed
-        this.setVisible(false);
-        this.dispose();
-    }//GEN-LAST:event_fecharBtActionPerformed
+    private void dataEmissaoTxtMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dataEmissaoTxtMouseClicked
+        int clique = evt.getClickCount();
+        if (clique > 1) {
+            dataEmissaoTxt.setEnabled(true);
+        }
+    }//GEN-LAST:event_dataEmissaoTxtMouseClicked
 
     private void tabelaAtividadesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaAtividadesMouseClicked
         if (tabelaAtividades.getModel().getRowCount() > 0) {
             linhaSelecionada = tabelaAtividades.getSelectedRow();
+            if (linhaSelecionada == -1) {
+                linhaSelecionada = 0;
+            }
             int coluna = tabelaAtividades.getSelectedColumn();
 
-            idAtividade = (int) tabelaAtividades.getModel().getValueAt(linhaSelecionada, 0);
-            valorAtividade = (float) tabelaAtividades.getModel().getValueAt(linhaSelecionada, 2);
+            idAtividade = (int) tabelaAtividades.getModel().getValueAt(tabelaAtividades.convertRowIndexToModel(linhaSelecionada), 0);
+
+            valorAtividade = (float) tabelaAtividades.getModel().getValueAt(tabelaAtividades.convertRowIndexToModel(linhaSelecionada), 2);
 
             cc = new ContaController();
             contaTxt.setText(cc.retornaIdConta());
 
             /*Se tive setado os valores vai resetar*/
             valorTxt.setText(Float.toString(valorAtividade).replace(".", ","));
-            //dataVencimentoTxt.setText("");
             obsTxt.setText("");
             Date date = new Date();
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -472,6 +487,7 @@ public class ContasAtletasView extends javax.swing.JDialog {
 
             salvarBt.setEnabled(true);
             atualizarBt.setEnabled(false);
+
         }
     }//GEN-LAST:event_tabelaAtividadesMouseClicked
 
@@ -544,13 +560,6 @@ public class ContasAtletasView extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_salvarBtActionPerformed
 
-    private void dataEmissaoTxtMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dataEmissaoTxtMouseClicked
-        int clique = evt.getClickCount();
-        if (clique > 1) {
-            dataEmissaoTxt.setEnabled(true);
-        }
-    }//GEN-LAST:event_dataEmissaoTxtMouseClicked
-
     private void tabelaMovimentacaoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaMovimentacaoMouseClicked
         cliques = evt.getClickCount();
 
@@ -584,22 +593,6 @@ public class ContasAtletasView extends javax.swing.JDialog {
             quitarBt.setEnabled(true);
         }
     }//GEN-LAST:event_tabelaMovimentacaoMouseClicked
-
-    private void removerBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removerBtActionPerformed
-        cc = new ContaController();
-        if (cc.removerConta(idMov) == true) {
-
-            ctm = (ContaTableModel) ContasAtletasView.tabelaMovimentacao.getModel();
-            ctm.removeRow(ContasAtletasView.linhaSelecionadaMov);
-            tabelaMovimentacao.clearSelection();
-
-            reabrirBt.setEnabled(false);
-            reabrirBt.setEnabled(false);
-            quitarBt.setEnabled(false);
-            removerBt.setEnabled(false);
-        }
-
-    }//GEN-LAST:event_removerBtActionPerformed
 
     private void quitarBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quitarBtActionPerformed
         cc = new ContaController();
@@ -638,10 +631,11 @@ public class ContasAtletasView extends javax.swing.JDialog {
                 int dialogResultado = JOptionPane.showConfirmDialog(null, "Deseja gerar um novo lançamento com este atleta?");
                 if (dialogResultado == JOptionPane.YES_OPTION) { /*Se sim*/
 
-                    if (cc.lancamentoRapido(dataV, valor, null, matriculaTxt.getText(), ContasAtletasView.tabelaMovimentacao) == true) {
+                    if (cc.lancamentoRapido(dataV, valor, null, matriculaTxt.getText(), tabelaMovimentacao) == true) {
                         JOptionPane.showMessageDialog(null, "Lançamento concluido.", "Alerta", JOptionPane.INFORMATION_MESSAGE);
+
                         ctm = new ContaTableModel();
-                        ctm = (ContaTableModel) ContasAtletasView.tabelaMovimentacao.getModel();
+                        ctm = (ContaTableModel) tabelaMovimentacao.getModel();
                         ctm.setValueAt("Pago", linhaSelecionadaMov, 4); /*Atualiza*/
 
                         linhaSelecionadaMov = 0;
@@ -656,7 +650,7 @@ public class ContasAtletasView extends javax.swing.JDialog {
                 } else { /*Se não */
 
                     ctm = new ContaTableModel();
-                    ctm = (ContaTableModel) ContasAtletasView.tabelaMovimentacao.getModel();
+                    ctm = (ContaTableModel) tabelaMovimentacao.getModel();
                     ctm.setValueAt("Pago", linhaSelecionadaMov, 4); /*Atualiza*/
 
                     linhaSelecionada = 0;
@@ -672,6 +666,26 @@ public class ContasAtletasView extends javax.swing.JDialog {
             }
         }
     }//GEN-LAST:event_quitarBtActionPerformed
+
+    private void removerBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removerBtActionPerformed
+        cc = new ContaController();
+        if (cc.removerConta(idMov) == true) {
+
+            ctm = (ContaTableModel) tabelaMovimentacao.getModel();
+            ctm.removeRow(ContasAtletasView.linhaSelecionadaMov);
+            tabelaMovimentacao.clearSelection();
+
+            reabrirBt.setEnabled(false);
+            reabrirBt.setEnabled(false);
+            quitarBt.setEnabled(false);
+            removerBt.setEnabled(false);
+        }
+    }//GEN-LAST:event_removerBtActionPerformed
+
+    private void fecharBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fecharBtActionPerformed
+        this.setVisible(false);
+        this.dispose();
+    }//GEN-LAST:event_fecharBtActionPerformed
 
     private void atualizarBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_atualizarBtActionPerformed
         cc = new ContaController();
@@ -693,11 +707,11 @@ public class ContasAtletasView extends javax.swing.JDialog {
             if (cc.atualizar(c) == true) {
                 tabelaMovimentacao.clearSelection();
                 ctm = new ContaTableModel();
-                ctm = (ContaTableModel) ContasAtletasView.tabelaMovimentacao.getModel();
-                ctm.setValueAt(c.getId(), ContasAtletasView.linhaSelecionadaMov, 0);
-                ctm.setValueAt(ContasAtletasView.dataEmissaoTxt.getText(), ContasAtletasView.linhaSelecionadaMov, 1);
-                ctm.setValueAt(ContasAtletasView.dataVencimentoTxt.getText(), ContasAtletasView.linhaSelecionadaMov, 2);
-                ctm.setValueAt(c.getValor_total(), ContasAtletasView.linhaSelecionadaMov, 3);
+                ctm = (ContaTableModel) tabelaMovimentacao.getModel();
+                ctm.setValueAt(c.getId(), linhaSelecionadaMov, 0);
+                ctm.setValueAt(dataEmissaoTxt.getText(), linhaSelecionadaMov, 1);
+                ctm.setValueAt(dataVencimentoTxt.getText(), linhaSelecionadaMov, 2);
+                ctm.setValueAt(c.getValor_total(), linhaSelecionadaMov, 3);
                 reabrirBt.setEnabled(false);
                 quitarBt.setEnabled(false);
                 removerBt.setEnabled(false);
@@ -725,14 +739,13 @@ public class ContasAtletasView extends javax.swing.JDialog {
             }
         }
 
-
     }//GEN-LAST:event_atualizarBtActionPerformed
 
     private void reabrirBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reabrirBtActionPerformed
         cc = new ContaController();
         if (cc.reabrirConta(idMov) == true) {
             ctm = new ContaTableModel();
-            ctm = (ContaTableModel) ContasAtletasView.tabelaMovimentacao.getModel();
+            ctm = (ContaTableModel) tabelaMovimentacao.getModel();
             ctm.setValueAt("Aberto", linhaSelecionadaMov, 4);
 
         }
@@ -742,11 +755,82 @@ public class ContasAtletasView extends javax.swing.JDialog {
         removerBt.setEnabled(false);
         atualizarBt.setEnabled(false);
     }//GEN-LAST:event_reabrirBtActionPerformed
-    public void render() {
-        TableCellRenderer defaultRenderer = tabelaMovimentacao.getDefaultRenderer(Object.class);
-        TableCellRenderer r = new ContasCellRender(defaultRenderer);
 
-        tabelaMovimentacao.getColumnModel().getColumn(4).setCellRenderer(r);
+    private void matriculaTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_matriculaTxtActionPerformed
+        carregarDados();
+    }//GEN-LAST:event_matriculaTxtActionPerformed
+
+    private void matriculaTxtKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_matriculaTxtKeyPressed
+        salvarBt.setEnabled(false);
+        quitarBt.setEnabled(false);
+        reabrirBt.setEnabled(false);
+        atualizarBt.setEnabled(false);
+        removerBt.setEnabled(false);
+        
+        atm = new AtividadesTableModel();
+        ctm = new ContaTableModel();
+        
+        tabelaAtividades.setModel(atm);
+        tabelaMovimentacao.setModel(ctm);
+        
+        nomeAtletaTxt.setText("");
+        dataVencimentoTxt.setText("");
+        contaTxt.setText("");
+        valorTxt.setText("");
+
+        cliques = 0;
+        idMov = 0;
+        dataV = "";
+        valor = 0;
+        situacaoMov = "";
+        linhaSelecionada = 0;
+        linhaSelecionadaMov = 0;
+        idAtividade = 0;
+        valorAtividade = 0;
+
+
+    }//GEN-LAST:event_matriculaTxtKeyPressed
+
+    public void carregarDados() {
+        int matricula = 0;
+        String matriculaTexto = matriculaTxt.getText();
+
+        if (!matriculaTexto.matches("[0-9]+")) {
+            matriculaTxt.setText("");
+            JOptionPane.showMessageDialog(null, "Digite somente números", "Erros", JOptionPane.ERROR_MESSAGE);
+
+        } else {
+
+            if (!"".equals(matriculaTexto)) {
+                matricula = Integer.parseInt(matriculaTexto);
+            }
+
+            if (matricula != 0) {
+                cc = new ContaController();
+                ac = new AtividadeController();
+                List<AtletaAtividade> aa = cc.retornaAtividadesAtleta(matricula);
+                if (aa.size() > 0) {
+                    atm = new AtividadesTableModel(aa);
+                    tabelaAtividades.setModel(atm);
+                    tabelaAtividades.getColumnModel().getColumn(0).setPreferredWidth(5); //ID.
+                    tabelaAtividades.getColumnModel().getColumn(1).setPreferredWidth(100); //NOME.
+
+                    nomeAtletaTxt.setText(aa.get(0).getNomeAtleta());
+
+                    tabelaMovimentacao.setModel(cc.listarContas(matricula));
+                    tabelaMovimentacao.getColumnModel().getColumn(0).setPreferredWidth(10); //ID.
+                    TableCellRenderer defaultRenderer = tabelaMovimentacao.getDefaultRenderer(Object.class
+                    );
+                    TableCellRenderer r = new ContasCellRender(defaultRenderer);
+
+                    tabelaMovimentacao.getColumnModel()
+                            .getColumn(4).setCellRenderer(r);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Nenhum registro encontrado.", "Erros", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        }
+
     }
 
     /**
@@ -767,16 +851,16 @@ public class ContasAtletasView extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ContasAtletasView.class
+            java.util.logging.Logger.getLogger(ContasAtletasLancamento.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ContasAtletasView.class
+            java.util.logging.Logger.getLogger(ContasAtletasLancamento.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ContasAtletasView.class
+            java.util.logging.Logger.getLogger(ContasAtletasLancamento.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ContasAtletasView.class
+            java.util.logging.Logger.getLogger(ContasAtletasLancamento.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
@@ -784,7 +868,7 @@ public class ContasAtletasView extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                ContasAtletasView dialog = new ContasAtletasView(new javax.swing.JFrame(), true);
+                ContasAtletasLancamento dialog = new ContasAtletasLancamento(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -815,7 +899,7 @@ public class ContasAtletasView extends javax.swing.JDialog {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel matriculaLabel;
-    public javax.swing.JTextField matriculaTxt;
+    private javax.swing.JFormattedTextField matriculaTxt;
     public javax.swing.JTextField nomeAtletaTxt;
     private javax.swing.JLabel obsLabel;
     private javax.swing.JTextArea obsTxt;

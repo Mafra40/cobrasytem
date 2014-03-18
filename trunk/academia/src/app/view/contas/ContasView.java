@@ -12,6 +12,8 @@ package app.view.contas;
 
 import app.controller.AtletaController;
 import app.controller.ContaController;
+import app.controller.FrequenciaController;
+import app.model.Atleta;
 import app.model.tablemodel.ContasReceberTableModel;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -157,6 +159,7 @@ public class ContasView extends javax.swing.JDialog {
         pesquisarMBt = new javax.swing.JButton();
         totalRegistrosLabel = new javax.swing.JLabel();
         totalLabel = new javax.swing.JLabel();
+        matriculaGeralRadio = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Financeiro");
@@ -595,6 +598,9 @@ public class ContasView extends javax.swing.JDialog {
         totalLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         totalLabel.setText("0");
 
+        buttonGroup3.add(matriculaGeralRadio);
+        matriculaGeralRadio.setText("Matrícula");
+
         javax.swing.GroupLayout movimentacaoPainelLayout = new javax.swing.GroupLayout(movimentacaoPainel);
         movimentacaoPainel.setLayout(movimentacaoPainelLayout);
         movimentacaoPainelLayout.setHorizontalGroup(
@@ -609,17 +615,19 @@ public class ContasView extends javax.swing.JDialog {
                     .addGroup(movimentacaoPainelLayout.createSequentialGroup()
                         .addGroup(movimentacaoPainelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(movimentacaoPainelLayout.createSequentialGroup()
+                                .addComponent(totalRegistrosLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(totalLabel))
+                            .addGroup(movimentacaoPainelLayout.createSequentialGroup()
                                 .addComponent(pesquisarMTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(nomeMRadio)
-                                .addGap(18, 18, 18)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(matriculaGeralRadio)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(situacaoMSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(pesquisarMBt))
-                            .addGroup(movimentacaoPainelLayout.createSequentialGroup()
-                                .addComponent(totalRegistrosLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(totalLabel)))
+                                .addComponent(pesquisarMBt)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -631,7 +639,8 @@ public class ContasView extends javax.swing.JDialog {
                     .addComponent(pesquisarMTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(nomeMRadio)
                     .addComponent(situacaoMSelect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(pesquisarMBt))
+                    .addComponent(pesquisarMBt)
+                    .addComponent(matriculaGeralRadio))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(movimentacaoPainelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 363, Short.MAX_VALUE)
@@ -692,7 +701,14 @@ public class ContasView extends javax.swing.JDialog {
                 int dialogResultado2 = JOptionPane.showConfirmDialog(null, "O atleta está inativo deseja ativalo?");
                 if (dialogResultado2 == JOptionPane.YES_OPTION) {
                     if (ac.ativarAtleta(matM) == true) {
-                        JOptionPane.showMessageDialog(null, "Atleta ativado.", "Alerta", JOptionPane.INFORMATION_MESSAGE);
+                        int dialogResultado3 = JOptionPane.showConfirmDialog(null, "Atleta ativado. Deseja adicioná-lo na ata de presença?");
+                         if (dialogResultado3 == JOptionPane.YES_OPTION) {
+                             
+                             Atleta a = new Atleta();
+                             a = ac.retornaAtleta(matM);
+                             FrequenciaController fc = new FrequenciaController();
+                             fc.addNaFrequencia(a.getId());
+                         }
                     }
 
                 }
@@ -702,8 +718,8 @@ public class ContasView extends javax.swing.JDialog {
                 int dialogResultado = JOptionPane.showConfirmDialog(null, "Deseja gerar um novo lançamento com este atleta?");
                 if (dialogResultado == JOptionPane.YES_OPTION) {
 
-                    if (cc.lancamentoRapido(dataVM, valorM, nomeM, null) == true) {
-                        JOptionPane.showMessageDialog(null, "Lançamento concluido.", "Alerta", JOptionPane.INFORMATION_MESSAGE);
+                    if (cc.lancamentoRapido(dataVM, valorM, nomeM, null, null) == true) {
+                        JOptionPane.showMessageDialog(null, "Operação concluída.", "Alerta", JOptionPane.INFORMATION_MESSAGE);
 
                         movimentacaoTabela.setValueAt("Pago", linhaSelecionadaM, 7);
                         quitarBt1.setEnabled(false);
@@ -786,7 +802,14 @@ public class ContasView extends javax.swing.JDialog {
                 int dialogResultado2 = JOptionPane.showConfirmDialog(null, "O atleta está inativo deseja ativalo?");
                 if (dialogResultado2 == JOptionPane.YES_OPTION) {
                     if (ac.ativarAtleta(matP) == true) {
-                        JOptionPane.showMessageDialog(null, "Lançamento concluido.", "Alerta", JOptionPane.INFORMATION_MESSAGE);
+                         int dialogResultado3 = JOptionPane.showConfirmDialog(null, "Atleta ativado. Deseja adicioná-lo na ata de presença?");
+                         if (dialogResultado3 == JOptionPane.YES_OPTION) {
+                             
+                             Atleta a = new Atleta();
+                             a = ac.retornaAtleta(matP);
+                             FrequenciaController fc = new FrequenciaController();
+                             fc.addNaFrequencia(a.getId());
+                         }
                     }
 
                 }
@@ -798,8 +821,8 @@ public class ContasView extends javax.swing.JDialog {
                 int dialogResultado = JOptionPane.showConfirmDialog(null, "Deseja gerar um novo lançamento com este atleta?");
                 if (dialogResultado == JOptionPane.YES_OPTION) {
 
-                    if (cc.lancamentoRapido(dataVP, valorP, nomeP, null) == true) {
-                        JOptionPane.showMessageDialog(null, "Lançamento concluido.", "Alerta", JOptionPane.INFORMATION_MESSAGE);
+                    if (cc.lancamentoRapido(dataVP, valorP, nomeP, null, null) == true) {
+                        JOptionPane.showMessageDialog(null, "Operação concluída.", "Alerta", JOptionPane.INFORMATION_MESSAGE);
 
                         ctrm = new ContasReceberTableModel();
                         ctrm = (ContasReceberTableModel) pendenciasTabela.getModel();
@@ -892,7 +915,14 @@ public class ContasView extends javax.swing.JDialog {
                 int dialogResultado2 = JOptionPane.showConfirmDialog(null, "O atleta está inativo deseja ativalo?");
                 if (dialogResultado2 == JOptionPane.YES_OPTION) {
                     if (ac.ativarAtleta(matR) == true) {
-                        JOptionPane.showMessageDialog(null, "Lançamento concluido.", "Alerta", JOptionPane.INFORMATION_MESSAGE);
+                        int dialogResultado3 = JOptionPane.showConfirmDialog(null, "Atleta ativado. Deseja adicioná-lo na ata de presença?");
+                         if (dialogResultado3 == JOptionPane.YES_OPTION) {
+                             
+                             Atleta a = new Atleta();
+                             a = ac.retornaAtleta(matR);
+                             FrequenciaController fc = new FrequenciaController();
+                             fc.addNaFrequencia(a.getId());
+                         }
                     }
 
                 }
@@ -907,8 +937,8 @@ public class ContasView extends javax.swing.JDialog {
                 int dialogResultado = JOptionPane.showConfirmDialog(null, "Deseja gerar um novo lançamento com este atleta?");
                 if (dialogResultado == JOptionPane.YES_OPTION) {
 
-                    if (cc.lancamentoRapido(dataVR, valorR, nomeR, null) == true) {
-                        JOptionPane.showMessageDialog(null, "Lançamento concluido.", "Alerta", JOptionPane.INFORMATION_MESSAGE);
+                    if (cc.lancamentoRapido(dataVR, valorR, nomeR, null,null) == true) {
+                        JOptionPane.showMessageDialog(null, "Operação concluída.", "Alerta", JOptionPane.INFORMATION_MESSAGE);
                         Date date = new Date();
                         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
                         String data = sdf.format(date);
@@ -998,6 +1028,10 @@ public class ContasView extends javax.swing.JDialog {
 
         if (nomeMRadio.isSelected()) {
             campos = "nome";
+        }
+        
+        if (matriculaGeralRadio.isSelected()){
+            campos = "matricula";
         }
 
         situacao = String.valueOf(situacaoMSelect.getSelectedIndex());
@@ -1207,6 +1241,7 @@ public class ContasView extends javax.swing.JDialog {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JRadioButton matriculaGeralRadio;
     private javax.swing.JRadioButton matriculaPendenciasRadio;
     public javax.swing.JPanel movimentacaoPainel;
     public static javax.swing.JTable movimentacaoTabela;

@@ -11,22 +11,22 @@ import app.model.tablemodel.ContaTableModel;
 import app.model.tablemodel.ContasReceberTableModel;
 import app.view.atleta.AtletaView;
 import app.view.contas.ContasAdminCheck;
+import app.view.contas.ContasAtletasLancamento;
 import app.view.contas.ContasAtletasView;
 import static app.view.contas.ContasAtletasView.tabelaAtividades;
 import static app.view.contas.ContasAtletasView.tabelaMovimentacao;
-import app.view.contas.ContasCellRender;
 import app.view.contas.ContasResumo;
 import app.view.contas.ContasView;
 import java.sql.CallableStatement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
-import javax.swing.table.TableCellRenderer;
 
 /**
  *
@@ -35,6 +35,7 @@ import javax.swing.table.TableCellRenderer;
 public class ContaController {
 
     private ContasAtletasView cv;
+    private ContasAtletasLancamento cl;
     private ContasView csv;
     private ContaModel cm;
     private ContaTableModel ctm;
@@ -51,6 +52,7 @@ public class ContaController {
     /*variavel onde irá salvar se foi aceito o login de segurança para remover a conta */
     public static boolean aceito = false;
     private List<Conta> contas;
+    public List<AtletaAtividade> al = new ArrayList<AtletaAtividade>();
     private ContasReceberTableModel ctrm;
 
     public void chamarView(int matricula) {
@@ -113,14 +115,14 @@ public class ContaController {
         if (cm.atletaAtivo(a.getId()) == true) {
             if (cm.cadastrarContaPagamento(c, matricula) == true) {
                 JOptionPane.showMessageDialog(null, "Lançamento cadastrado.", "Alerta", JOptionPane.INFORMATION_MESSAGE);
-
+                /*
                 ctm = new ContaTableModel();
                 ctm = (ContaTableModel) ContasAtletasView.tabelaMovimentacao.getModel();
 
                 String dataLan = null;
                 String dataVen = null;
 
-                try {/*Formata datas*/
+                try {/*Formata datas*//*
 
                     Date date = new SimpleDateFormat("yyyy-MM-dd").parse(c.getLancamento());
                     Date date2 = new SimpleDateFormat("yyyy-MM-dd").parse(c.getVencimento());
@@ -128,10 +130,10 @@ public class ContaController {
                     dataVen = new SimpleDateFormat("dd/MM/yyyy").format(date2);
 
                 } catch (ParseException ex) {
-                    
+
                 }
 
-                ctm.addRow(c.getId(), dataLan, dataVen, c.getValor_total(), "Aberto", 1);
+                ctm.addRow(c.getId(), dataLan, dataVen, c.getValor_total(), "Aberto", 1);*/
                 return true;
             }
         } else {
@@ -278,7 +280,7 @@ public class ContaController {
         }
     }
 
-    public boolean lancamentoRapido(String dataV, float valor, String nomeAtleta, String matriculaText) {
+    public boolean lancamentoRapido(String dataV, float valor, String nomeAtleta, String matriculaText, JTable tabela) {
         int matricula = 0;
         String dataE = "";
         String dataVencimento = "";
@@ -337,7 +339,7 @@ public class ContaController {
 
         if (cm.cadastrarContaPagamento(c, matricula) == true) {
             if (nomeAtleta == null) {
-                ctm = (ContaTableModel) ContasAtletasView.tabelaMovimentacao.getModel();
+                ctm = (ContaTableModel) tabela.getModel();
 
                 String dataLan = null;
                 String dataVen = null;
@@ -421,7 +423,20 @@ public class ContaController {
         ContasResumo.detalhesTabela.setModel(crtm);
 
     }
+    /*Fazer lacamento*/
 
+    public void chamarViewLancamento() {
+        cl = new ContasAtletasLancamento(null, true);
+        cl.setVisible(true);
+    }
+
+    public List<AtletaAtividade> retornaAtividadesAtleta(int matricula) {
+        cm = new ContaModel();
+        al = cm.retornaAtividades(matricula);
+        return al;
+    }
+
+    /*Fim lancamento*/
     /**
      * Função de rotina
      */

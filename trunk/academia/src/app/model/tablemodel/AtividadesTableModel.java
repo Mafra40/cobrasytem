@@ -19,7 +19,6 @@ public class AtividadesTableModel extends AbstractTableModel {
     private static final int ID = 0;
     private static final int NOME = 1;
     private static final int VALOR = 2;
-    
 
     // Cria um Func sem nenhuma linha
     public AtividadesTableModel() {
@@ -30,8 +29,6 @@ public class AtividadesTableModel extends AbstractTableModel {
     public AtividadesTableModel(List<AtletaAtividade> listaDeAtividades) {
         linhas = new ArrayList<AtletaAtividade>(listaDeAtividades);
     }
-
-    
 
     @Override
     public int getRowCount() {
@@ -55,9 +52,9 @@ public class AtividadesTableModel extends AbstractTableModel {
                 return String.class;
             case NOME:
                 return String.class;
-                 case VALOR:
+            case VALOR:
                 return String.class;
-            
+
             default:
                 // Não deve ocorrer, pois só existem 2 colunas
                 throw new IndexOutOfBoundsException("columnIndex out of bounds");
@@ -71,15 +68,15 @@ public class AtividadesTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        // Pega o sócio referente a linha especificada.
-       AtletaAtividade a = linhas.get(rowIndex);
+       
+        AtletaAtividade a = linhas.get(rowIndex);
 
         switch (columnIndex) {
             case ID:
                 return a.getAtividadeId();
             case NOME:
                 return a.getNomeAtividade();
-                case VALOR:
+            case VALOR:
                 return a.getValorAtividade();
 
             default:
@@ -100,11 +97,11 @@ public class AtividadesTableModel extends AbstractTableModel {
             case NOME:
                 a.setNomeAtividade((String) aValue);
                 break;
-                
-                case VALOR:
+
+            case VALOR:
                 a.setValorAtividade((float) aValue);
                 break;
-            
+
             default:
                 // Não deve ocorrer, pois só existem 2 colunas
                 throw new IndexOutOfBoundsException("columnIndex out of bounds");
@@ -126,23 +123,23 @@ public class AtividadesTableModel extends AbstractTableModel {
     }
 
     public void addRow(int id, String nome, Float valor, String ativo, int row) {
-       /* AtletaAtividade a = new Atividade();
-        a.setId(id);
-        a.setNome(nome);
-        a.setValor(valor);
-        a.setAtivo(ativo);
-        linhas.add(a);
-        fireTableRowsInserted(row + 1, row + 1);*/
+        /* AtletaAtividade a = new Atividade();
+         a.setId(id);
+         a.setNome(nome);
+         a.setValor(valor);
+         a.setAtivo(ativo);
+         linhas.add(a);
+         fireTableRowsInserted(row + 1, row + 1);*/
     }
 
     public void updateRow(int id, String nome, Float valor, String ativo, int row) {
         /*Atividade a = new Atividade();
-        a.setId(id);
-        a.setNome(nome);
-        a.setValor(valor);
-        a.setAtivo(ativo);
+         a.setId(id);
+         a.setNome(nome);
+         a.setValor(valor);
+         a.setAtivo(ativo);
 
-        fireTableRowsUpdated(row, row);*/
+         fireTableRowsUpdated(row, row);*/
 
     }
 

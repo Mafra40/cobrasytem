@@ -145,6 +145,9 @@ public class AtividadeController {
             JOptionPane.showMessageDialog(null, "Nenhum registro encontrado.", "Alerta.", JOptionPane.INFORMATION_MESSAGE);
         }
     }
+    
+    
+   
 
     /**
      * AtletaAtividade

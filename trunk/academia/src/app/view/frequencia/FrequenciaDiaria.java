@@ -49,6 +49,12 @@ public class FrequenciaDiaria extends javax.swing.JDialog {
         jLabel3 = new javax.swing.JLabel();
         fecharBt = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
+        totalLabel = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        prensentesLabel = new javax.swing.JLabel();
+        faltantesLabel = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Frequencia diaria");
@@ -69,7 +75,7 @@ public class FrequenciaDiaria extends javax.swing.JDialog {
         jScrollPane1.setViewportView(frequenciaTabela);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel1.setText("Ata de Atletas");
+        jLabel1.setText("Lista de atletas ativos.");
 
         jLabel3.setText("Data:");
 
@@ -85,14 +91,47 @@ public class FrequenciaDiaria extends javax.swing.JDialog {
         jLabel5.setForeground(new java.awt.Color(255, 0, 0));
         jLabel5.setText("jLabel5");
 
+        totalLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        totalLabel.setText("jLabel5");
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel4.setText("Total:");
+
+        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel6.setText("Faltantes:");
+
+        prensentesLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        prensentesLabel.setForeground(new java.awt.Color(0, 51, 255));
+        prensentesLabel.setText("jLabel6");
+
+        faltantesLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        faltantesLabel.setForeground(new java.awt.Color(255, 0, 0));
+        faltantesLabel.setText("jLabel7");
+
+        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel7.setText("Presentes:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(23, 23, 23)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(fecharBt)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(totalLabel)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(prensentesLabel)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(faltantesLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(fecharBt))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
                             .addComponent(jLabel3)
@@ -114,7 +153,15 @@ public class FrequenciaDiaria extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 497, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(fecharBt)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(fecharBt)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel4)
+                        .addComponent(totalLabel)
+                        .addComponent(jLabel7)
+                        .addComponent(prensentesLabel)
+                        .addComponent(jLabel6)
+                        .addComponent(faltantesLabel)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -142,6 +189,22 @@ public class FrequenciaDiaria extends javax.swing.JDialog {
 
         frequenciaTabela.getColumnModel().getColumn(2).setCellRenderer(r);
         jLabel5.setText(FrequenciaController.fl.get(0).getDataF());
+        
+        int total = frequenciaTabela.getModel().getRowCount();
+        totalLabel.setText(String.valueOf(total));
+
+        int presentes = 0, faltantes = 0;
+        for (int i = 0; i < frequenciaTabela.getModel().getRowCount(); i++) {
+            if (frequenciaTabela.getModel().getValueAt(i, 2).equals("P")) {
+                presentes++;
+            } else {
+                faltantes++;
+            }
+
+        }
+
+        prensentesLabel.setText(String.valueOf(presentes));
+        faltantesLabel.setText(String.valueOf(faltantes));
 
     }
 
@@ -195,11 +258,17 @@ public class FrequenciaDiaria extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel faltantesLabel;
     private javax.swing.JButton fecharBt;
     public javax.swing.JTable frequenciaTabela;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel prensentesLabel;
+    private javax.swing.JLabel totalLabel;
     // End of variables declaration//GEN-END:variables
 }

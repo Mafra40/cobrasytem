@@ -173,7 +173,7 @@
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/images/book-open-bookmark.png"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Frequ&#xea;ncia Diaria"/>
+                <Property name="text" type="java.lang.String" value="Checar frequ&#xea;ncia por data"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="frequenciaDiariaBtActionPerformed"/>
@@ -266,7 +266,9 @@
                   <Component id="freManual" min="-2" pref="109" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="contasBt" min="-2" pref="111" max="-2" attributes="0"/>
-                  <EmptySpace pref="293" max="32767" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Component id="contasBt1" min="-2" pref="111" max="-2" attributes="0"/>
+                  <EmptySpace pref="172" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -278,6 +280,7 @@
                       <Component id="frequenciaBt" alignment="3" min="-2" pref="57" max="-2" attributes="0"/>
                       <Component id="contasBt" alignment="3" min="-2" pref="57" max="-2" attributes="0"/>
                       <Component id="freManual" alignment="3" min="-2" pref="57" max="-2" attributes="0"/>
+                      <Component id="contasBt1" alignment="3" min="-2" pref="57" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace pref="24" max="32767" attributes="0"/>
               </Group>
@@ -314,13 +317,24 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/images/tick.png"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Chek in M."/>
+            <Property name="text" type="java.lang.String" value="Chek in"/>
             <Property name="toolTipText" type="java.lang.String" value="Chek in manual."/>
             <Property name="requestFocusEnabled" type="boolean" value="false"/>
             <Property name="rolloverEnabled" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="freManualActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="contasBt1">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/images/lightning--arrow.png"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Lan&#xe7;amento"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="contasBt1ActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

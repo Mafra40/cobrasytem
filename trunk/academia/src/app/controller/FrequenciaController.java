@@ -63,8 +63,6 @@ public class FrequenciaController {
 
         return false;
     }
-    
-    
 
     public FrequenciaTableModel listaFrequencia() {
         fm = new FrequenciaModel();
@@ -226,6 +224,18 @@ public class FrequenciaController {
         } else {
             JOptionPane.showMessageDialog(null, "Ata com esta data não existe.", "Erro", JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    /**
+     * Adiciona um atleta na lista de frequência na data que foi lançado.
+     *
+     * @param idAtleta
+     * @return
+     */
+    public boolean addNaFrequencia(int idAtleta) {
+        fm = new FrequenciaModel();
+
+        return fm.addNaFrequencia(idAtleta);
     }
 
 }
