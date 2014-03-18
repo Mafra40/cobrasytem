@@ -9,7 +9,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -79,6 +82,7 @@ public class ContaModel {
                 + "AND atividade_id = at.id\n"
                 + "AND at.ativo = 'S'\n"
                 + "AND atletas_id = (SELECT id FROM atletas WHERE matricula=" + matricula + ")";
+
         DB.conectar();
 
         try {
@@ -311,11 +315,15 @@ public class ContaModel {
     }
 
     public boolean quitarConta(int idConta) {
-
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date(); //data de hoje
+        String data = dateFormat.format(date);
+        
         query = "UPDATE `contas_receber` "
                 + "SET "
                 + "situacao = 'PG', \n"
-                + "datapago = CURDATE() \n"
+                + "datapago = '" + data
+                + "' \n"
                 + "WHERE id = ? ";
         //System.err.println(idConta);
         //System.err.println(query);
@@ -443,13 +451,19 @@ public class ContaModel {
      *
      */
     public List<Conta> listaContasReceber() {
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date(); //data de hoje
+        String data = dateFormat.format(date);
+
         query = "SELECT cr.id, cr.atletas_id ,  date_format(cr.vencimento ,  '%d/%m/%Y' ) as vencimento,  cr.valor_total , cr.situacao, date_format(cr.lancamento ,  '%d/%m/%Y' ) as lancamento  , cr.observacao ,date_format(cr.datapago ,  '%d/%m/%Y' ) as datapago ,\n"
                 + "a.nome , a.matricula  FROM contas_receber cr, atletas a \n"
                 + "WHERE a.id = cr.atletas_id\n"
-                + "AND vencimento = CURDATE() "
+                + "AND cr.vencimento = '" + data + "' "
                 + "ORDER BY  cr.vencimento desc "
                 + "LIMIT 300";
         DB.conectar();
+       // System.err.println(query);
         try {
             stm = DB.con.createStatement();
             rs = stm.executeQuery(query);
@@ -494,6 +508,7 @@ public class ContaModel {
 
     /*Lista todas as pendencias.*/
     public List<Conta> listaPendencias() {
+
         query = "SELECT cr.id, cr.atletas_id ,  date_format(cr.vencimento ,  '%d/%m/%Y' ) as vencimento,  cr.valor_total , cr.situacao, date_format(cr.lancamento ,  '%d/%m/%Y' ) as lancamento  , cr.observacao ,date_format(cr.datapago ,  '%d/%m/%Y' ) as datapago ,\n"
                 + "a.nome, a.matricula  FROM contas_receber cr, atletas a \n"
                 + "WHERE a.id = cr.atletas_id\n"
@@ -595,11 +610,15 @@ public class ContaModel {
     /*ROTINA QUE ATUALIZARÁ OS CONTAS QUE ESTÃO ABERTA PARA VENCIDAS
      CASO PASSE DA DATA DE VENCIMENTO.*/
     public void rotinaAtualizarPendencias() {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date(); //data de hoje
+        String data = dateFormat.format(date);
+
         query
                 = "UPDATE `contas_receber` "
                 + "SET situacao = 'P', "
-                + "situacao = CASE WHEN lancamento > curdate() THEN 'A' ELSE 'P' END " //não deixa pendente se a data de lançamento for > que a data atual.
-                + "WHERE curdate() not between lancamento AND vencimento " //datas não estiver entre o vencimento e lançamento
+                + "situacao = CASE WHEN lancamento > '" + data + "' THEN 'A' ELSE 'P' END " //não deixa pendente se a data de lançamento for > que a data atual.
+                + "WHERE '" + data + "' not between lancamento AND vencimento " //datas não estiver entre o vencimento e lançamento
                 + "AND situacao = 'A' ";//onde todas as contas estiverem como aberto.
 
         DB.conectar();
@@ -617,12 +636,16 @@ public class ContaModel {
 
     public List<Conta> filtrar(String tipo, String pesquisaTxt, String campo, String campo2) {
 
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date(); //data de hoje
+        String data = dateFormat.format(date);
+
         if (tipo.equals("receber")) {
 
             query = "SELECT cr.id, cr.atletas_id ,  date_format(cr.vencimento ,  '%d/%m/%Y' ) as vencimento,  cr.valor_total , cr.situacao, date_format(cr.lancamento ,  '%d/%m/%Y' ) as lancamento  , cr.observacao ,date_format(cr.datapago ,  '%d/%m/%Y' ) as datapago ,\n"
                     + "a.nome, a.matricula  FROM contas_receber cr, atletas a \n"
                     + "WHERE a.id = cr.atletas_id\n"
-                    + "AND vencimento = CURDATE() "
+                    + "AND vencimento = '" + data + "'"
                     + "AND cr.situacao ='" + campo2 + "' "
                     + "AND a.nome LIKE'%" + pesquisaTxt + "%' "
                     + "ORDER BY  cr.vencimento desc "
@@ -632,7 +655,7 @@ public class ContaModel {
                 query = "SELECT cr.id, cr.atletas_id ,  date_format(cr.vencimento ,  '%d/%m/%Y' ) as vencimento,  cr.valor_total , cr.situacao, date_format(cr.lancamento ,  '%d/%m/%Y' ) as lancamento  , cr.observacao ,date_format(cr.datapago ,  '%d/%m/%Y' ) as datapago ,\n"
                         + "a.nome , a.matricula  FROM contas_receber cr, atletas a \n"
                         + "WHERE a.id = cr.atletas_id\n"
-                        + "AND vencimento = CURDATE() "
+                        + "AND vencimento = '" + data + "'"
                         + "AND a.nome LIKE'%" + pesquisaTxt + "%' "
                         + "ORDER BY  cr.vencimento desc "
                         + "LIMIT 300 ";
@@ -640,11 +663,18 @@ public class ContaModel {
         }
 
         if (tipo.equals("movimento")) {
+            String campoSql = "";
+            if (campo.equals("nome")) {
+                campoSql = "AND a.nome LIKE'%" + pesquisaTxt + "%' ";
+            }
+            if (campo.equals("matricula")) {
+                campoSql = "AND a.matricula = " + Integer.parseInt(pesquisaTxt) + " ";
+            }
             query = "SELECT cr.id, cr.atletas_id ,  date_format(cr.vencimento ,  '%d/%m/%Y' ) as vencimento,  cr.valor_total , cr.situacao, date_format(cr.lancamento ,  '%d/%m/%Y' ) as lancamento  , cr.observacao ,date_format(cr.datapago ,  '%d/%m/%Y' ) as datapago ,\n"
                     + "a.nome , a.matricula  FROM contas_receber cr, atletas a \n"
                     + "WHERE a.id = cr.atletas_id\n"
                     + "AND cr.situacao ='" + campo2 + "' "
-                    + "AND a.nome LIKE'%" + pesquisaTxt + "%' "
+                    + campoSql
                     + "ORDER BY  cr.vencimento desc "
                     + "LIMIT 300 ";
 
@@ -652,7 +682,7 @@ public class ContaModel {
                 query = "SELECT cr.id, cr.atletas_id ,  date_format(cr.vencimento ,  '%d/%m/%Y' ) as vencimento,  cr.valor_total , cr.situacao, date_format(cr.lancamento ,  '%d/%m/%Y' ) as lancamento  , cr.observacao ,date_format(cr.datapago ,  '%d/%m/%Y' ) as datapago ,\n"
                         + "a.nome , a.matricula  FROM contas_receber cr, atletas a \n"
                         + "WHERE a.id = cr.atletas_id\n"
-                        + "AND a.nome LIKE'%" + pesquisaTxt + "%' "
+                        + campoSql
                         + "ORDER BY  cr.vencimento desc "
                         + "LIMIT 300";
             }
@@ -664,7 +694,7 @@ public class ContaModel {
                 campoSql = "AND a.nome LIKE'%" + pesquisaTxt + "%' ";
             }
             if (campo.equals("matricula")) {
-                campoSql = "AND a.matricula LIKE'%" + pesquisaTxt + "%' ";
+                campoSql = "AND a.matricula = " + Integer.parseInt(pesquisaTxt) + " ";
             }
 
             query = "SELECT cr.id, cr.atletas_id ,  date_format(cr.vencimento ,  '%d/%m/%Y' ) as vencimento,  cr.valor_total , cr.situacao, date_format(cr.lancamento ,  '%d/%m/%Y' ) as lancamento  , cr.observacao ,date_format(cr.datapago ,  '%d/%m/%Y' ) as datapago ,\n"

@@ -45,7 +45,7 @@ public class FrequenciaDataPicker extends javax.swing.JDialog {
         okBT = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Frequencia por data. Escolha uma data.");
+        setTitle("Escolha uma data.");
         setType(java.awt.Window.Type.UTILITY);
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/calendar.png"))); // NOI18N

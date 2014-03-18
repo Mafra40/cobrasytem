@@ -7,7 +7,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -76,8 +79,10 @@ public class FrequenciaModel {
      * @return
      */
     public boolean insere(List<Atleta> a) {
-
-        query = "INSERT INTO frequencia (atletas_id , presenca, data) VALUES (? , ? , curdate()) ";
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date(); //data de hoje
+        String data = dateFormat.format(date);
+        query = "INSERT INTO frequencia (atletas_id , presenca, data) VALUES (? , ? , '" + data + "') ";
 
 
         /*Insere todos na tabela de presença na data corrente.*/
@@ -110,7 +115,10 @@ public class FrequenciaModel {
     }
 
     public boolean insereFaltante(Atleta a) {
-        query = "INSERT INTO frequencia (atletas_id , presenca, data) VALUES (? , ? , curdate()) ";
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date(); //data de hoje
+        String data = dateFormat.format(date);
+        query = "INSERT INTO frequencia (atletas_id , presenca, data) VALUES (? , ? , '" + data + "' ) ";
 
 
         /*Insere todos na tabela de presença na data corrente.*/
@@ -144,8 +152,11 @@ public class FrequenciaModel {
      */
     public boolean verificaAta() {
 
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date(); //data de hoje
+        String data = dateFormat.format(date);
         /*Verifica se existe 1 registro com a data atual.*/
-        query = "SELECT data, count(data) as quantidade FROM frequencia WHERE data = curdate()  LIMIT 1;";
+        query = "SELECT data, count(data) as quantidade FROM frequencia WHERE data = '" + data + "'  LIMIT 1;";
         DB.conectar();
 
         try {
@@ -171,11 +182,14 @@ public class FrequenciaModel {
      * Lista a ata dos atletas ativos.
      */
     public List<Frequencia> listaAta() {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date(); //data de hoje
+        String data = dateFormat.format(date);
 
         query = "SELECT a.id , a.matricula, a.nome , f.presenca, date_format(f.data ,  '%d/%m/%Y' ) as data\n"
                 + "FROM atletas a , frequencia f\n"
                 + "WHERE a.id = f.atletas_id\n"
-                + "AND f.data = curdate()\n"
+                + "AND f.data = '" + data + "'\n"
                 + "ORDER BY a.nome ASC;";
         DB.conectar();
 
@@ -207,8 +221,11 @@ public class FrequenciaModel {
      *
      */
     public void deletar() {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date(); //data de hoje
+        String data = dateFormat.format(date);
         query = "DELETE FROM frequencia\n"
-                + "WHERE data = curdate() ";
+                + "WHERE data = '" + data + "' ";
         DB.conectar();
 
         try {
@@ -324,10 +341,13 @@ public class FrequenciaModel {
     public boolean verificarAteltaAta(Atleta a) {
         int count = 0;
 
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date(); //data de hoje
+        String data = dateFormat.format(date);
         query = "SELECT count(atletas_id) as count "
                 + "FROM frequencia "
                 + "WHERE atletas_id = " + a.getId() + " "
-                + "AND data = curdate()";
+                + "AND data = '" + data + "'";
 
         DB.conectar();
 
@@ -356,10 +376,13 @@ public class FrequenciaModel {
     }
 
     public Boolean alterarFrequencia(Atleta a) {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date(); //data de hoje
+        String data = dateFormat.format(date);
 
         query = "UPDATE frequencia SET presenca = ? "
                 + "WHERE atletas_id = ? "
-                + "AND data=curdate()";
+                + "AND data='" + data + "'";
 
 
         /*Insere todos na tabela de presença na data corrente.*/
@@ -453,6 +476,40 @@ public class FrequenciaModel {
         DB.desconectar();
 
         return fl;
+    }
+
+    /**
+     * Adiciona um atleta na lista de frequência na data que foi lançado.
+     *
+     * @return
+     */
+    public boolean addNaFrequencia(int idAtleta) {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date(); //data de hoje
+        String data = dateFormat.format(date);
+
+        query = "INSERT INTO frequencia (atletas_id , presenca, data) VALUES (? , ? , '" + data + "') ";
+
+        try {
+
+            DB.conectar();
+
+            pstm = DB.con.prepareStatement(query);
+
+            pstm.setInt(1, idAtleta);
+            pstm.setString(2, "P");
+
+            pstm.execute();
+            pstm.close();
+            return true;
+
+        } catch (SQLException ex) {
+            Logs LogError = new Logs();
+            LogError.gravarLogError("" + ex);
+        }
+        DB.desconectar();
+
+        return false;
     }
 
 }

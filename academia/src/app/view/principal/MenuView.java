@@ -19,6 +19,12 @@ import app.view.contas.ContasResumo;
 import app.view.frequencia.FrequenciaDataPicker;
 import app.view.sobre.SobreView;
 import conf.Global;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 
 /**
  *
@@ -37,6 +43,14 @@ public class MenuView extends javax.swing.JFrame {
         this.setExtendedState(this.MAXIMIZED_BOTH);
 
         initComponents();
+        Image i = null;
+        try {
+            i = ImageIO.read(getClass().getResource("/images/snake-5-32.png"));
+            this.setIconImage(Toolkit.getDefaultToolkit().getImage("\\images\\snake-5-32.png"));  
+        } catch (IOException ex) {
+            Logger.getLogger(MenuView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        setIconImage(i);
         setLocationRelativeTo(null);
 
         /*ROTINAS*/
@@ -58,6 +72,7 @@ public class MenuView extends javax.swing.JFrame {
         frequenciaBt = new javax.swing.JButton();
         contasBt = new javax.swing.JButton();
         freManual = new javax.swing.JButton();
+        contasBt1 = new javax.swing.JButton();
         menuPrincipal = new javax.swing.JMenuBar();
         menuAquivo = new javax.swing.JMenu();
         miAlterarSenha = new javax.swing.JMenuItem();
@@ -104,13 +119,21 @@ public class MenuView extends javax.swing.JFrame {
         });
 
         freManual.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/tick.png"))); // NOI18N
-        freManual.setText("Chek in M.");
+        freManual.setText("Chek in");
         freManual.setToolTipText("Chek in manual.");
         freManual.setRequestFocusEnabled(false);
         freManual.setRolloverEnabled(false);
         freManual.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 freManualActionPerformed(evt);
+            }
+        });
+
+        contasBt1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/lightning--arrow.png"))); // NOI18N
+        contasBt1.setText("Lançamento");
+        contasBt1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                contasBt1ActionPerformed(evt);
             }
         });
 
@@ -125,7 +148,9 @@ public class MenuView extends javax.swing.JFrame {
                 .addComponent(freManual, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(contasBt, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(293, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(contasBt1, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(172, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -134,7 +159,8 @@ public class MenuView extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(frequenciaBt, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(contasBt, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(freManual, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(freManual, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(contasBt1, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(24, Short.MAX_VALUE))
         );
 
@@ -258,7 +284,7 @@ public class MenuView extends javax.swing.JFrame {
         frequenciaMenu.add(jMenuItem3);
 
         frequenciaDiariaBt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/book-open-bookmark.png"))); // NOI18N
-        frequenciaDiariaBt.setText("Frequência Diaria");
+        frequenciaDiariaBt.setText("Checar frequência por data");
         frequenciaDiariaBt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 frequenciaDiariaBtActionPerformed(evt);
@@ -359,30 +385,35 @@ public class MenuView extends javax.swing.JFrame {
     }//GEN-LAST:event_freManualActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-         FrequenciaController fc = new FrequenciaController();
+        FrequenciaController fc = new FrequenciaController();
         fc.chamaChekinManualForm();
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void ataAtletasMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ataAtletasMenuActionPerformed
-      FrequenciaController fc = new FrequenciaController();
+        FrequenciaController fc = new FrequenciaController();
         fc.chamarViewFrequencia();
     }//GEN-LAST:event_ataAtletasMenuActionPerformed
 
     private void miSobreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miSobreActionPerformed
-       SobreView sw = new SobreView(this, true);
-       sw.setVisible(true);
+        SobreView sw = new SobreView(this, true);
+        sw.setVisible(true);
     }//GEN-LAST:event_miSobreActionPerformed
 
     private void frequenciaDiariaBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_frequenciaDiariaBtActionPerformed
         FrequenciaDataPicker fd = new FrequenciaDataPicker(this, true);
         fd.setVisible(true);
-        
+
     }//GEN-LAST:event_frequenciaDiariaBtActionPerformed
 
     private void resumoMensalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resumoMensalActionPerformed
         ContasResumo cr = new ContasResumo(null, true);
         cr.setVisible(true);
     }//GEN-LAST:event_resumoMensalActionPerformed
+
+    private void contasBt1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contasBt1ActionPerformed
+        ContaController cc = new ContaController();
+        cc.chamarViewLancamento();
+    }//GEN-LAST:event_contasBt1ActionPerformed
     /*FUNÇÃO DE ROTINA
     
      */
@@ -398,8 +429,8 @@ public class MenuView extends javax.swing.JFrame {
         cc = new ContaController();
         cc.rotinaAtualizarConta();
     }
-    
-    public void carregaAtualziarAtleta(){
+
+    public void carregaAtualziarAtleta() {
         ac = new AtletaController();
         ac.carregarRotina();
     }
@@ -443,6 +474,7 @@ public class MenuView extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem ataAtletasMenu;
     private javax.swing.JButton contasBt;
+    private javax.swing.JButton contasBt1;
     private javax.swing.JMenuItem contasReceberMenu;
     private javax.swing.JButton freManual;
     private javax.swing.JButton frequenciaBt;
