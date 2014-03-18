@@ -10,6 +10,7 @@
  */
 package app.controller;
 
+import app.model.Atividade;
 import app.model.Atleta;
 import app.model.AtletaModel;
 import app.model.Conta;
@@ -64,15 +65,16 @@ public class FrequenciaController {
         return false;
     }
 
-    public FrequenciaTableModel listaFrequencia() {
+    public FrequenciaTableModel listaFrequencia(int idAtividade) {
         fm = new FrequenciaModel();
-
-        return new FrequenciaTableModel(fm.listaAta());
+        return new FrequenciaTableModel(fm.listaAta(idAtividade));
 
     }
 
-    public void chamarViewFrequencia() {
-        fv = new FrequenciaLista(null, true);
+    public void chamarViewFrequencia(int id, String nomeAtividade) {
+        fv = new FrequenciaLista(null, true, id , nomeAtividade);
+        fv.titulo.setText(nomeAtividade);
+
         fv.setVisible(true);
     }
 
@@ -226,16 +228,33 @@ public class FrequenciaController {
         }
     }
 
+    public boolean verificaFrequencia(int idAtleta) {
+        fm = new FrequenciaModel();
+        int qtd = fm.verificaFrequencia(idAtleta);
+        if (qtd >= 1) {
+            fm.atualizaFrequencia(idAtleta);
+            return true;
+        }
+        return false;
+    }
+
     /**
      * Adiciona um atleta na lista de frequência na data que foi lançado.
      *
      * @param idAtleta
-     * @return
      */
-    public boolean addNaFrequencia(int idAtleta) {
+    public void addNaFrequencia(int idAtleta) {
         fm = new FrequenciaModel();
 
-        return fm.addNaFrequencia(idAtleta);
+        if (verificaFrequencia(idAtleta) == true) {
+        } else {
+            fm.addNaFrequencia(idAtleta);
+        }
+
     }
 
+    /* public List<Atividade>  popula(){
+     fm = new FrequenciaModel();
+     return fm.popula();
+     }*/
 }

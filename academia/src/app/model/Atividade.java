@@ -32,9 +32,8 @@ public class Atividade {
         this.ativo = ativo;
         this.valor = valor;
     }
-    
-    
 
+  
     public String getNome() {
         return nome;
     }

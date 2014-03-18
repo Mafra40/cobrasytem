@@ -11,12 +11,10 @@
 package app.view.frequencia;
 
 import app.controller.FrequenciaController;
-import app.model.tablemodel.FrequenciaTableModel;
 import conf.Global;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import javax.swing.table.TableCellRenderer;
 
 /**
@@ -27,13 +25,19 @@ public class FrequenciaLista extends javax.swing.JDialog {
 
     private FrequenciaController fc;
 
+    public static int idAtividade;
+    public static String nomeAtividade;
+
     /**
      * Creates new form frequenciaLista
      */
-    public FrequenciaLista(java.awt.Frame parent, boolean modal) {
+    public FrequenciaLista(java.awt.Frame parent, boolean modal, int id, String nome) {
         super(parent, modal);
         initComponents();
         this.setLocationRelativeTo(null);
+        idAtividade = id;
+        nome = nomeAtividade;
+
         popularTabela();
     }
 
@@ -59,6 +63,7 @@ public class FrequenciaLista extends javax.swing.JDialog {
         prensentesLabel = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         faltantesLabel = new javax.swing.JLabel();
+        titulo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Frequência");
@@ -126,6 +131,9 @@ public class FrequenciaLista extends javax.swing.JDialog {
         faltantesLabel.setForeground(new java.awt.Color(255, 0, 0));
         faltantesLabel.setText("jLabel7");
 
+        titulo.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        titulo.setText("nenhuma");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -150,24 +158,33 @@ public class FrequenciaLista extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(fecharBt))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 817, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(layout.createSequentialGroup()
-                            .addComponent(jLabel3)
-                            .addGap(3, 3, 3)
-                            .addComponent(jLabel2))
-                        .addComponent(jLabel1)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 817, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel3)
+                                    .addGap(3, 3, 3)
+                                    .addComponent(jLabel2))
+                                .addComponent(jLabel1))
+                            .addGap(226, 226, 226)
+                            .addComponent(titulo))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(titulo)
+                        .addGap(20, 20, 20)))
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 497, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -187,54 +204,57 @@ public class FrequenciaLista extends javax.swing.JDialog {
 
     private void fecharBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fecharBtActionPerformed
         this.setVisible(false);
+        idAtividade = 0;
         this.dispose();
     }//GEN-LAST:event_fecharBtActionPerformed
 
     private void atualizarBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_atualizarBtActionPerformed
-        atualizarBt.setCursor(new java.awt.Cursor(java.awt.Cursor.WAIT_CURSOR));
-        fc = new FrequenciaController();
+        /*atualizarBt.setCursor(new java.awt.Cursor(java.awt.Cursor.WAIT_CURSOR));
+         fc = new FrequenciaController();
 
-        popularTabela();
+         popularTabela();
 
-        FrequenciaTableModel ftm = (FrequenciaTableModel) frequenciaTabela.getModel();
-        ftm.removeAll();
+         FrequenciaTableModel ftm = (FrequenciaTableModel) frequenciaTabela.getModel();
+         ftm.removeAll();
 
-        frequenciaTabela.setModel(fc.listaFrequencia());
-        frequenciaTabela.getColumnModel().getColumn(0).setPreferredWidth(5);
-        frequenciaTabela.getColumnModel().getColumn(1).setPreferredWidth(250);
-        frequenciaTabela.getColumnModel().getColumn(2).setPreferredWidth(20);
+         frequenciaTabela.setModel(fc.listaFrequencia());
+         frequenciaTabela.getColumnModel().getColumn(0).setPreferredWidth(5);
+         frequenciaTabela.getColumnModel().getColumn(1).setPreferredWidth(250);
+         frequenciaTabela.getColumnModel().getColumn(2).setPreferredWidth(20);
 
-        TableCellRenderer defaultRenderer = frequenciaTabela.getDefaultRenderer(Object.class);
-        TableCellRenderer r = new FrequenciaCellRender(defaultRenderer);
+         TableCellRenderer defaultRenderer = frequenciaTabela.getDefaultRenderer(Object.class);
+         TableCellRenderer r = new FrequenciaCellRender(defaultRenderer);
 
-        frequenciaTabela.getColumnModel().getColumn(2).setCellRenderer(r);
+         frequenciaTabela.getColumnModel().getColumn(2).setCellRenderer(r);
 
-        frequenciaTabela.getColumnModel().getColumn(3).setPreferredWidth(20);
-        frequenciaTabela.getColumnModel().getColumn(3).setPreferredWidth(5);
+         frequenciaTabela.getColumnModel().getColumn(3).setPreferredWidth(20);
+         frequenciaTabela.getColumnModel().getColumn(3).setPreferredWidth(5);
 
-        atualizarBt.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+         atualizarBt.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        int total = frequenciaTabela.getModel().getRowCount();
-        totalLabel.setText(String.valueOf(total));
+         int total = frequenciaTabela.getModel().getRowCount();
+         totalLabel.setText(String.valueOf(total));
 
-        int presentes = 0, faltantes = 0;
-        for (int i = 0; i < frequenciaTabela.getModel().getRowCount(); i++) {
-            if (frequenciaTabela.getModel().getValueAt(i, 2).equals("P")) {
-                presentes++;
-            } else {
-                faltantes++;
-            }
+         int presentes = 0, faltantes = 0;
+         for (int i = 0; i < frequenciaTabela.getModel().getRowCount(); i++) {
+         if (frequenciaTabela.getModel().getValueAt(i, 2).equals("P")) {
+         presentes++;
+         } else {
+         faltantes++;
+         }
 
-        }
+         }
 
-        prensentesLabel.setText(String.valueOf(presentes));
-        faltantesLabel.setText(String.valueOf(faltantes));
+         prensentesLabel.setText(String.valueOf(presentes));
+         faltantesLabel.setText(String.valueOf(faltantes));*/
 
     }//GEN-LAST:event_atualizarBtActionPerformed
 
     public void popularTabela() {
         fc = new FrequenciaController();
-        frequenciaTabela.setModel(fc.listaFrequencia());
+
+        frequenciaTabela.setModel(fc.listaFrequencia(idAtividade));
+
         frequenciaTabela.getColumnModel().getColumn(0).setPreferredWidth(5);
         frequenciaTabela.getColumnModel().getColumn(1).setPreferredWidth(250);
         frequenciaTabela.getColumnModel().getColumn(2).setPreferredWidth(20);
@@ -295,7 +315,7 @@ public class FrequenciaLista extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                FrequenciaLista dialog = new FrequenciaLista(new javax.swing.JFrame(), true);
+                FrequenciaLista dialog = new FrequenciaLista(new javax.swing.JFrame(), true, idAtividade, nomeAtividade);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -320,6 +340,7 @@ public class FrequenciaLista extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel prensentesLabel;
+    public javax.swing.JLabel titulo;
     private javax.swing.JLabel totalLabel;
     // End of variables declaration//GEN-END:variables
 }

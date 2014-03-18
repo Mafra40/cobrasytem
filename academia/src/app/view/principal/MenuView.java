@@ -17,6 +17,7 @@ import app.controller.FrequenciaController;
 import app.controller.FuncionarioController;
 import app.view.contas.ContasResumo;
 import app.view.frequencia.FrequenciaDataPicker;
+import app.view.frequencia.FrequenciaEscolherAtividade;
 import app.view.sobre.SobreView;
 import conf.Global;
 import java.awt.Image;
@@ -46,7 +47,7 @@ public class MenuView extends javax.swing.JFrame {
         Image i = null;
         try {
             i = ImageIO.read(getClass().getResource("/images/snake-5-32.png"));
-            this.setIconImage(Toolkit.getDefaultToolkit().getImage("\\images\\snake-5-32.png"));  
+            this.setIconImage(Toolkit.getDefaultToolkit().getImage("\\images\\snake-5-32.png"));
         } catch (IOException ex) {
             Logger.getLogger(MenuView.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -322,7 +323,7 @@ public class MenuView extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(350, Short.MAX_VALUE))
+                .addContainerGap(352, Short.MAX_VALUE))
         );
 
         getAccessibleContext().setAccessibleDescription("");
@@ -375,13 +376,16 @@ public class MenuView extends javax.swing.JFrame {
     }//GEN-LAST:event_moviMenuBtActionPerformed
 
     private void frequenciaBtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_frequenciaBtActionPerformed
-        FrequenciaController fc = new FrequenciaController();
-        fc.chamarViewFrequencia();
+
+        FrequenciaEscolherAtividade f = new FrequenciaEscolherAtividade(this, false);
+        f.setVisible(true);
     }//GEN-LAST:event_frequenciaBtActionPerformed
 
     private void freManualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_freManualActionPerformed
         FrequenciaController fc = new FrequenciaController();
         fc.chamaChekinManualForm();
+
+
     }//GEN-LAST:event_freManualActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
@@ -390,8 +394,8 @@ public class MenuView extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void ataAtletasMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ataAtletasMenuActionPerformed
-        FrequenciaController fc = new FrequenciaController();
-        fc.chamarViewFrequencia();
+        FrequenciaEscolherAtividade f = new FrequenciaEscolherAtividade(this, false);
+        f.setVisible(true);
     }//GEN-LAST:event_ataAtletasMenuActionPerformed
 
     private void miSobreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miSobreActionPerformed
