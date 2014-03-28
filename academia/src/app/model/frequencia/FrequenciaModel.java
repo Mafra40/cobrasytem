@@ -1,5 +1,9 @@
-package app.model;
+package app.model.frequencia;
 
+import app.model.DB;
+import app.model.conta.Conta;
+import app.model.atleta.Atleta;
+import app.model.atividade.Atividade;
 import app.view.frequencia.FrequenciaManual;
 import app.view.frequencia.FrequenciaView;
 import java.awt.Image;

@@ -8,8 +8,11 @@
  * Contributors:
  *    WISE - initial API and implementation and/or initial documentation
  */
-package app.model;
+package app.model.atividade;
 
+import app.model.atleta.Atleta;
+import app.model.atleta.AtletaAtividade;
+import app.model.DB;
 import app.model.tablemodel.AtividadeTableModel;
 import app.model.tablemodel.AtletaAtividadeTableModel;
 import java.sql.PreparedStatement;

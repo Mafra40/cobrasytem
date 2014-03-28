@@ -11,7 +11,7 @@
 
 package app.model.tablemodel;
 
-import app.model.Conta;
+import app.model.conta.Conta;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;

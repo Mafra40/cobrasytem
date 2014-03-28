@@ -10,12 +10,12 @@
  */
 package app.controller;
 
-import app.model.Atividade;
-import app.model.Atleta;
-import app.model.AtletaModel;
-import app.model.Conta;
-import app.model.Frequencia;
-import app.model.FrequenciaModel;
+import app.model.atividade.Atividade;
+import app.model.atleta.Atleta;
+import app.model.atleta.AtletaModel;
+import app.model.conta.Conta;
+import app.model.frequencia.Frequencia;
+import app.model.frequencia.FrequenciaModel;
 import app.model.tablemodel.FrequenciaTableModel;
 import app.model.tablemodel.PendenciasTableModel;
 import app.view.frequencia.FrequenciaDiaria;
@@ -72,7 +72,7 @@ public class FrequenciaController {
     }
 
     public void chamarViewFrequencia(int id, String nomeAtividade) {
-        fv = new FrequenciaLista(null, true, id , nomeAtividade);
+        fv = new FrequenciaLista(null, true, id, nomeAtividade);
         fv.titulo.setText(nomeAtividade);
 
         fv.setVisible(true);

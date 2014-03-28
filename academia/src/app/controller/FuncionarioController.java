@@ -1,7 +1,7 @@
 package app.controller;
 
-import app.model.Funcionario;
-import app.model.FuncionarioModel;
+import app.model.funcionario.Funcionario;
+import app.model.funcionario.FuncionarioModel;
 import app.model.tablemodel.FuncionarioTableModel;
 import app.view.funcionario.FuncionarioEditar;
 import app.view.funcionario.FuncionarioForm;

@@ -3,7 +3,7 @@ package app.model.tablemodel;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
-import app.model.Funcionario;
+import app.model.funcionario.Funcionario;
 
 public class FuncionarioTableModel extends AbstractTableModel {
 

@@ -13,7 +13,7 @@ package app.view.frequencia;
 import app.controller.AtletaController;
 import app.controller.ContaController;
 import app.controller.FrequenciaController;
-import app.model.Atleta;
+import app.model.atleta.Atleta;
 import app.model.tablemodel.PendenciasTableModel;
 import conf.Global;
 import java.text.DateFormat;

@@ -11,7 +11,7 @@
 package app.view.atleta;
 
 import app.controller.AtletaController;
-import app.model.Atleta;
+import app.model.atleta.Atleta;
 import javax.swing.JOptionPane;
 import libs.Validador;
 

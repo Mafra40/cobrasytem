@@ -1,10 +1,13 @@
-package app.model;
+package app.model.conta;
+
+import app.model.atleta.Atleta;
+import java.io.Serializable;
 
 /**
  *
  * @author WISE
  */
-public class Conta extends Atleta{
+public class Conta extends Atleta implements Serializable{ //RMI
 
     private int id;
     private int id_atleta;

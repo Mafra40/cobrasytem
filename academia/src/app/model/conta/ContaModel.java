@@ -1,5 +1,9 @@
-package app.model;
+package app.model.conta;
 
+import app.model.DB;
+import app.model.funcionario.Funcionario;
+import app.model.login.LoginModel;
+import app.model.atleta.AtletaAtividade;
 import app.model.tablemodel.ContaTableModel;
 import app.view.contas.ContasAdminCheck;
 import java.math.BigInteger;
@@ -178,6 +182,10 @@ public class ContaModel {
         DB.desconectar();
         return "1";
     }
+    
+  
+    
+    
 
     public ContaTableModel listarContas(int matricula) {
         query = "SELECT id, atletas_id, date_format(vencimento ,  '%d/%m/%Y' ) as vencimento,"

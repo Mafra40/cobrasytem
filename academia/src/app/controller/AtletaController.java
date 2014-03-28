@@ -10,8 +10,8 @@
  */
 package app.controller;
 
-import app.model.Atleta;
-import app.model.AtletaModel;
+import app.model.atleta.Atleta;
+import app.model.atleta.AtletaModel;
 import app.model.tablemodel.AtletaTableModel;
 import app.view.atleta.AtletaCadastro;
 import app.view.atleta.AtletaEditar;

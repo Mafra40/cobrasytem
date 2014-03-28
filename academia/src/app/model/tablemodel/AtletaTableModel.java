@@ -11,7 +11,7 @@
 
 package app.model.tablemodel;
 
-import app.model.Atleta;
+import app.model.atleta.Atleta;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;

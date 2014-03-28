@@ -1,7 +1,7 @@
 package app.model.tablemodel;
 
-import app.model.Atividade;
-import app.model.AtletaAtividade;
+import app.model.atividade.Atividade;
+import app.model.atleta.AtletaAtividade;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;

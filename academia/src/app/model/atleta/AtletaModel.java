@@ -8,8 +8,9 @@
  * Contributors:
  *    WISE - initial API and implementation and/or initial documentation
  */
-package app.model;
+package app.model.atleta;
 
+import app.model.DB;
 import app.model.tablemodel.AtletaTableModel;
 import app.view.atleta.AtletaEditar;
 import conf.Global;

@@ -9,9 +9,9 @@ import app.controller.AtividadeController;
 import app.controller.AtletaController;
 import app.controller.ContaController;
 import app.controller.FrequenciaController;
-import app.model.Atleta;
-import app.model.AtletaAtividade;
-import app.model.Conta;
+import app.model.atleta.Atleta;
+import app.model.atleta.AtletaAtividade;
+import app.model.conta.Conta;
 import app.model.tablemodel.AtividadesTableModel;
 import app.model.tablemodel.ContaTableModel;
 import conf.Global;
@@ -19,14 +19,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.TableCellRenderer;
 import libs.Validador;
 
 /**
- *
+ *CLASSE NÂO ESTÁ SENDO MAIS UTILIZADA.
  * @author MafraWise
  */
 public class ContasAtletasLancamento extends javax.swing.JDialog {
@@ -631,7 +629,7 @@ public class ContasAtletasLancamento extends javax.swing.JDialog {
                 int dialogResultado = JOptionPane.showConfirmDialog(null, "Deseja gerar um novo lançamento com este atleta?");
                 if (dialogResultado == JOptionPane.YES_OPTION) { /*Se sim*/
 
-                    if (cc.lancamentoRapido(dataV, valor, null, matriculaTxt.getText(), tabelaMovimentacao) == true) {
+                    if (cc.lancamentoRapido(dataV, valor, null, matriculaTxt.getText(), tabelaMovimentacao, "AtletasView") == true) {
                         JOptionPane.showMessageDialog(null, "Lançamento concluido.", "Alerta", JOptionPane.INFORMATION_MESSAGE);
 
                         ctm = new ContaTableModel();

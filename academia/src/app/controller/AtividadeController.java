@@ -10,9 +10,9 @@
  */
 package app.controller;
 
-import app.model.Atividade;
-import app.model.AtividadeModel;
-import app.model.AtletaAtividade;
+import app.model.atividade.Atividade;
+import app.model.atividade.AtividadeModel;
+import app.model.atleta.AtletaAtividade;
 import app.model.tablemodel.AtividadeTableModel;
 import app.model.tablemodel.AtletaAtividadeTableModel;
 import app.view.atividade.AtividadeEditar;

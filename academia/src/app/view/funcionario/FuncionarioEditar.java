@@ -11,7 +11,7 @@
 package app.view.funcionario;
 
 import app.controller.FuncionarioController;
-import app.model.Funcionario;
+import app.model.funcionario.Funcionario;
 import conf.Global;
 import java.awt.Color;
 import javax.swing.BorderFactory;

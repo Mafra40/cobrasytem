@@ -9,7 +9,7 @@
  *    WISE - initial API and implementation and/or initial documentation
  */
 
-package app.model;
+package app.model.atividade;
 
 /**
  *
