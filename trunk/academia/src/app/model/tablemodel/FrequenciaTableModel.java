@@ -11,7 +11,7 @@
 
 package app.model.tablemodel;
 
-import app.model.Frequencia;
+import app.model.frequencia.Frequencia;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;

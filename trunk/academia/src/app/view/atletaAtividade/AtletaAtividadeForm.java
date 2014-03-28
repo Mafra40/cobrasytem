@@ -11,7 +11,7 @@
 package app.view.atletaAtividade;
 
 import app.controller.AtividadeController;
-import app.model.Atividade;
+import app.model.atividade.Atividade;
 import app.view.atleta.AtletaCadastro;
 import app.view.atleta.AtletaView;
 import conf.Global;

@@ -11,7 +11,7 @@
 package app.controller;
 
 import static app.controller.LoginController.F_LOGIN;
-import app.model.LoginModel;
+import app.model.login.LoginModel;
 import app.view.login.LoginView;
 import app.view.principal.MenuView;
 import javax.swing.JOptionPane;

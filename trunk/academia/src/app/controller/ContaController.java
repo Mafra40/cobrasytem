@@ -1,23 +1,26 @@
 package app.controller;
 
-import app.model.AtividadeModel;
-import app.model.Atleta;
-import app.model.AtletaAtividade;
-import app.model.AtletaModel;
-import app.model.Conta;
-import app.model.ContaModel;
+import app.model.atividade.AtividadeModel;
+import app.model.atleta.Atleta;
+import app.model.atleta.AtletaAtividade;
+import app.model.atleta.AtletaModel;
+import app.model.conta.Conta;
+import app.model.conta.ContaModel;
+import app.model.contadetalhes.ContaDetalhes;
+import app.model.contadetalhes.ContaDetalhesModel;
 import app.model.tablemodel.AtividadesTableModel;
 import app.model.tablemodel.ContaTableModel;
 import app.model.tablemodel.ContasReceberTableModel;
 import app.view.atleta.AtletaView;
 import app.view.contas.ContasAdminCheck;
-import app.view.contas.ContasAtletasLancamento;
 import app.view.contas.ContasAtletasView;
 import static app.view.contas.ContasAtletasView.tabelaAtividades;
 import static app.view.contas.ContasAtletasView.tabelaMovimentacao;
 import app.view.contas.ContasResumo;
 import app.view.contas.ContasView;
+import app.view.contas.ContasViewDetalhes;
 import java.sql.CallableStatement;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -35,7 +38,7 @@ import javax.swing.JTable;
 public class ContaController {
 
     private ContasAtletasView cv;
-    private ContasAtletasLancamento cl;
+    private ContasViewDetalhes cvd;
     private ContasView csv;
     private ContaModel cm;
     private ContaTableModel ctm;
@@ -53,7 +56,12 @@ public class ContaController {
     public static boolean aceito = false;
     private List<Conta> contas;
     public List<AtletaAtividade> al = new ArrayList<AtletaAtividade>();
+    private List<ContaDetalhes> cdl = new ArrayList<ContaDetalhes>();
+
     private ContasReceberTableModel ctrm;
+    private ContaDetalhesModel cdm;
+    private AtletaModel atletam;
+    private Atleta a;
 
     public void chamarView(int matricula) {
         cv = new ContasAtletasView(null, true);
@@ -116,24 +124,25 @@ public class ContaController {
             if (cm.cadastrarContaPagamento(c, matricula) == true) {
                 JOptionPane.showMessageDialog(null, "Lançamento cadastrado.", "Alerta", JOptionPane.INFORMATION_MESSAGE);
                 /*
-                ctm = new ContaTableModel();
-                ctm = (ContaTableModel) ContasAtletasView.tabelaMovimentacao.getModel();
+                 ctm = new ContaTableModel();
+                 ctm = (ContaTableModel) ContasAtletasView.tabelaMovimentacao.getModel();
 
-                String dataLan = null;
-                String dataVen = null;
+                 String dataLan = null;
+                 String dataVen = null;
 
-                try {/*Formata datas*//*
+                 try {/*Formata datas*//*
 
-                    Date date = new SimpleDateFormat("yyyy-MM-dd").parse(c.getLancamento());
-                    Date date2 = new SimpleDateFormat("yyyy-MM-dd").parse(c.getVencimento());
-                    dataLan = new SimpleDateFormat("dd/MM/yyyy").format(date);
-                    dataVen = new SimpleDateFormat("dd/MM/yyyy").format(date2);
+                 Date date = new SimpleDateFormat("yyyy-MM-dd").parse(c.getLancamento());
+                 Date date2 = new SimpleDateFormat("yyyy-MM-dd").parse(c.getVencimento());
+                 dataLan = new SimpleDateFormat("dd/MM/yyyy").format(date);
+                 dataVen = new SimpleDateFormat("dd/MM/yyyy").format(date2);
 
-                } catch (ParseException ex) {
+                 } catch (ParseException ex) {
 
-                }
+                 }
 
-                ctm.addRow(c.getId(), dataLan, dataVen, c.getValor_total(), "Aberto", 1);*/
+                 ctm.addRow(c.getId(), dataLan, dataVen, c.getValor_total(), "Aberto", 1);*/
+
                 return true;
             }
         } else {
@@ -280,11 +289,20 @@ public class ContaController {
         }
     }
 
-    public boolean lancamentoRapido(String dataV, float valor, String nomeAtleta, String matriculaText, JTable tabela) {
+    public boolean lancamentoRapido(String dataV, float valor, String nomeAtleta, String matriculaText, JTable tabela, String contasView) {
         int matricula = 0;
         String dataE = "";
         String dataVencimento = "";
         String mesS = "";
+
+        atletam = new AtletaModel();
+        a = new Atleta();
+        cdm = new ContaDetalhesModel();
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Date data = new Date();
+        String hoje = dateFormat.format(data);
+
+        matricula = Integer.parseInt(matriculaText);  //essa matricula é pega para testa os detalhes.
 
         String[] split = dataV.split("/");
 
@@ -337,32 +355,129 @@ public class ContaController {
         c.setObservacao("");
         c.setDatapago("0000-00-00");
 
-        if (cm.cadastrarContaPagamento(c, matricula) == true) {
-            if (nomeAtleta == null) {
-                ctm = (ContaTableModel) tabela.getModel();
+        a = atletam.retorna_atleta(matricula);
+        int idUltimaConta = cdm.retornaUltimaContaDeUmAtleta(a.getId());
+        cdl = cdm.checarDetalhes(idUltimaConta);
+        /*Destalhes do pagamento - Checa se ele tem algum histórico*/
+        if (cdl.size() > 0) {/*Se tiver histórico carrega a ultima transação que ele fez e deixa como base*/
 
-                String dataLan = null;
-                String dataVen = null;
+            //cdm.cadastrar(cdl);
 
-                try {/*Formata datas*/
+            if (cm.cadastrarContaPagamento(c, matricula) == true) {
 
-                    Date date = new SimpleDateFormat("yyyy-MM-dd").parse(c.getLancamento());
-                    Date date2 = new SimpleDateFormat("yyyy-MM-dd").parse(c.getVencimento());
-                    dataLan = new SimpleDateFormat("dd/MM/yyyy").format(date);
-                    dataVen = new SimpleDateFormat("dd/MM/yyyy").format(date2);
+                int novaIdConta = cdm.retornaUltimaContaDeUmAtleta(a.getId());
+                for (int i = 0; i < cdl.size(); i++) {
+                    cdl.get(i).setId_contas_receber(novaIdConta);
+                }
+                cdm.cadastrar(cdl);
 
-                } catch (ParseException ex) {
-                    Logger.getLogger(ContaController.class.getName()).log(Level.SEVERE, null, ex);
+                if (nomeAtleta == null) {//se tiver null é pq ta na View ContasAtletasView
+                    ctm = (ContaTableModel) tabela.getModel();
+
+                    String dataLan = null;
+                    String dataVen = null;
+
+                    try {/*Formata datas*/
+
+                        Date date = new SimpleDateFormat("yyyy-MM-dd").parse(c.getLancamento());
+                        Date date2 = new SimpleDateFormat("yyyy-MM-dd").parse(c.getVencimento());
+                        dataLan = new SimpleDateFormat("dd/MM/yyyy").format(date);
+                        dataVen = new SimpleDateFormat("dd/MM/yyyy").format(date2);
+
+                    } catch (ParseException ex) {
+                        Logger.getLogger(ContaController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    ctm.addRow(c.getId(), dataLan, dataVen, c.getValor_total(), "Aberto", 0);
+
+                    return true;
+                } else {//tabelas da conta View !! PAREI AQUI POR QUE NA HORA DE CONTAS A RECEBER ELE ESTÁ BUGADOO!!! nao atá atualizando o status.
+
+                    switch (contasView) {
+                        case "Receber":
+                            ctrm = new ContasReceberTableModel();
+                            ctrm = (ContasReceberTableModel) ContasView.contasReceberTabela.getModel();
+                            ctrm.setValueAt(hoje, ContasView.linhaSelecionadaCR, 5); /*Atualiza*/
+
+                            ctrm.setValueAt("Pago", ContasView.linhaSelecionadaCR, 7); /*Atualiza*/
+
+                            this.chamarView(matricula);
+
+                            return false;
+
+                        case "Pendencias":
+                            ctrm = new ContasReceberTableModel();
+                            ctrm = (ContasReceberTableModel) ContasView.pendenciasTabela.getModel();
+                            ctrm.setValueAt(hoje, ContasView.linhaSelecionadaP, 5); /*Atualiza*/
+
+                            ctrm.setValueAt("Pago", ContasView.linhaSelecionadaP, 7); /*Atualiza*/
+
+                            this.chamarView(matricula);
+                            return false;
+
+                        case "Movimentacao":
+                            ctrm = new ContasReceberTableModel();
+                            ctrm = (ContasReceberTableModel) ContasView.movimentacaoTabela.getModel();
+                            ctrm.setValueAt(hoje, ContasView.linhaSelecionadaM, 5); /*Atualiza*/
+
+                            ctrm.setValueAt("Pago", ContasView.linhaSelecionadaM, 7); /*Atualiza*/
+
+                            this.chamarView(matricula);
+                            return false;
+
+                    }
+
                 }
 
-                ctm.addRow(c.getId(), dataLan, dataVen, c.getValor_total(), "Aberto", 0);
+            } else {
+                return false;
             }
 
-            return true;
         } else {
-            return false;
-        }
+            /* Exibe uma menssagem para ele fazer uma conta detalhada manualmente para ficar salvo um histórico. */
+            JOptionPane.showMessageDialog(null, "Precisa de uma conta criada na nova versão para ser processado o detalhamento da conta anterior.", "Alerta: Não foi possivel fazer um lançamento automático.", JOptionPane.INFORMATION_MESSAGE);
 
+            switch (contasView) {
+                case "Receber":
+                    ctrm = new ContasReceberTableModel();
+                    ctrm = (ContasReceberTableModel) ContasView.contasReceberTabela.getModel();
+                    ctrm.setValueAt(hoje, ContasView.linhaSelecionadaCR, 5); /*Atualiza*/
+
+                    ctrm.setValueAt("Pago", ContasView.linhaSelecionadaCR, 7); /*Atualiza*/
+
+                    this.chamarView(matricula);
+
+                    return false;
+
+                case "Pendencias":
+                    ctrm = new ContasReceberTableModel();
+                    ctrm = (ContasReceberTableModel) ContasView.pendenciasTabela.getModel();
+                     ctrm.setValueAt(hoje, ContasView.linhaSelecionadaP, 5); /*Atualiza*/
+                    ctrm.setValueAt("Pago", ContasView.linhaSelecionadaP, 7); /*Atualiza*/
+
+                    this.chamarView(matricula);
+                    return false;
+
+                case "Movimentacao":
+                    ctrm = new ContasReceberTableModel();
+                    ctrm = (ContasReceberTableModel) ContasView.movimentacaoTabela.getModel();
+                     ctrm.setValueAt(hoje, ContasView.linhaSelecionadaM, 5); /*Atualiza*/
+                    ctrm.setValueAt("Pago", ContasView.linhaSelecionadaM, 7); /*Atualiza*/
+
+                    this.chamarView(matricula);
+                    return false;
+
+                case "AtletasView":
+                    ctm = new ContaTableModel();
+                    ctm = (ContaTableModel) ContasAtletasView.tabelaMovimentacao.getModel();
+                    ctm.setValueAt("Pago", ContasAtletasView.linhaSelecionadaMov, 4); /*Atualiza*/
+
+                    return false;
+
+            }
+
+        }
+        return false;
     }
 
     public boolean reabrirConta(int contaId) {
@@ -426,8 +541,8 @@ public class ContaController {
     /*Fazer lacamento*/
 
     public void chamarViewLancamento() {
-        cl = new ContasAtletasLancamento(null, true);
-        cl.setVisible(true);
+        cvd = new ContasViewDetalhes(null, true);
+        cvd.setVisible(true);
     }
 
     public List<AtletaAtividade> retornaAtividadesAtleta(int matricula) {

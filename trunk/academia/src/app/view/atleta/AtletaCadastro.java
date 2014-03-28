@@ -6,7 +6,7 @@
 package app.view.atleta;
 
 import app.controller.AtletaController;
-import app.model.Atleta;
+import app.model.atleta.Atleta;
 import conf.Global;
 import java.awt.Image;
 import javax.swing.ImageIcon;

@@ -13,7 +13,7 @@ package app.view.contas;
 import app.controller.AtletaController;
 import app.controller.ContaController;
 import app.controller.FrequenciaController;
-import app.model.Atleta;
+import app.model.atleta.Atleta;
 import app.model.tablemodel.ContasReceberTableModel;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -725,7 +725,7 @@ public class ContasView extends javax.swing.JDialog {
                 int dialogResultado = JOptionPane.showConfirmDialog(null, "Deseja gerar um novo lançamento com este atleta?");
                 if (dialogResultado == JOptionPane.YES_OPTION) {
 
-                    if (cc.lancamentoRapido(dataVM, valorM, nomeM, null, null) == true) {
+                    if (cc.lancamentoRapido(dataVM, valorM, nomeM, String.valueOf(matM), null, "Movimentacao") == true) {
                         JOptionPane.showMessageDialog(null, "Operação concluída.", "Alerta", JOptionPane.INFORMATION_MESSAGE);
 
                         movimentacaoTabela.setValueAt("Pago", linhaSelecionadaM, 7);
@@ -778,8 +778,8 @@ public class ContasView extends javax.swing.JDialog {
 
     private void atualizarBt2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_atualizarBt2ActionPerformed
         popularPendencias();
-        quitarBt1.setEnabled(false);
-        removerBt1.setEnabled(false);
+        quitarPendenciasBt.setEnabled(false);
+        removerBt2.setEnabled(false);
         linhaSelecionadaM = 0;
         idM = 0;
         matM = 0;
@@ -834,7 +834,7 @@ public class ContasView extends javax.swing.JDialog {
                 int dialogResultado = JOptionPane.showConfirmDialog(null, "Deseja gerar um novo lançamento com este atleta?");
                 if (dialogResultado == JOptionPane.YES_OPTION) {
 
-                    if (cc.lancamentoRapido(dataVP, valorP, nomeP, null, null) == true) {
+                    if (cc.lancamentoRapido(dataVP, valorP, nomeP, String.valueOf(matP), null, "Pendencias") == true) {
                         JOptionPane.showMessageDialog(null, "Operação concluída.", "Alerta", JOptionPane.INFORMATION_MESSAGE);
 
                         ctrm = new ContasReceberTableModel();
@@ -844,6 +844,7 @@ public class ContasView extends javax.swing.JDialog {
 
                         quitarPendenciasBt.setEnabled(false);
                         removerBt2.setEnabled(false);
+                        
                         linhaSelecionadaP = 0;
                         idP = 0;
                         matP = 0;
@@ -856,7 +857,7 @@ public class ContasView extends javax.swing.JDialog {
                     ctrm = (ContasReceberTableModel) pendenciasTabela.getModel();
 
                     ctrm.removeRow(linhaSelecionadaP);
-                    pendenciasTabela.remove(linhaSelecionadaP);
+                    
                     quitarPendenciasBt.setEnabled(false);
                     removerBt2.setEnabled(false);
                     linhaSelecionadaP = 0;
@@ -956,7 +957,7 @@ public class ContasView extends javax.swing.JDialog {
                 int dialogResultado = JOptionPane.showConfirmDialog(null, "Deseja gerar um novo lançamento com este atleta?");
                 if (dialogResultado == JOptionPane.YES_OPTION) {
 
-                    if (cc.lancamentoRapido(dataVR, valorR, nomeR, null, null) == true) {
+                    if (cc.lancamentoRapido(dataVR, valorR, nomeR, String.valueOf(matR), null, "Receber") == true) {
                         JOptionPane.showMessageDialog(null, "Operação concluída.", "Alerta", JOptionPane.INFORMATION_MESSAGE);
                         Date date = new Date();
                         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -1267,7 +1268,7 @@ public class ContasView extends javax.swing.JDialog {
     private javax.swing.JRadioButton nomeRadio;
     public javax.swing.JTabbedPane painel;
     public javax.swing.JPanel pendenciasPainel;
-    private javax.swing.JTable pendenciasTabela;
+    public static javax.swing.JTable pendenciasTabela;
     private javax.swing.JButton pesquisarBt;
     private javax.swing.JButton pesquisarMBt;
     private javax.swing.JTextField pesquisarMTxt;

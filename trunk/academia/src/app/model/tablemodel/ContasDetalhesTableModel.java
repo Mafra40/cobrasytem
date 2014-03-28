@@ -1,42 +1,42 @@
 /*
- * Copyright (c) 2014 WISE.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *    WISE - initial API and implementation and/or initial documentation
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
 package app.model.tablemodel;
 
-import app.model.atividade.Atividade;
+import app.model.contadetalhes.ContaDetalhes;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
 /**
  *
- * @author WISE
+ * @author MafraWise
  */
-public class AtividadeTableModel extends AbstractTableModel {
+public class ContasDetalhesTableModel extends AbstractTableModel {
 
-    private List<Atividade> linhas;
-    private String[] colunas = new String[]{"Id","Nome", "Valor", "Ativo"};
+    private List<ContaDetalhes> linhas;
+    private String[] colunas = new String[]{"ID", "Nome", "Valor", "Conta"};
 
     private static final int ID = 0;
     private static final int NOME = 1;
     private static final int VALOR = 2;
-    private static final int ATIVO = 3;
+    private static final int CONTA = 3;
+    private ContaDetalhes c;
 
     // Cria um Func sem nenhuma linha
-    public AtividadeTableModel() {
-        linhas = new ArrayList<Atividade>();
+    public ContasDetalhesTableModel() {
+        linhas = new ArrayList<ContaDetalhes>();
     }
 
     // Cria um SocioTableModel contendo a lista recebida por parâmetro
-    public AtividadeTableModel(List<Atividade> listaDeAtividades) {
-        linhas = new ArrayList<Atividade>(listaDeAtividades);
+    public ContasDetalhesTableModel(List<ContaDetalhes> listaDeContas) {
+        linhas = new ArrayList<ContaDetalhes>(listaDeContas);
+    }
+
+    public void setList(List<ContaDetalhes> listaDeContas) {
+        linhas = new ArrayList<ContaDetalhes>(listaDeContas);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class AtividadeTableModel extends AbstractTableModel {
                 return String.class;
             case VALOR:
                 return String.class;
-            case ATIVO:
+            case CONTA:
                 return String.class;
             default:
                 // Não deve ocorrer, pois só existem 2 colunas
@@ -79,17 +79,18 @@ public class AtividadeTableModel extends AbstractTableModel {
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         // Pega o sócio referente a linha especificada.
-        Atividade a = linhas.get(rowIndex);
+        ContaDetalhes c = linhas.get(rowIndex);
 
         switch (columnIndex) {
             case ID:
-                return a.getId();
+                return c.getId();
             case NOME:
-                return a.getNome();
+                return c.getNome();
             case VALOR:
-                return a.getValor();
-            case ATIVO:
-                return a.getAtivo();
+                return c.getValor();
+            case CONTA:
+                return c.getId_contas_receber();
+
             default:
                 // Não deve ocorrer, pois só existem 2 colunas
                 throw new IndexOutOfBoundsException("columnIndex out of bounds");
@@ -99,21 +100,25 @@ public class AtividadeTableModel extends AbstractTableModel {
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         // Pega o sócio referente a linha especificada.
-        Atividade a = linhas.get(rowIndex);
+        ContaDetalhes c = linhas.get(rowIndex);
 
         switch (columnIndex) {
             case ID:
-                a.setId((int) aValue);
+                c.setId((int) aValue);
                 break;
+
             case NOME:
-                a.setNome((String) aValue);
+                c.setNome((String) aValue);
                 break;
+
             case VALOR:
-                a.setValor((Float) aValue);
+                c.setValor((float) aValue);
                 break;
-            case ATIVO:
-                a.setAtivo((String) aValue);
+
+            case CONTA:
+                c.setId_contas_receber((int) aValue);
                 break;
+
             default:
                 // Não deve ocorrer, pois só existem 2 colunas
                 throw new IndexOutOfBoundsException("columnIndex out of bounds");
@@ -126,30 +131,47 @@ public class AtividadeTableModel extends AbstractTableModel {
         linhas.remove(row);
         fireTableRowsDeleted(row, row);
     }
-    
-    public void removeAll() {
-         for (int i = 0; i < linhas.size(); i++) {
-             linhas.removeAll(linhas);
-         }
-         fireTableDataChanged();
-       }
 
-    public void addRow(int id, String nome, Float valor, String ativo, int row) {
-        Atividade a = new Atividade();
-        a.setId(id);
-        a.setNome(nome);
-        a.setValor(valor);
-        a.setAtivo(ativo);
-        linhas.add(a);
+    public void removeAll() {
+        for (int i = 0; i < linhas.size(); i++) {
+            linhas.removeAll(linhas);
+        }
+        fireTableDataChanged();
+    }
+
+    public void addRow(int idConta, String nome, Float valor, int conta, int row) {
+        c = new ContaDetalhes();
+        c.setId(idConta);
+        c.setNome(nome);
+        c.setValor(valor);
+        c.setId_contas_receber(conta);
+        linhas.add(c);
+        fireTableRowsInserted(row + 1, row + 1);
+    }
+    
+    public void addRowNomeValor(int idConta, String nome, Float valor, int row) {
+        c = new ContaDetalhes();
+        c.setId(idConta);
+        c.setNome(nome);
+        c.setValor(valor);
+        linhas.add(c);
         fireTableRowsInserted(row + 1, row + 1);
     }
 
-    public void updateRow(int id, String nome, Float valor, String ativo, int row) {
-        Atividade a = new Atividade();
-        a.setId(id);
-        a.setNome(nome);
-        a.setValor(valor);
-        a.setAtivo(ativo);
+    public void updateRow(int idConta, int mat, String nome, Float valor, int conta, int row) {
+        c = new ContaDetalhes();
+        c.setId(idConta);
+        c.setNome(nome);
+        c.setValor(valor);
+        c.setId_contas_receber(conta);
+
+        fireTableRowsUpdated(row, row);
+
+    }
+
+    public void updateRowSituacao(String situacao, int row) {
+        c = new ContaDetalhes();
+        c.setSituacao(situacao);
 
         fireTableRowsUpdated(row, row);
 

@@ -7,7 +7,7 @@ package app.view.frequencia;
 
 import app.controller.AtividadeController;
 import app.controller.FrequenciaController;
-import app.model.Atividade;
+import app.model.atividade.Atividade;
 import java.util.List;
 import javax.swing.JOptionPane;
 

@@ -12,7 +12,7 @@
 package app.view.atividade;
 
 import app.controller.AtividadeController;
-import app.model.Atividade;
+import app.model.atividade.Atividade;
 import javax.swing.JOptionPane;
 import libs.Validador;
 

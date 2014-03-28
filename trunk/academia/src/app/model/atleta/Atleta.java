@@ -9,13 +9,15 @@
  *    WISE - initial API and implementation and/or initial documentation
  */
 
-package app.model;
+package app.model.atleta;
+
+import java.io.Serializable;
 
 /**
  *
  * @author WISE
  */
-public class Atleta {
+public class Atleta implements Serializable{ //RMI
     private int id;
     private int matricula;
     private String rg;

@@ -12,7 +12,7 @@
 package app.view.funcionario;
 
 import app.controller.FuncionarioController;
-import app.model.Funcionario;
+import app.model.funcionario.Funcionario;
 import app.model.tablemodel.FuncionarioTableModel;
 import conf.Global;
 import javax.swing.JOptionPane;

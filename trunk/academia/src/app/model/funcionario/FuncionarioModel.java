@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package app.model;
+package app.model.funcionario;
 
+import app.model.DB;
+import app.model.login.LoginModel;
 import app.model.tablemodel.FuncionarioTableModel;
 import java.math.BigInteger;
 import java.security.MessageDigest;
